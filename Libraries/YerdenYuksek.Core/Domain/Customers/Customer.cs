@@ -1,4 +1,5 @@
-﻿using YerdenYuksek.Core.Primitives;
+﻿using YerdenYuksek.Core.Domain.Common;
+using YerdenYuksek.Core.Primitives;
 
 namespace YerdenYuksek.Core.Domain.Customers;
 
@@ -8,7 +9,7 @@ public class Customer : BaseEntity, ISoftDeletedEntity
 
     public Customer()
     {
-
+        AllAddresses = new HashSet<Address>();
     }
 
     #endregion
@@ -66,6 +67,8 @@ public class Customer : BaseEntity, ISoftDeletedEntity
     public Guid? ShippingAddressId { get; set; }
 
     public CustomerPassword CustomerPassword { get; set; }
+
+    public ICollection<Address> AllAddresses { get; set; }
 
     #endregion
 }
