@@ -2,7 +2,7 @@
 
 namespace YerdenYuksek.Core.Domain.Customers;
 
-public class CustomerPassword : BaseEntity
+public class CustomerPassword
 {
     #region Constructure and Destructure
 

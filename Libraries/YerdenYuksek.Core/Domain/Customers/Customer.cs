@@ -1,4 +1,5 @@
-﻿using YerdenYuksek.Core.Domain.Common;
+﻿using YerdenYuksek.Core.Domain.Stores;
+using YerdenYuksek.Core.Domain.Common;
 using YerdenYuksek.Core.Primitives;
 
 namespace YerdenYuksek.Core.Domain.Customers;
@@ -29,8 +30,6 @@ public class Customer : BaseEntity, ISoftDeletedEntity
     public string Gender { get; set; }
 
     public DateTime? DateOfBirth { get; set; }
-
-    public string CustomCustomerAttributesXML { get; set; }
 
     public bool EmailValidated { get; set; }
 

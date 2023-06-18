@@ -1,6 +1,8 @@
-﻿using YerdenYuksek.Core.Primitives;
+﻿using YerdenYuksek.Core.Domain.Common;
+using YerdenYuksek.Core.Domain.Customers;
+using YerdenYuksek.Core.Primitives;
 
-namespace Nop.Core.Domain.Stores;
+namespace YerdenYuksek.Core.Domain.Stores;
 
 public class Store : BaseEntity, ISoftDeletedEntity
 {
@@ -8,6 +10,7 @@ public class Store : BaseEntity, ISoftDeletedEntity
 
     public Store()
     {
+        AllRegisteredCustomers = new HashSet<Customer>();
     }
 
     #endregion
@@ -44,7 +47,11 @@ public class Store : BaseEntity, ISoftDeletedEntity
 
     public string CompanyVat { get; set; }
 
+    public bool Active { get; set; }
+
     public bool Deleted { get; set; }
+
+    public ICollection<Customer> AllRegisteredCustomers { get; set; }
 
     #endregion
 }
