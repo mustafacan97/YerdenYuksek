@@ -1,4 +1,5 @@
-﻿using YerdenYuksek.Core.Domain.Customers;
+﻿using YerdenYuksek.Core.Domain.Configuration;
+using YerdenYuksek.Core.Domain.Customers;
 using YerdenYuksek.Core.Primitives;
 
 namespace YerdenYuksek.Core.Domain.Stores;
@@ -9,7 +10,8 @@ public class Store : BaseEntity, ISoftDeletedEntity
 
     public Store()
     {
-        AllRegisteredCustomers = new HashSet<Customer>();
+        RegisteredCustomers = new HashSet<Customer>();
+        Settings = new HashSet<Setting>();
     }
 
     #endregion
@@ -50,7 +52,9 @@ public class Store : BaseEntity, ISoftDeletedEntity
 
     public bool Deleted { get; set; }
 
-    public ICollection<Customer> AllRegisteredCustomers { get; set; }
+    public ICollection<Customer> RegisteredCustomers { get; set; }
+
+    public ICollection<Setting> Settings { get; set; }
 
     #endregion
 }

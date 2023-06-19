@@ -44,5 +44,10 @@ public class CustomerBuilder : IEntityTypeConfiguration<Customer>
 
         builder.Property(e => e.LastActivityDateUtc)
             .HasPrecision(6);
+
+        builder.HasMany(q => q.Addresses)
+            .WithOne()
+            .HasForeignKey(q => q.CustomerId)
+            .IsRequired();
     }
 }

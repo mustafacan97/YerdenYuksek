@@ -8,7 +8,7 @@ public class Customer : BaseEntity, ISoftDeletedEntity
 
     public Customer()
     {
-        AllAddresses = new HashSet<CustomerAddressMapping>();
+        Addresses = new HashSet<CustomerAddressMapping>();
     }
 
     #endregion
@@ -65,7 +65,7 @@ public class Customer : BaseEntity, ISoftDeletedEntity
 
     public CustomerPassword CustomerPassword { get; set; }
 
-    public ICollection<CustomerAddressMapping> AllAddresses { get; set; }
+    public ICollection<CustomerAddressMapping> Addresses { get; set; }
 
     #endregion
 }

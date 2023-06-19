@@ -6,6 +6,13 @@ namespace eCommerce.Framework.Persistence.Builders;
 
 public class StoreBuilder : IEntityTypeConfiguration<Store>
 {
+    #region Static Fields and Constants
+
+    public static readonly Guid DefaultStoreId = Guid.NewGuid();
+
+    #endregion
+
+
     #region Public Methods
 
     public void Configure(EntityTypeBuilder<Store> builder)
@@ -37,14 +44,19 @@ public class StoreBuilder : IEntityTypeConfiguration<Store>
         builder.Property(e => e.CompanyVat)
             .HasMaxLength(1000);
 
-        builder.HasMany(q => q.AllRegisteredCustomers)
+        builder.HasMany(q => q.RegisteredCustomers)
             .WithOne()
             .HasForeignKey(q => q.RegisteredInStoreId)
             .IsRequired();
 
+        builder.HasMany(q => q.Settings)
+            .WithOne()
+            .HasForeignKey(q => q.StoreId)
+            .IsRequired();
+
         builder.HasData(new Store
         {
-            Id = Guid.NewGuid(),
+            Id = DefaultStoreId,
             Name = "Yerden Yuksek Store",
             DefaultTitle = "Yerden Yuksek",
             DefaultMetaKeywords = string.Empty,
