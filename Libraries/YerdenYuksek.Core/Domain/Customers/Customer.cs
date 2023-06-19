@@ -55,8 +55,6 @@ public class Customer : BaseEntity, ISoftDeletedEntity
 
     public DateTime LastActivityDateUtc { get; set; }
 
-    public Guid RegisteredInStoreId { get; set; }
-
     public Guid? SelectedAddressId { get; set; }
 
     public Guid? BillingAddressId { get; set; }

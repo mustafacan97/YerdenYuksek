@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using YerdenYuksek.Core.Domain.Stores;
 using YerdenYuksek.Core.Domain.Common;
 using YerdenYuksek.Core.Domain.Customers;
 
@@ -29,8 +28,6 @@ public class ApplicationDbContext : DbContext
     #endregion
 
     #region Public Properties
-
-    public virtual DbSet<Store> Store { get; set; }
 
     public virtual DbSet<Address> Address { get; set; }
 

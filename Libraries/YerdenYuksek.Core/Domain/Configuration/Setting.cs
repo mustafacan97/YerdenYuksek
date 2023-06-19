@@ -10,11 +10,10 @@ public class Setting : BaseEntity
     {
     }
 
-    public Setting(string name, string value, Guid storeId)
+    public Setting(string name, string value)
     {
         Name = name;
         Value = value;
-        StoreId = storeId;
     }
 
     #endregion
@@ -24,8 +23,6 @@ public class Setting : BaseEntity
     public string Name { get; set; }
 
     public string Value { get; set; }
-
-    public Guid StoreId { get; set; }
 
     #endregion
 

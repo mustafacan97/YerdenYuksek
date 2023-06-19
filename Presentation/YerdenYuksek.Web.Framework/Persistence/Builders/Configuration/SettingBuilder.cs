@@ -117,8 +117,7 @@ public class SettingBuilder : IEntityTypeConfiguration<Setting>
             {
                 Id = Guid.NewGuid(),
                 Name = key.Trim().ToLowerInvariant(),
-                Value = TypeDescriptor.GetConverter(prop.PropertyType).ConvertToInvariantString(value) ?? string.Empty,
-                StoreId = StoreBuilder.DefaultStoreId
+                Value = TypeDescriptor.GetConverter(prop.PropertyType).ConvertToInvariantString(value) ?? string.Empty
             };
 
             settings.Add(setting);            
