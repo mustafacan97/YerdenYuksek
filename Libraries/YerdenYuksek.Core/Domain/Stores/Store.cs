@@ -1,5 +1,4 @@
-﻿using YerdenYuksek.Core.Domain.Common;
-using YerdenYuksek.Core.Domain.Customers;
+﻿using YerdenYuksek.Core.Domain.Customers;
 using YerdenYuksek.Core.Primitives;
 
 namespace YerdenYuksek.Core.Domain.Stores;

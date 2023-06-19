@@ -36,6 +36,11 @@ public class StoreBuilder : IEntityTypeConfiguration<Store>
 
         builder.Property(e => e.CompanyVat)
             .HasMaxLength(1000);
+
+        builder.HasMany(q => q.AllRegisteredCustomers)
+            .WithOne()
+            .HasForeignKey(q => q.RegisteredInStoreId)
+            .IsRequired();
     }
 
     #endregion

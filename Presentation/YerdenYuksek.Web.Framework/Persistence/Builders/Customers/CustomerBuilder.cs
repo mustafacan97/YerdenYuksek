@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using YerdenYuksek.Core.Domain.Common;
 using YerdenYuksek.Core.Domain.Customers;
 
 namespace eCommerce.Framework.Persistence.Builders;
@@ -45,13 +44,5 @@ public class CustomerBuilder : IEntityTypeConfiguration<Customer>
 
         builder.Property(e => e.LastActivityDateUtc)
             .HasPrecision(6);
-
-        builder.HasMany(q => q.AllAddresses)
-            .WithMany(q => q.AllCustomers)
-            .UsingEntity(
-                "CustomerAddressMapping",
-                l => l.HasOne(typeof(Address)).WithMany().HasForeignKey("AddressId").HasPrincipalKey(nameof(Address.Id)),
-                r => r.HasOne(typeof(Customer)).WithMany().HasForeignKey("CustomerId").HasPrincipalKey(nameof(Customer.Id)),
-                j => j.HasKey("AddressId", "CustomerId"));
     }
 }

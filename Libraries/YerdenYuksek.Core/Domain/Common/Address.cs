@@ -1,19 +1,9 @@
-﻿using YerdenYuksek.Core.Domain.Customers;
-using YerdenYuksek.Core.Primitives;
+﻿using YerdenYuksek.Core.Primitives;
 
 namespace YerdenYuksek.Core.Domain.Common;
 
 public class Address : BaseEntity
 {
-    #region Constructure and Destructure
-
-    public Address()
-    {
-        AllCustomers = new HashSet<Customer>();
-    }
-
-    #endregion
-
     #region Public Properties
 
     public string FirstName { get; set; }
@@ -37,8 +27,6 @@ public class Address : BaseEntity
     public string CustomAttributes { get; set; }
 
     public DateTime CreatedOnUtc { get; set; }
-
-    public ICollection<Customer> AllCustomers { get; set; }
 
     #endregion
 }
