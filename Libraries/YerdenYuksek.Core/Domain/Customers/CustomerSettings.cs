@@ -1,4 +1,4 @@
-﻿using YerdenYuksek.Core.Primitives;
+﻿using YerdenYuksek.Core.Configuration;
 
 namespace YerdenYuksek.Core.Domain.Customers;
 
