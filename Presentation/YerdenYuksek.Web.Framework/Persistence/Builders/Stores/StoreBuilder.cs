@@ -41,6 +41,25 @@ public class StoreBuilder : IEntityTypeConfiguration<Store>
             .WithOne()
             .HasForeignKey(q => q.RegisteredInStoreId)
             .IsRequired();
+
+        builder.HasData(new Store
+        {
+            Id = Guid.NewGuid(),
+            Name = "Yerden Yuksek Store",
+            DefaultTitle = "Yerden Yuksek",
+            DefaultMetaKeywords = string.Empty,
+            DefaultMetaDescription = string.Empty,
+            HomepageTitle = "Home page title",
+            HomepageDescription = "Home page description",
+            Url = string.Empty,
+            SslEnabled = false,
+            Hosts = "yourstore.com,www.yourstore.com",
+            DisplayOrder = 1,
+            CompanyName = "Your company name",
+            CompanyAddress = "your company country, state, zip, street, etc",
+            CompanyPhoneNumber = "(123) 456-78901",
+            CompanyVat = string.Empty
+        });
     }
 
     #endregion

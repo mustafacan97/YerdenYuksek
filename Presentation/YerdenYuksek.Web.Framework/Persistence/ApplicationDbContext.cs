@@ -30,13 +30,15 @@ public class ApplicationDbContext : DbContext
 
     #region Public Properties
 
+    public virtual DbSet<Store> Store { get; set; }
+
     public virtual DbSet<Address> Address { get; set; }
 
     public virtual DbSet<Customer> Customer { get; set; }
 
     public virtual DbSet<CustomerPassword> CustomerPassword { get; set; }
 
-    public virtual DbSet<Store> Store { get; set; }
+    public virtual DbSet<CustomerAddressMapping> CustomerAddressMapping { get; set; }    
 
     #endregion
 }

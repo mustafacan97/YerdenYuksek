@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace eCommerce.Framework.Infrastructure;
+namespace eCommerce.Framework.Infrastructure.Extensions;
 
 public static class ApplicationBuilderExtensions
 {
