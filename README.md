@@ -2,4 +2,4 @@
 
 ---Create Migration---
 
-dotnet ef migrations add InitialMigration --output-dir Migrations/07062023 --startup-project "../eCommerce.API"
+dotnet ef migrations add InitialMigration --output-dir Migrations/23062023 --startup-project "../YerdenYuksek.Web"
