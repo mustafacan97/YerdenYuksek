@@ -3,6 +3,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using System.Net;
+using YerdenYuksek.Application.Services.Public.Configuration;
+using YerdenYuksek.Core;
+using YerdenYuksek.Core.Caching;
+using YerdenYuksek.Core.Configuration;
+using YerdenYuksek.Core.Infrastructure;
+using YerdenYuksek.Core.Primitives;
+using YerdenYuksek.Web.Framework.Persistence;
+using YerdenYuksek.Web.Framework.Persistence.Services.Public;
 
 namespace eCommerce.Framework.Infrastructure.Extensions;
 
@@ -10,11 +20,16 @@ public static class ServiceCollectionExtensions
 {
     #region Public Methods
 
-    public static IServiceCollection RegisterServiceCollections(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection RegisterServiceCollections(
+        this IServiceCollection services,
+        IConfiguration configuration,
+        IHostEnvironment environment)
     {
         services
             .ConfigureApiBehaviorOptions()
+            .ConfigureApplicationSettings(environment)
             .AddServices()
+            .RegisterAllSettings()
             .AddEntityFramework(configuration);
 
         return services;
@@ -30,6 +45,27 @@ public static class ServiceCollectionExtensions
         {
             options.SuppressModelStateInvalidFilter = true;
         });
+
+        return services;
+    }
+
+    private static IServiceCollection ConfigureApplicationSettings(this IServiceCollection services, IHostEnvironment environment)
+    {
+        ServicePointManager.SecurityProtocol = SecurityProtocolType.SystemDefault;
+
+        CommonHelper.DefaultFileProvider = new YerdenYuksekFileProvider(environment);
+
+        var typeFinder = new TypeFinder(CommonHelper.DefaultFileProvider);
+        Singleton<ITypeFinder>.Instance = typeFinder;
+        services.AddSingleton<ITypeFinder>(typeFinder);
+
+        var configurations = typeFinder
+                .FindClassesOfType<IConfig>()
+                .Select(configType => (IConfig)Activator.CreateInstance(configType))
+                .ToList();
+
+        var appSettings = AppSettingsHelper.SaveAppSettings(configurations, CommonHelper.DefaultFileProvider, true);
+        services.AddSingleton(appSettings);
 
         return services;
     }
@@ -53,6 +89,39 @@ public static class ServiceCollectionExtensions
 
     private static IServiceCollection AddServices(this IServiceCollection services)
     {
+        services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+        services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
+        services.AddSingleton<IStaticCacheManager, MemoryCacheManager>();
+        services.AddSingleton<ITypeFinder, TypeFinder>();
+
+        //static cache manager
+        services.AddTransient(typeof(IConcurrentCollection<>), typeof(ConcurrentTrie<>));
+        services.AddSingleton<ICacheKeyManager, CacheKeyManager>();
+        services.AddMemoryCache();
+        services.AddSingleton<IStaticCacheManager, MemoryCacheManager>();
+
+        //services
+        services.AddScoped<ISettingService, SettingService>();
+
+        //register all settings
+        services.RegisterAllSettings();
+
+        return services;
+    }
+
+    private static IServiceCollection RegisterAllSettings(this IServiceCollection services)
+    {
+        var typeFinder = Singleton<ITypeFinder>.Instance;
+        var settings = typeFinder.FindClassesOfType(typeof(ISettings), false).ToList();
+
+        foreach (var setting in settings)
+        {
+            services.AddScoped(setting, serviceProvider =>
+            {
+                return serviceProvider.GetRequiredService<ISettingService>().LoadSettingAsync(setting).Result;
+            });
+        }
+        
         return services;
     }
 

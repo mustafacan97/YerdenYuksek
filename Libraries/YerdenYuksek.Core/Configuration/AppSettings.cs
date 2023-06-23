@@ -13,16 +13,13 @@ public class AppSettings
 
     #region Constructure and Desctructure
 
-    public AppSettings(IList<IConfig>? configurations = null)
+    public AppSettings()
     {
-        _configurations = configurations
-            ?.OrderBy(config => config.Name)
-            ?.ToDictionary(config => config.GetType(), config => config)
-            ?? new Dictionary<Type, IConfig>();
+        _configurations ??= new Dictionary<Type, IConfig>();
     }
 
     #endregion
-    
+
     #region Public Methods
 
     public TConfig Get<TConfig>() where TConfig : class, IConfig
