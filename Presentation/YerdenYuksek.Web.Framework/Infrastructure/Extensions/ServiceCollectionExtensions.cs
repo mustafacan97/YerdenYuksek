@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Net;
 using YerdenYuksek.Application.Services.Public.Configuration;
+using YerdenYuksek.Application.Services.Public.Customers;
 using YerdenYuksek.Core;
 using YerdenYuksek.Core.Caching;
 using YerdenYuksek.Core.Configuration;
@@ -92,7 +93,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
         services.AddSingleton<IStaticCacheManager, MemoryCacheManager>();
-        services.AddSingleton<ITypeFinder, TypeFinder>();
+        services.AddScoped<IYerdenYuksekFileProvider, YerdenYuksekFileProvider>();
 
         //static cache manager
         services.AddTransient(typeof(IConcurrentCollection<>), typeof(ConcurrentTrie<>));
@@ -102,6 +103,7 @@ public static class ServiceCollectionExtensions
 
         //services
         services.AddScoped<ISettingService, SettingService>();
+        services.AddScoped<ICustomerService, CustomerService>();
 
         //register all settings
         services.RegisterAllSettings();
