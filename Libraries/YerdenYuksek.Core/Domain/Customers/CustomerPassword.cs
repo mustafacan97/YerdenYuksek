@@ -31,7 +31,5 @@ public class CustomerPassword
         set => PasswordFormatId = (int)value;
     }
 
-    public Customer Customer { get; set; }
-
     #endregion
 }

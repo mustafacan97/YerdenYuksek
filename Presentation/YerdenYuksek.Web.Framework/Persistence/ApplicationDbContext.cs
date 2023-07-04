@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using YerdenYuksek.Core.Domain.Common;
+using YerdenYuksek.Core.Domain.Configuration;
 using YerdenYuksek.Core.Domain.Customers;
+using YerdenYuksek.Core.Domain.Logging;
 
 namespace eCommerce.Infrastructure.Persistence.Primitives;
 
@@ -31,11 +33,19 @@ public class ApplicationDbContext : DbContext
 
     public virtual DbSet<Address> Address { get; set; }
 
+    public virtual DbSet<ActivityLog> ActivityLog { get; set; }
+
+    public virtual DbSet<ActivityLogType> ActivityLogType { get; set; }
+
     public virtual DbSet<Customer> Customer { get; set; }
 
     public virtual DbSet<CustomerPassword> CustomerPassword { get; set; }
 
-    public virtual DbSet<CustomerAddressMapping> CustomerAddressMapping { get; set; }    
+    public virtual DbSet<CustomerRole> CustomerRole { get; set; }
+
+    public virtual DbSet<Log> Log { get; set; }
+
+    public virtual DbSet<Setting> Setting { get; set; }
 
     #endregion
 }

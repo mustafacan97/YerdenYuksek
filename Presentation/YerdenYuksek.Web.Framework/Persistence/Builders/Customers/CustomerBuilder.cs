@@ -4,16 +4,13 @@ using YerdenYuksek.Core.Domain.Customers;
 
 namespace eCommerce.Framework.Persistence.Builders;
 
-public class CustomerBuilder : IEntityTypeConfiguration<Customer>
+public sealed class CustomerBuilder : IEntityTypeConfiguration<Customer>
 {
     public void Configure(EntityTypeBuilder<Customer> builder)
     {
         builder.ToTable("Customer");
 
         builder.HasKey(x => x.Id);
-
-        builder.Property(e => e.Username)
-            .HasMaxLength(64);
 
         builder.Property(e => e.Email)
             .HasMaxLength(128);
@@ -30,9 +27,6 @@ public class CustomerBuilder : IEntityTypeConfiguration<Customer>
         builder.Property(e => e.DateOfBirth)
             .HasPrecision(6);
 
-        builder.Property(e => e.SystemName)
-            .HasMaxLength(400);
-
         builder.Property(e => e.CannotLoginUntilDateUtc)
             .HasPrecision(6);
 
@@ -45,9 +39,35 @@ public class CustomerBuilder : IEntityTypeConfiguration<Customer>
         builder.Property(e => e.LastActivityDateUtc)
             .HasPrecision(6);
 
+        builder.Property(q => q.Active)
+            .HasDefaultValue(true);
+
+        builder.HasOne(q => q.CustomerPassword)
+            .WithOne()
+            .HasForeignKey<CustomerPassword>(q => q.CustomerId)
+            .IsRequired();
+
         builder.HasMany(q => q.Addresses)
             .WithOne()
             .HasForeignKey(q => q.CustomerId)
             .IsRequired();
+
+        builder.HasMany(q => q.Logs)
+            .WithOne()
+            .HasForeignKey(q => q.CustomerId)
+            .IsRequired();
+
+        builder.HasMany(q => q.ActivityLogs)
+            .WithOne()
+            .HasForeignKey(q => q.CustomerId)
+            .IsRequired();
+
+        builder.HasMany(q => q.CustomerRoles)
+            .WithMany(q => q.Customers)
+            .UsingEntity(
+                "CustomerRoleMapping",
+                l => l.HasOne(typeof(CustomerRole)).WithMany().HasForeignKey("CustomerRoleId").HasPrincipalKey(nameof(CustomerRole.Id)),
+                r => r.HasOne(typeof(Customer)).WithMany().HasForeignKey("CustomerId").HasPrincipalKey(nameof(Customer.Id)),
+                j => j.HasKey("CustomerRoleId", "CustomerId"));
     }
 }

@@ -1,4 +1,6 @@
-﻿using YerdenYuksek.Core.Primitives;
+﻿using YerdenYuksek.Core.Domain.Common;
+using YerdenYuksek.Core.Domain.Logging;
+using YerdenYuksek.Core.Primitives;
 
 namespace YerdenYuksek.Core.Domain.Customers;
 
@@ -8,14 +10,15 @@ public class Customer : BaseEntity, ISoftDeletedEntity
 
     public Customer()
     {
-        Addresses = new HashSet<CustomerAddressMapping>();
+        Addresses = new HashSet<Address>();
+        CustomerRoles = new HashSet<CustomerRole>();
+        Logs = new HashSet<Log>();
+        ActivityLogs = new HashSet<ActivityLog>();
     }
 
     #endregion
 
     #region Public Properties
-
-    public string Username { get; set; }
 
     public string Email { get; set; }
 
@@ -43,10 +46,6 @@ public class Customer : BaseEntity, ISoftDeletedEntity
 
     public bool Deleted { get; set; }
 
-    public bool IsSystemAccount { get; set; }
-
-    public string SystemName { get; set; }
-
     public string LastIpAddress { get; set; }
 
     public DateTime CreatedOnUtc { get; set; }
@@ -55,15 +54,15 @@ public class Customer : BaseEntity, ISoftDeletedEntity
 
     public DateTime LastActivityDateUtc { get; set; }
 
-    public Guid? SelectedAddressId { get; set; }
-
-    public Guid? BillingAddressId { get; set; }
-
-    public Guid? ShippingAddressId { get; set; }
-
     public CustomerPassword CustomerPassword { get; set; }
 
-    public ICollection<CustomerAddressMapping> Addresses { get; set; }
+    public ICollection<Address> Addresses { get; set; }
+
+    public ICollection<Log> Logs { get; set; }
+
+    public ICollection<ActivityLog> ActivityLogs { get; set; }
+
+    public ICollection<CustomerRole> CustomerRoles { get; set; }
 
     #endregion
 }

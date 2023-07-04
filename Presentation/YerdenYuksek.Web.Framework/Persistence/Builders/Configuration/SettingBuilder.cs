@@ -6,7 +6,7 @@ using YerdenYuksek.Core.Domain.Customers;
 
 namespace eCommerce.Framework.Persistence.Builders;
 
-public class SettingBuilder : IEntityTypeConfiguration<Setting>
+public sealed class SettingBuilder : IEntityTypeConfiguration<Setting>
 {
     #region Public Methods
 
@@ -18,9 +18,10 @@ public class SettingBuilder : IEntityTypeConfiguration<Setting>
 
         builder.Property(x => x.Name)
             .IsRequired()
-            .HasMaxLength(256);
+            .HasMaxLength(255);
 
         builder.Property(x => x.Value)
+            .HasMaxLength(255)
             .IsRequired();
 
         builder.HasData(SeedCustomerSettings());
