@@ -1,6 +1,15 @@
-﻿namespace YerdenYuksek.Application.Services.Public.Customers;
+﻿using YerdenYuksek.Core.Domain.Customers;
+using YerdenYuksek.Core.Primitives;
+
+namespace YerdenYuksek.Application.Services.Public.Customers;
 
 public partial interface ICustomerService
 {
-    Task<bool> IsRegisteredAsync(string email);
+    Task<Customer?> GetCustomerByEmailAsync(string email);    
+
+    Task<Result> RegisterCustomerAsync(string email, string password);
+
+    Task<CustomerRole?> GetCustomerRoleByNameAsync(string name);
+
+    Task InsertCustomerAsync(Customer customer);
 }

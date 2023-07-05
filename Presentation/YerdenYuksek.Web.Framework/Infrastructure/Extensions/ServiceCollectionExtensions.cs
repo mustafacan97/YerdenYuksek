@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using System.Net;
 using YerdenYuksek.Application.Services.Public.Configuration;
 using YerdenYuksek.Application.Services.Public.Customers;
+using YerdenYuksek.Application.Services.Public.Security;
 using YerdenYuksek.Core;
 using YerdenYuksek.Core.Caching;
 using YerdenYuksek.Core.Configuration;
@@ -82,7 +83,6 @@ public static class ServiceCollectionExtensions
         services.AddDbContext<ApplicationDbContext>(opt =>
         {
             opt.UseMySql(connectionString, serverVersion);
-            opt.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
         });
 
         return services;
@@ -93,7 +93,15 @@ public static class ServiceCollectionExtensions
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
         services.AddSingleton<IStaticCacheManager, MemoryCacheManager>();
+
+        //file provider
         services.AddScoped<IYerdenYuksekFileProvider, YerdenYuksekFileProvider>();
+
+        //add accessor to HttpContext
+        services.AddHttpContextAccessor();
+
+        //web helper
+        services.AddScoped<IWebHelper, WebHelper>();
 
         //static cache manager
         services.AddTransient(typeof(IConcurrentCollection<>), typeof(ConcurrentTrie<>));
@@ -104,6 +112,7 @@ public static class ServiceCollectionExtensions
         //services
         services.AddScoped<ISettingService, SettingService>();
         services.AddScoped<ICustomerService, CustomerService>();
+        services.AddScoped<IEncryptionService, EncryptionService>();
 
         //register all settings
         services.RegisterAllSettings();

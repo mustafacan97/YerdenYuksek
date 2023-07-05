@@ -189,6 +189,48 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
         return await _staticCacheManager.GetAsync(cacheKey, getByIdsAsync);
     }
 
+    public async Task InsertAsync(T entity)
+    {
+        if (entity is null)
+        {
+            throw new ArgumentNullException(nameof(entity));
+        }
+
+        await _dbSet.AddAsync(entity);
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public void Insert(T entity)
+    {
+        if (entity is null)
+        {
+            throw new ArgumentNullException(nameof(entity));
+        }
+
+        _dbSet.Add(entity);
+    }
+
+    public async Task InsertAsync(IList<T> entities)
+    {
+        if (entities is null)
+        {
+            throw new ArgumentNullException(nameof(entities));
+        }
+
+        await _dbSet.AddRangeAsync(entities);
+    }
+
+    public virtual void Insert(IList<T> entities)
+    {
+        if (entities is null)
+        {
+            throw new ArgumentNullException(nameof(entities));
+        }
+
+        _dbSet.AddRange(entities);
+    }
+
+
     #endregion
 
     #region Methods
