@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using YerdenYuksek.Application.Services.Public.Customers;
-using YerdenYuksek.Core.Domain.Customers;
 using YerdenYuksek.Core.Primitives;
 using YerdenYuksek.Web.Contract.Models.Customer;
 
@@ -30,13 +29,8 @@ public class AuthenticationController : Controller
     [HttpPost]
     public async Task<Result> Register(RegisterModel model)
     {
-        var isAlreadyRegistered = await _customerService.IsRegisteredAsync(model.Email);
-        if (isAlreadyRegistered)
-        {
-            return Result.Failure(Error.Conflict());
-        }
-
-        return Result.Success();
+        var registerResult = await _customerService.RegisterCustomerAsync(model.Email, model.Password);
+        return registerResult;
     }
 
     #endregion

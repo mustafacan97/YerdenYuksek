@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.ComponentModel;
+using YerdenYuksek.Core;
 using YerdenYuksek.Core.Domain.Configuration;
 using YerdenYuksek.Core.Domain.Customers;
+using YerdenYuksek.Core.Domain.Security;
 
 namespace eCommerce.Framework.Persistence.Builders;
 
@@ -25,6 +27,7 @@ public sealed class SettingBuilder : IEntityTypeConfiguration<Setting>
             .IsRequired();
 
         builder.HasData(SeedCustomerSettings());
+        builder.HasData(SeedSecuritySettings());
     }
 
     #endregion
@@ -122,6 +125,49 @@ public sealed class SettingBuilder : IEntityTypeConfiguration<Setting>
             };
 
             settings.Add(setting);            
+        }
+
+        return settings;
+    }
+
+    private static IList<Setting> SeedSecuritySettings()
+    {
+        var securitySettings = new SecuritySettings
+        {
+            EncryptionKey = CommonHelper.GenerateRandomDigitCode(16),
+            AdminAreaAllowedIpAddresses = null,
+            HoneypotEnabled = false,
+            HoneypotInputName = "hpinput",
+            AllowNonAsciiCharactersInHeaders = true,
+            UseAesEncryptionAlgorithm = true,
+            AllowStoreOwnerExportImportCustomersWithHashedPassword = true
+        };
+
+        var settings = new List<Setting>() { };
+        var properties = typeof(SecuritySettings).GetProperties();
+
+        foreach (var prop in properties)
+        {
+            if (!prop.CanRead || !prop.CanWrite)
+            {
+                continue;
+            }
+
+            if (!TypeDescriptor.GetConverter(prop.PropertyType).CanConvertFrom(typeof(string)))
+            {
+                continue;
+            }
+
+            var key = typeof(SecuritySettings).Name + "." + prop.Name;
+            var value = prop.GetValue(securitySettings, null);
+            var setting = new Setting()
+            {
+                Id = Guid.NewGuid(),
+                Name = key.Trim().ToLowerInvariant(),
+                Value = TypeDescriptor.GetConverter(prop.PropertyType).ConvertToInvariantString(value) ?? string.Empty
+            };
+
+            settings.Add(setting);
         }
 
         return settings;

@@ -22,13 +22,13 @@ public class Customer : BaseEntity, ISoftDeletedEntity
 
     public string Email { get; set; }
 
-    public string FirstName { get; set; }
+    public string? FirstName { get; set; }
 
-    public string LastName { get; set; }
+    public string? LastName { get; set; }
 
-    public string PhoneNumber { get; set; }
+    public string? PhoneNumber { get; set; }
 
-    public string Gender { get; set; }
+    public string? Gender { get; set; }
 
     public DateTime? DateOfBirth { get; set; }
 
@@ -46,15 +46,15 @@ public class Customer : BaseEntity, ISoftDeletedEntity
 
     public bool Deleted { get; set; }
 
-    public string LastIpAddress { get; set; }
+    public string? LastIpAddress { get; private set; }
 
     public DateTime CreatedOnUtc { get; set; }
 
     public DateTime? LastLoginDateUtc { get; set; }
 
-    public DateTime LastActivityDateUtc { get; set; }
+    public DateTime? LastActivityDateUtc { get; set; }
 
-    public CustomerPassword CustomerPassword { get; set; }
+    public CustomerPassword CustomerPassword { get; private set; }
 
     public ICollection<Address> Addresses { get; set; }
 
@@ -62,7 +62,43 @@ public class Customer : BaseEntity, ISoftDeletedEntity
 
     public ICollection<ActivityLog> ActivityLogs { get; set; }
 
-    public ICollection<CustomerRole> CustomerRoles { get; set; }
+    public ICollection<CustomerRole> CustomerRoles { get; private set; }
+
+    #endregion
+
+    #region Public Methods
+
+    public static Customer Create(string email)
+    {
+        return new Customer()
+        {
+            Email = email,
+            Active = true,
+            CreatedOnUtc = DateTime.UtcNow
+        };
+    }
+
+    public void SetIpAddress(string ipAddress)
+    {
+        if (!string.IsNullOrEmpty(ipAddress))
+        {
+            LastIpAddress = ipAddress;
+        }
+    }
+
+    public void SetCustomerPassword(CustomerPassword customerPassword)
+    {
+        CustomerPassword = customerPassword;
+    }
+
+    public void AddCustomerRole(CustomerRole customerRole)
+    {
+        var isAlreadyExists = CustomerRoles.FirstOrDefault(q => q.Id == customerRole.Id);
+        if (isAlreadyExists is null)
+        {
+            CustomerRoles.Add(customerRole);
+        }
+    }
 
     #endregion
 }

@@ -1,6 +1,8 @@
 ﻿namespace YerdenYuksek.Web.Contract.Models.Customer;
 
-public partial record RegisterModel : BaseModel
+public record RegisterModel : BaseModel
 {
     public string Email { get; set; }
+
+    public string Password { get; set; }
 }

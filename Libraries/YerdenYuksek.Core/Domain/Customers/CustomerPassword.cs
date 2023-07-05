@@ -1,6 +1,4 @@
-﻿using YerdenYuksek.Core.Primitives;
-
-namespace YerdenYuksek.Core.Domain.Customers;
+﻿namespace YerdenYuksek.Core.Domain.Customers;
 
 public class CustomerPassword
 {
@@ -8,7 +6,7 @@ public class CustomerPassword
 
     public CustomerPassword()
     {
-        PasswordFormat = PasswordFormat.Clear;
+        PasswordFormatId = (int)PasswordFormat.Clear;
     }
 
     #endregion
@@ -25,10 +23,13 @@ public class CustomerPassword
 
     public DateTime CreatedOnUtc { get; set; }
 
-    public PasswordFormat PasswordFormat
+    #endregion
+
+    #region Public Methods
+
+    public PasswordFormat GetPasswordFormat()
     {
-        get => (PasswordFormat)PasswordFormatId;
-        set => PasswordFormatId = (int)value;
+        return (PasswordFormat)PasswordFormatId;
     }
 
     #endregion
