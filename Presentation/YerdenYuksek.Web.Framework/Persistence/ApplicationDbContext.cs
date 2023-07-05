@@ -2,7 +2,9 @@
 using YerdenYuksek.Core.Domain.Common;
 using YerdenYuksek.Core.Domain.Configuration;
 using YerdenYuksek.Core.Domain.Customers;
+using YerdenYuksek.Core.Domain.Localization;
 using YerdenYuksek.Core.Domain.Logging;
+using YerdenYuksek.Core.Domain.Messages;
 
 namespace eCommerce.Infrastructure.Persistence.Primitives;
 
@@ -43,7 +45,13 @@ public class ApplicationDbContext : DbContext
 
     public virtual DbSet<CustomerRole> CustomerRole { get; set; }
 
+    public virtual DbSet<EmailAccount> EmailAccount { get; set; }
+
+    public virtual DbSet<Language> Language { get; set; }
+
     public virtual DbSet<Log> Log { get; set; }
+
+    public virtual DbSet<MessageTemplate> MessageTemplate { get; set; }
 
     public virtual DbSet<Setting> Setting { get; set; }
 
