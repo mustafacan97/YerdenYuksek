@@ -85,21 +85,6 @@ public class CustomerService : ICustomerService
 
     public async Task<Result> RegisterCustomerAsync(string email, string password)
     {
-        if (string.IsNullOrEmpty(email))
-        {
-            return Result.Failure(Error.Failure(description: "Email is required!"));
-        }
-
-        if (string.IsNullOrEmpty(password))
-        {
-            return Result.Failure(Error.Failure(description: "Email is required!"));
-        }
-
-        if (!CommonHelper.IsValidEmail(email))
-        {
-            return Result.Failure(Error.Failure(description: "Email is not valid!"));
-        }
-
         if (await GetCustomerByEmailAsync(email) is not null)
         {
             return Result.Failure(Error.Conflict(description: "Email is already registered!"));

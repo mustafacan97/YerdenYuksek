@@ -27,10 +27,23 @@ public class AuthenticationController : Controller
     #region Methods
 
     [HttpPost]
-    public async Task<Result> Register(RegisterModel model)
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Register(RegisterModel model)
     {
+        if (!ModelState.IsValid)
+        {
+            var errors = ModelState.Values
+                .SelectMany(q => q.Errors)
+                .Select(x => Error.Validation(description: x.ErrorMessage));
+
+            var result = Result.Failure(errors.ToList());
+
+            return BadRequest(result);
+        }
+
         var registerResult = await _customerService.RegisterCustomerAsync(model.Email, model.Password);
-        return registerResult;
+        return registerResult.IsSuccess ? Ok(registerResult) : BadRequest(registerResult);
     }
 
     #endregion

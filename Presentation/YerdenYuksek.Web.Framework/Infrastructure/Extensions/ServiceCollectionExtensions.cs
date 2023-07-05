@@ -1,10 +1,13 @@
 ﻿using eCommerce.Infrastructure.Persistence.Primitives;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Net;
+using System.Reflection;
 using YerdenYuksek.Application.Services.Public.Configuration;
 using YerdenYuksek.Application.Services.Public.Customers;
 using YerdenYuksek.Application.Services.Public.Security;
@@ -32,7 +35,8 @@ public static class ServiceCollectionExtensions
             .ConfigureApplicationSettings(environment)
             .AddServices()
             .RegisterAllSettings()
-            .AddEntityFramework(configuration);
+            .AddEntityFramework(configuration)
+            .AddFluentValidation();
 
         return services;
     }
@@ -133,6 +137,16 @@ public static class ServiceCollectionExtensions
             });
         }
         
+        return services;
+    }
+
+    private static IServiceCollection AddFluentValidation(this IServiceCollection services)
+    {
+        services
+            .AddFluentValidationAutoValidation()
+            .AddValidatorsFromAssembly(Assembly.GetEntryAssembly())
+            .AddFluentValidationClientsideAdapters();
+
         return services;
     }
 
