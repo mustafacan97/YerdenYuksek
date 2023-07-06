@@ -189,6 +189,8 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
         return await _staticCacheManager.GetAsync(cacheKey, getByIdsAsync);
     }
 
+    #region Insert
+
     public async Task InsertAsync(T entity)
     {
         if (entity is null)
@@ -197,7 +199,6 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
         }
 
         await _dbSet.AddAsync(entity);
-        await _dbContext.SaveChangesAsync();
     }
 
     public void Insert(T entity)
@@ -220,7 +221,7 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
         await _dbSet.AddRangeAsync(entities);
     }
 
-    public virtual void Insert(IList<T> entities)
+    public void Insert(IList<T> entities)
     {
         if (entities is null)
         {
@@ -230,6 +231,50 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
         _dbSet.AddRange(entities);
     }
 
+    #endregion
+
+    public void Update(T entity)
+    {
+        if (entity is null)
+        {
+            throw new ArgumentNullException(nameof(entity));
+        }
+
+        _dbSet.Attach(entity).State = EntityState.Modified;
+    }
+
+    public void Update(IList<T> entities)
+    {
+        if (entities is null)
+        {
+            throw new ArgumentNullException(nameof(entities));
+        }
+
+        if (entities.Count == 0)
+        {
+            return;
+        }
+
+        _dbSet.UpdateRange(entities);
+    }
+
+    public void Delete(T entity)
+    {
+        switch (entity)
+        {
+            case null:
+                throw new ArgumentNullException(nameof(entity));
+
+            case ISoftDeletedEntity softDeletedEntity:
+                softDeletedEntity.Deleted = true;
+                _dbSet.Attach(entity).State = EntityState.Modified;
+                break;
+
+            default:
+                _dbSet.Attach(entity).State = EntityState.Deleted;
+                break;
+        }
+    }
 
     #endregion
 

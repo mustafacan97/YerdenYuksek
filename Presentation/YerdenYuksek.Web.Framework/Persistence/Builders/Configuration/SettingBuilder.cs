@@ -4,6 +4,7 @@ using System.ComponentModel;
 using YerdenYuksek.Core;
 using YerdenYuksek.Core.Domain.Configuration;
 using YerdenYuksek.Core.Domain.Customers;
+using YerdenYuksek.Core.Domain.Localization;
 using YerdenYuksek.Core.Domain.Messages;
 using YerdenYuksek.Core.Domain.Security;
 
@@ -20,17 +21,17 @@ public sealed class SettingBuilder : IEntityTypeConfiguration<Setting>
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.Name)
-            .IsRequired()
             .HasMaxLength(255);
 
         builder.Property(x => x.Value)
-            .HasMaxLength(255)
-            .IsRequired();
+            .HasMaxLength(255);
 
         builder.HasData(SeedCustomerSettings());
         builder.HasData(SeedSecuritySettings());
         builder.HasData(SeedMessageSettings());
         builder.HasData(SeedEmailAccountSettings());
+        builder.HasData(SeedLanguageSettings());
+        builder.HasData(SeedLocalizationSettings());
     }
 
     #endregion
@@ -233,6 +234,72 @@ public sealed class SettingBuilder : IEntityTypeConfiguration<Setting>
 
             var key = typeof(EmailAccountSettings).Name + "." + prop.Name;
             var value = prop.GetValue(emailAccountSettings, null);
+            var setting = new Setting()
+            {
+                Id = Guid.NewGuid(),
+                Name = key.Trim().ToLowerInvariant(),
+                Value = TypeDescriptor.GetConverter(prop.PropertyType).ConvertToInvariantString(value) ?? string.Empty
+            };
+
+            settings.Add(setting);
+        }
+
+        return settings;
+    }
+
+    private static IList<Setting> SeedLanguageSettings()
+    {
+        var emailAccountSettings = new LanguageSettings();
+        var settings = new List<Setting>() { };
+        var properties = typeof(LanguageSettings).GetProperties();
+
+        foreach (var prop in properties)
+        {
+            if (!prop.CanRead || !prop.CanWrite)
+            {
+                continue;
+            }
+
+            if (!TypeDescriptor.GetConverter(prop.PropertyType).CanConvertFrom(typeof(string)))
+            {
+                continue;
+            }
+
+            var key = typeof(LanguageSettings).Name + "." + prop.Name;
+            var value = prop.GetValue(emailAccountSettings, null);
+            var setting = new Setting()
+            {
+                Id = Guid.NewGuid(),
+                Name = key.Trim().ToLowerInvariant(),
+                Value = TypeDescriptor.GetConverter(prop.PropertyType).ConvertToInvariantString(value) ?? string.Empty
+            };
+
+            settings.Add(setting);
+        }
+
+        return settings;
+    }
+
+    private static IList<Setting> SeedLocalizationSettings()
+    {
+        var localizationSettings = new LocalizationSettings();
+        var settings = new List<Setting>() { };
+        var properties = typeof(LocalizationSettings).GetProperties();
+
+        foreach (var prop in properties)
+        {
+            if (!prop.CanRead || !prop.CanWrite)
+            {
+                continue;
+            }
+
+            if (!TypeDescriptor.GetConverter(prop.PropertyType).CanConvertFrom(typeof(string)))
+            {
+                continue;
+            }
+
+            var key = typeof(LocalizationSettings).Name + "." + prop.Name;
+            var value = prop.GetValue(localizationSettings, null);
             var setting = new Setting()
             {
                 Id = Guid.NewGuid(),

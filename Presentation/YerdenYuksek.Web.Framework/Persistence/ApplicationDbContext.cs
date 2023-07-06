@@ -49,6 +49,8 @@ public class ApplicationDbContext : DbContext
 
     public virtual DbSet<Language> Language { get; set; }
 
+    public virtual DbSet<LocaleStringResource> LocaleStringResource { get; set; }
+
     public virtual DbSet<Log> Log { get; set; }
 
     public virtual DbSet<MessageTemplate> MessageTemplate { get; set; }

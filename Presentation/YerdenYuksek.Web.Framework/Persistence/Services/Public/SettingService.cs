@@ -5,7 +5,6 @@ using YerdenYuksek.Core.Caching;
 using YerdenYuksek.Core.Configuration;
 using YerdenYuksek.Core.Domain.Configuration;
 using YerdenYuksek.Core.Primitives;
-using YerdenYuksek.Services.Configuration;
 
 namespace YerdenYuksek.Web.Framework.Persistence.Services.Public;
 
@@ -13,29 +12,143 @@ public class SettingService : ISettingService
 {
     #region Fields
 
-    private readonly IRepository<Setting> _settingRepository;
-
     private readonly IStaticCacheManager _staticCacheManager;
+
+    private readonly IUnitOfWork _unitOfWork;
 
     #endregion
 
     #region Constructure and Destructure
 
     public SettingService(
-        IRepository<Setting> settingRepository, 
-        IStaticCacheManager staticCacheManager)
+        IStaticCacheManager staticCacheManager,
+        IUnitOfWork unitOfWork)
     {
-        _settingRepository = settingRepository;
         _staticCacheManager = staticCacheManager;
+        _unitOfWork = unitOfWork;
     }
 
     #endregion
 
     #region Public Methods
 
-    public virtual async Task<IList<Setting>> GetAllSettingsAsync()
+    #region Commands
+
+    public void ClearCache()
     {
-        var settings = await _settingRepository.GetAllAsync(query =>
+        _staticCacheManager.RemoveByPrefix(YerdenYuksekEntityCacheDefaults<Setting>.Prefix);
+    }
+
+    public async Task ClearCacheAsync()
+    {
+        await _staticCacheManager.RemoveByPrefixAsync(YerdenYuksekEntityCacheDefaults<Setting>.Prefix);
+    }
+
+    public void InsertSetting(Setting setting, bool clearCache = true)
+    {
+        _unitOfWork.GetRepository<Setting>().Insert(setting);
+
+        if (clearCache)
+        {
+            ClearCache();
+        }
+
+        _unitOfWork.SaveChanges();
+    }
+
+    public async Task InsertSettingAsync(Setting setting, bool clearCache = true)
+    {
+        await _unitOfWork.GetRepository<Setting>().InsertAsync(setting);
+
+        if (clearCache)
+        {
+            await ClearCacheAsync();
+        }
+
+        await _unitOfWork.SaveChangesAsync();
+    }
+
+    public async Task SaveSettingAsync<T>(T settings) where T : ISettings, new()
+    {
+        foreach (var prop in typeof(T).GetProperties())
+        {
+            if (!prop.CanRead || !prop.CanWrite)
+            {
+                continue;
+            }
+
+            if (!TypeDescriptor.GetConverter(prop.PropertyType).CanConvertFrom(typeof(string)))
+            {
+                continue;
+            }
+
+            var key = typeof(T).Name + "." + prop.Name;
+            var value = prop.GetValue(settings, null);
+            if (value != null)
+            {
+                await SetSettingAsync(prop.PropertyType, key, value, false);
+            }
+            else
+            {
+                await SetSettingAsync(key, string.Empty, false);
+            }
+        }
+
+        await ClearCacheAsync();
+        await _unitOfWork.SaveChangesAsync();
+    }
+
+    public void SetSetting<T>(string key, T value, bool clearCache = true)
+    {
+        SetSetting(typeof(T), key, value, clearCache);
+    }
+
+    public async Task SetSettingAsync<T>(string key, T value, bool clearCache = true)
+    {
+        await SetSettingAsync(typeof(T), key, value, clearCache);
+    }
+
+    public void UpdateSetting(Setting setting, bool clearCache = true)
+    {
+        if (setting is null)
+        {
+            throw new ArgumentNullException(nameof(setting));
+        }
+
+        _unitOfWork.GetRepository<Setting>().Update(setting);
+
+        if (clearCache)
+        {
+            ClearCache();
+        }
+
+        _unitOfWork.SaveChanges();
+    }
+
+    public async Task UpdateSettingAsync(Setting setting, bool clearCache = true)
+    {
+        if (setting is null)
+        {
+            throw new ArgumentNullException(nameof(setting));
+        }
+
+        _unitOfWork.GetRepository<Setting>().Update(setting);
+
+        if (clearCache)
+        {
+            await ClearCacheAsync();
+        }
+
+        await _unitOfWork.SaveChangesAsync();
+    }
+
+    #endregion
+
+    #region Queries
+
+    public IList<Setting> GetAllSettings()
+    {
+        var settings = _unitOfWork.GetRepository<Setting>().GetAll(query =>
         {
             return from s in query
                    orderby s.Name
@@ -45,7 +158,29 @@ public class SettingService : ISettingService
         return settings;
     }
 
-    public virtual async Task<T> GetSettingByKeyAsync<T>(string key, T defaultValue = default)
+    public async Task<IList<Setting>> GetAllSettingsAsync()
+    {
+        var settings = await _unitOfWork.GetRepository<Setting>().GetAllAsync(query =>
+        {
+            return from s in query
+                   orderby s.Name
+                   select s;
+        }, cache => default);
+
+        return settings;
+    }
+
+    public Setting GetSettingById(Guid settingId)
+    {
+        return _unitOfWork.GetRepository<Setting>().GetById(settingId, cache => default);
+    }
+
+    public async Task<Setting> GetSettingByIdAsync(Guid settingId)
+    {
+        return await _unitOfWork.GetRepository<Setting>().GetByIdAsync(settingId, cache => default);
+    }
+
+    public async Task<T?> GetSettingByKeyAsync<T>(string key, T? defaultValue = default)
     {
         if (string.IsNullOrEmpty(key))
         {
@@ -54,7 +189,7 @@ public class SettingService : ISettingService
 
         var settings = await GetAllSettingsDictionaryAsync();
         key = key.Trim().ToLowerInvariant();
-        
+
         if (!settings.ContainsKey(key))
         {
             return defaultValue;
@@ -62,7 +197,7 @@ public class SettingService : ISettingService
 
         var setting = (settings[key]).FirstOrDefault();
 
-        return setting != null ? CommonHelper.To<T>(setting.Value) : defaultValue;
+        return !string.IsNullOrEmpty(setting?.Value) ? CommonHelper.To<T>(setting.Value) : defaultValue;
     }
 
     public async Task<T> LoadSettingAsync<T>() where T : ISettings, new()
@@ -70,7 +205,7 @@ public class SettingService : ISettingService
         return (T)await LoadSettingAsync(typeof(T));
     }
 
-    public async Task<ISettings> LoadSettingAsync(Type type)
+    public async Task<ISettings?> LoadSettingAsync(Type type)
     {
         var settings = Activator.CreateInstance(type);
 
@@ -99,16 +234,49 @@ public class SettingService : ISettingService
                 continue;
             }
 
-            var value = TypeDescriptor.GetConverter(prop.PropertyType).ConvertFromInvariantString(setting);            
+            var value = TypeDescriptor.GetConverter(prop.PropertyType).ConvertFromInvariantString(setting);
             prop.SetValue(settings, value, null);
         }
 
         return settings as ISettings;
     }
 
+    
+
+    #endregion
+
     #endregion
 
     #region Methods
+
+    private IDictionary<string, IList<Setting>> GetAllSettingsDictionary()
+    {
+        return _staticCacheManager.Get(YerdenYuksekSettingsDefaults.SettingsAllAsDictionaryCacheKey, () =>
+        {
+            var settings = GetAllSettings();
+            var dictionary = new Dictionary<string, IList<Setting>>();
+            foreach (var s in settings)
+            {
+                var resourceName = s.Name.ToLowerInvariant();
+                var settingForCaching = new Setting
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Value = s.Value
+                };
+                if (!dictionary.ContainsKey(resourceName))
+                {
+                    dictionary.Add(resourceName, new List<Setting> { settingForCaching });
+                }
+                else
+                {
+                    dictionary[resourceName].Add(settingForCaching);
+                }
+            }
+
+            return dictionary;
+        });
+    }
 
     private async Task<IDictionary<string, IList<Setting>>> GetAllSettingsDictionaryAsync()
     {
@@ -139,6 +307,69 @@ public class SettingService : ISettingService
 
             return dictionary;
         });
+    }
+
+    private void SetSetting(Type type, string key, object value, bool clearCache = true)
+    {
+        if (key is null)
+        {
+            throw new ArgumentNullException(nameof(key));
+        }
+            
+        key = key.Trim().ToLowerInvariant();
+
+        var valueStr = TypeDescriptor.GetConverter(type).ConvertToInvariantString(value);
+        var allSettings = GetAllSettingsDictionary();
+        var settingForCaching = allSettings.TryGetValue(key, out var settings) ?
+            settings.FirstOrDefault() : null;
+        if (settingForCaching != null)
+        {
+            var setting = GetSettingById(settingForCaching.Id);
+            setting.Value = valueStr;
+            UpdateSetting(setting, clearCache);
+        }
+        else
+        {
+            var setting = new Setting
+            {
+                Id = Guid.NewGuid(),
+                Name = key,
+                Value = valueStr
+            };
+            InsertSetting(setting, clearCache);
+        }
+    }
+
+    private async Task SetSettingAsync(Type type, string key, object value, bool clearCache = true)
+    {
+        if (key is null)
+        {
+            throw new ArgumentNullException(nameof(key));
+        }
+            
+        key = key.Trim().ToLowerInvariant();
+
+        var valueStr = TypeDescriptor.GetConverter(type).ConvertToInvariantString(value);
+        var allSettings = await GetAllSettingsDictionaryAsync();
+        var settingForCaching = allSettings.TryGetValue(key, out var settings) ?
+            settings.FirstOrDefault() : null;
+        if (settingForCaching != null)
+        {
+            var setting = await GetSettingByIdAsync(settingForCaching.Id);
+            setting.Value = valueStr;
+            await UpdateSettingAsync(setting, clearCache);
+        }
+        else
+        {
+            var setting = new Setting
+            {
+                Id = Guid.NewGuid(),
+                Name = key,
+                Value = valueStr
+            };
+
+            await InsertSettingAsync(setting, clearCache);
+        }
     }
 
     #endregion

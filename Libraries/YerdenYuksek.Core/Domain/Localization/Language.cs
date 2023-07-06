@@ -4,6 +4,15 @@ namespace YerdenYuksek.Core.Domain.Localization;
 
 public class Language : BaseEntity
 {
+    #region Constructure and Destructure
+
+    public Language()
+    {
+        LocaleStringResources = new HashSet<LocaleStringResource>();
+    }
+
+    #endregion
+
     #region Public Properties
 
     public string Name { get; set; }
@@ -23,6 +32,8 @@ public class Language : BaseEntity
     public bool Active { get; set; }
 
     public bool Deleted { get; set; }
+
+    public ICollection<LocaleStringResource> LocaleStringResources { get; set; }
 
     #endregion
 }

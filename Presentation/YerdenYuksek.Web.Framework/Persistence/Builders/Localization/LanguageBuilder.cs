@@ -27,6 +27,11 @@ public sealed class LanguageBuilder : IEntityTypeConfiguration<Language>
         builder.Property(e => e.FlagImageFileName)
             .HasMaxLength(16);
 
+        builder.HasMany(q => q.LocaleStringResources)
+            .WithOne()
+            .HasForeignKey(q => q.LanguageId)
+            .IsRequired();
+
         builder.HasData(SeedLanguageData());
     }
 
@@ -39,7 +44,7 @@ public sealed class LanguageBuilder : IEntityTypeConfiguration<Language>
         var defaultCulture = new CultureInfo("tr-TR");
         var defaultLanguage = new Language
         {
-            Id = Guid.NewGuid(),
+            Id = LanguageSettings.DefaultLanguageId,
             Name = defaultCulture.TwoLetterISOLanguageName.ToUpperInvariant(),
             LanguageCulture = defaultCulture.Name,
             UniqueSeoCode = defaultCulture.TwoLetterISOLanguageName,

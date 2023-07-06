@@ -43,6 +43,8 @@ public interface IRepository<T> where T : BaseEntity
         Func<IStaticCacheManager, CacheKey>? getCacheKey = null, 
         bool includeDeleted = true);
 
+    #region Insert
+
     Task InsertAsync(T entity);
 
     void Insert(T entity);
@@ -50,6 +52,14 @@ public interface IRepository<T> where T : BaseEntity
     Task InsertAsync(IList<T> entities);
 
     void Insert(IList<T> entities);
+
+    #endregion
+
+    void Update(T entity);
+
+    void Update(IList<T> entities);
+
+    void Delete(T entity);
 
     #endregion
 

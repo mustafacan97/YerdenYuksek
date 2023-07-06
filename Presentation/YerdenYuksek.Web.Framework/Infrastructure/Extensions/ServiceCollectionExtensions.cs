@@ -10,6 +10,7 @@ using System.Net;
 using System.Reflection;
 using YerdenYuksek.Application.Services.Public.Configuration;
 using YerdenYuksek.Application.Services.Public.Customers;
+using YerdenYuksek.Application.Services.Public.Localization;
 using YerdenYuksek.Application.Services.Public.Security;
 using YerdenYuksek.Core;
 using YerdenYuksek.Core.Caching;
@@ -92,10 +93,19 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
+    public static IServiceCollection AddUnitOfWork<TContext>(this IServiceCollection services) where TContext : DbContext
+    {
+        services.AddScoped<IUnitOfWork, UnitOfWork<TContext>>();
+        services.AddScoped<IUnitOfWork<TContext>, UnitOfWork<TContext>>();
+
+        return services;
+    }
+
     private static IServiceCollection AddServices(this IServiceCollection services)
     {
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-        services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
+        //services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
+        services.AddUnitOfWork<ApplicationDbContext>();
         services.AddSingleton<IStaticCacheManager, MemoryCacheManager>();
 
         //file provider
@@ -117,6 +127,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ISettingService, SettingService>();
         services.AddScoped<ICustomerService, CustomerService>();
         services.AddScoped<IEncryptionService, EncryptionService>();
+        services.AddScoped<ILanguageService, LanguageService>();
 
         //register all settings
         services.RegisterAllSettings();
