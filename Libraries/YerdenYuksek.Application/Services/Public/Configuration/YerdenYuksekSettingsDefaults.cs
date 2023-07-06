@@ -1,7 +1,7 @@
 ﻿using YerdenYuksek.Core.Caching;
 using YerdenYuksek.Core.Domain.Configuration;
 
-namespace YerdenYuksek.Services.Configuration;
+namespace YerdenYuksek.Application.Services.Public.Configuration;
 
 public static class YerdenYuksekSettingsDefaults
 {
