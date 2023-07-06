@@ -15,12 +15,6 @@ public sealed class LocaleStringResourceBuilder : IEntityTypeConfiguration<Local
 
         builder.HasKey(x => x.Id);
 
-        builder.Property(e => e.ResourceName)
-            .HasMaxLength(255);
-
-        builder.Property(e => e.ResourceValue)
-            .HasMaxLength(255);
-
         builder.HasData(SeedLocaleStringResourceData());
     }
 
