@@ -17,6 +17,7 @@ using YerdenYuksek.Core.Caching;
 using YerdenYuksek.Core.Configuration;
 using YerdenYuksek.Core.Infrastructure;
 using YerdenYuksek.Core.Primitives;
+using YerdenYuksek.Web.Framework.Common;
 using YerdenYuksek.Web.Framework.Persistence;
 using YerdenYuksek.Web.Framework.Persistence.Services.Public;
 
