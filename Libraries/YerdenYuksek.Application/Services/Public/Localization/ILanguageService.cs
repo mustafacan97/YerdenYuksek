@@ -14,6 +14,8 @@ public interface ILanguageService
 
     IList<Language> GetAllLanguages(bool onlyActive = true);
 
+    Task<Language> GetDefaultLanguageAsync();
+
     Task<Language> GetLanguageByIdAsync(Guid languageId);
 
     string? GetTwoLetterIsoLanguageName(Language language);

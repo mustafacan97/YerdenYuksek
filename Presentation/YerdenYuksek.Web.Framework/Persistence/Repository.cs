@@ -1,5 +1,7 @@
 ﻿using eCommerce.Infrastructure.Persistence.Primitives;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
+using System.Linq.Expressions;
 using YerdenYuksek.Core.Caching;
 using YerdenYuksek.Core.Primitives;
 using YerdenYuksek.Web.Framework.Persistence.Extensions;
@@ -99,6 +101,15 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
         query = func != null ? func(query) : query;
 
         return await query.ToPagedListAsync(pageIndex, pageSize, getOnlyTotalCount);
+    }
+
+    public async Task<T?> GetFirstOrDefaultAsync<TResult>(
+        Expression<Func<T, bool>> predicate,
+        bool includeDeleted = true)
+    {
+        var query = AddDeletedFilter(Table, includeDeleted);
+
+        return await query.Where(predicate).FirstOrDefaultAsync();
     }
 
     public async Task<T> GetByIdAsync(

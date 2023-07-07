@@ -1,4 +1,5 @@
-﻿using YerdenYuksek.Core.Caching;
+﻿using System.Linq.Expressions;
+using YerdenYuksek.Core.Caching;
 
 namespace YerdenYuksek.Core.Primitives;
 
@@ -26,6 +27,10 @@ public interface IRepository<T> where T : BaseEntity
         int pageIndex = 0, 
         int pageSize = int.MaxValue, 
         bool getOnlyTotalCount = false, 
+        bool includeDeleted = true);
+
+    Task<TResult?> GetFirstOrDefaultAsync<TResult>(        
+        Expression<Func<T, bool>> predicate,
         bool includeDeleted = true);
 
     Task<T> GetByIdAsync(

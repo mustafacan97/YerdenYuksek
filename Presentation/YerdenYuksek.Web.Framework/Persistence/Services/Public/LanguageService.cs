@@ -131,6 +131,12 @@ public class LanguageService : ILanguageService
         return languages;
     }
 
+    public async Task<Language> GetDefaultLanguageAsync()
+    {
+        return (await _unitOfWork.GetRepository<Language>().GetFirstOrDefaultAsync<Language>(
+            q => q.IsDefaultLanguage && q.Active && !q.Deleted))!;
+    }
+
     public async Task<Language> GetLanguageByIdAsync(Guid languageId)
     {
         return await _unitOfWork.GetRepository<Language>().GetByIdAsync(languageId, cache => default);
