@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using YerdenYuksek.Application.Services.Public.Customers;
+using YerdenYuksek.Application.Services.Public.Localization;
 using YerdenYuksek.Application.Services.Public.Security;
 using YerdenYuksek.Core;
 using YerdenYuksek.Core.Caching;
@@ -15,6 +16,8 @@ public class CustomerService : ICustomerService
     private readonly CustomerSettings _customerSettings;
 
     private readonly IEncryptionService _encryptionService;
+
+    private readonly ILocalizationService _localizationService;
 
     private readonly IRepository<Customer> _customerRepository;
 
@@ -34,7 +37,8 @@ public class CustomerService : ICustomerService
         IRepository<Customer> customerRepository,
         IStaticCacheManager staticCacheManager,
         IRepository<CustomerRole> customerRoleRepository,
-        IWebHelper webHelper)
+        IWebHelper webHelper,
+        ILocalizationService localizationService)
     {
         _customerSettings = customerSettings;
         _customerRepository = customerRepository;
@@ -42,6 +46,7 @@ public class CustomerService : ICustomerService
         _staticCacheManager = staticCacheManager;
         _customerRoleRepository = customerRoleRepository;
         _webHelper = webHelper;
+        _localizationService = localizationService;
     }
 
     #endregion
@@ -62,6 +67,40 @@ public class CustomerService : ICustomerService
         var customer = await query.FirstOrDefaultAsync();
 
         return customer;
+    }
+
+    public async Task<Customer> GetCustomerByIdAsync(Guid customerId)
+    {
+        return await _customerRepository.GetByIdAsync(customerId,
+            cache => cache.PrepareKeyForShortTermCache(YerdenYuksekEntityCacheDefaults<Customer>.ByIdCacheKey, customerId));
+    }
+
+    public virtual async Task<string> GetCustomerFullNameAsync(Customer customer)
+    {
+        if (customer is null)
+        {
+            throw new ArgumentNullException(nameof(customer));
+        }
+
+        var firstName = customer.FirstName;
+        var lastName = customer.LastName;
+        var fullName = string.Empty;
+
+        if (!string.IsNullOrWhiteSpace(firstName) && !string.IsNullOrWhiteSpace(lastName))
+        {
+            var format = await _localizationService.GetResourceAsync("Customer.FullNameFormat");
+            fullName = string.Format(format, firstName, lastName);
+        }
+        else
+        {
+            if (!string.IsNullOrWhiteSpace(firstName))
+                fullName = firstName;
+
+            if (!string.IsNullOrWhiteSpace(lastName))
+                fullName = lastName;
+        }
+
+        return fullName;
     }
 
     public async Task<CustomerRole?> GetCustomerRoleByNameAsync(string name)
