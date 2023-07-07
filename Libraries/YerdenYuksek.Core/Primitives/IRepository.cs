@@ -29,7 +29,7 @@ public interface IRepository<T> where T : BaseEntity
         bool getOnlyTotalCount = false, 
         bool includeDeleted = true);
 
-    Task<TResult?> GetFirstOrDefaultAsync<TResult>(        
+    Task<T?> GetFirstOrDefaultAsync<TResult>(        
         Expression<Func<T, bool>> predicate,
         bool includeDeleted = true);
 
