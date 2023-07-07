@@ -1,4 +1,5 @@
-﻿using YerdenYuksek.Core.Configuration;
+﻿using System.Linq.Expressions;
+using YerdenYuksek.Core.Configuration;
 using YerdenYuksek.Core.Domain.Configuration;
 
 namespace YerdenYuksek.Application.Services.Public.Configuration;
@@ -13,11 +14,15 @@ public interface ISettingService
 
     Task<IList<Setting>> GetAllSettingsAsync();
 
+    Task<Setting> GetSettingAsync(string key, bool loadSharedValueIfNotFound = false);
+
     Setting GetSettingById(Guid settingId);
 
     Task<Setting> GetSettingByIdAsync(Guid settingId);
 
     Task<T?> GetSettingByKeyAsync<T>(string key, T? defaultValue = default);
+
+    string GetSettingKey<TSettings, T>(TSettings settings, Expression<Func<TSettings, T>> keySelector) where TSettings : ISettings, new();
 
     void InsertSetting(Setting setting, bool clearCache = true);
 

@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel;
+using System.Linq.Expressions;
+using System.Reflection;
 using YerdenYuksek.Application.Services.Public.Configuration;
 using YerdenYuksek.Core;
 using YerdenYuksek.Core.Caching;
@@ -198,6 +200,43 @@ public class SettingService : ISettingService
         var setting = (settings[key]).FirstOrDefault();
 
         return !string.IsNullOrEmpty(setting?.Value) ? CommonHelper.To<T>(setting.Value) : defaultValue;
+    }
+
+    public async Task<Setting> GetSettingAsync(string key, bool loadSharedValueIfNotFound = false)
+    {
+        if (string.IsNullOrEmpty(key))
+        {
+            return null;
+        }
+
+        var settings = await GetAllSettingsDictionaryAsync();
+        key = key.Trim().ToLowerInvariant();
+        if (!settings.ContainsKey(key))
+        {
+            return null;
+        }
+
+        var settingsByKey = settings[key];
+        var setting = settingsByKey.FirstOrDefault();
+
+        return setting != null ? await GetSettingByIdAsync(setting.Id) : null;
+    }
+
+    public string GetSettingKey<TSettings, T>(TSettings settings, Expression<Func<TSettings, T>> keySelector) where TSettings : ISettings, new()
+    {
+        if (keySelector.Body is not MemberExpression member)
+        {
+            throw new ArgumentException($"Expression '{keySelector}' refers to a method, not a property.");
+        }
+
+        if (member.Member is not PropertyInfo propInfo)
+        {
+            throw new ArgumentException($"Expression '{keySelector}' refers to a field, not a property.");
+        }
+
+        var key = $"{typeof(TSettings).Name}.{propInfo.Name}";
+
+        return key;
     }
 
     public async Task<T> LoadSettingAsync<T>() where T : ISettings, new()

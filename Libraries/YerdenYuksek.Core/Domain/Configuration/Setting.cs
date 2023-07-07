@@ -1,8 +1,9 @@
-﻿using YerdenYuksek.Core.Primitives;
+﻿using YerdenYuksek.Core.Domain.Localization;
+using YerdenYuksek.Core.Primitives;
 
 namespace YerdenYuksek.Core.Domain.Configuration;
 
-public class Setting : BaseEntity
+public class Setting : BaseEntity, ILocalizedEntity
 {
     #region Constructure and Destructure
 
