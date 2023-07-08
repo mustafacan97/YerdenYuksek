@@ -32,11 +32,9 @@ public class QueuedEmail : BaseEntity
 
     public int AttachedDownloadId { get; set; }
 
-    public DateTime CreatedOnUtc { get; set; }
-
-    public DateTime? DontSendBeforeDateUtc { get; set; }
-
     public int SentTries { get; set; }
+
+    public DateTime CreatedOnUtc { get; set; }    
 
     public DateTime? SentOnUtc { get; set; }
 

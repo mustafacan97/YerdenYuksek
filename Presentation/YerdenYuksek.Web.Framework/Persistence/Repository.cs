@@ -287,6 +287,11 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
         }
     }
 
+    public void Truncate()
+    {
+        _dbSet.RemoveRange(_dbSet);
+    }
+
     #endregion
 
     #region Methods

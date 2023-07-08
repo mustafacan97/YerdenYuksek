@@ -17,11 +17,6 @@ public interface IRepository<T> where T : BaseEntity
         Func<IStaticCacheManager, CacheKey>? getCacheKey = null, 
         bool includeDeleted = true);
 
-    /*Task<IList<T>> GetAllAsync(
-        Func<IQueryable<T>, Task<IQueryable<T>>>? func = null,
-        Func<IStaticCacheManager, CacheKey>? getCacheKey = null, 
-        bool includeDeleted = true);*/
-
     Task<IPagedList<T>> GetAllPagedAsync(
         Func<IQueryable<T>, IQueryable<T>>? func = null,
         int pageIndex = 0, 
@@ -48,8 +43,6 @@ public interface IRepository<T> where T : BaseEntity
         Func<IStaticCacheManager, CacheKey>? getCacheKey = null, 
         bool includeDeleted = true);
 
-    #region Insert
-
     Task InsertAsync(T entity);
 
     void Insert(T entity);
@@ -58,13 +51,13 @@ public interface IRepository<T> where T : BaseEntity
 
     void Insert(IList<T> entities);
 
-    #endregion
-
     void Update(T entity);
 
     void Update(IList<T> entities);
 
     void Delete(T entity);
+
+    void Truncate();
 
     #endregion
 

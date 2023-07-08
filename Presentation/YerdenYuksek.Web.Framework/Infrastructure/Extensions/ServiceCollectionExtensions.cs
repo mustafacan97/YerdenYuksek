@@ -11,6 +11,8 @@ using System.Reflection;
 using YerdenYuksek.Application.Services.Public.Configuration;
 using YerdenYuksek.Application.Services.Public.Customers;
 using YerdenYuksek.Application.Services.Public.Localization;
+using YerdenYuksek.Application.Services.Public.Messages;
+using YerdenYuksek.Application.Services.Public.ScheduleTasks;
 using YerdenYuksek.Application.Services.Public.Security;
 using YerdenYuksek.Core;
 using YerdenYuksek.Core.Caching;
@@ -129,6 +131,8 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ICustomerService, CustomerService>();
         services.AddScoped<IEncryptionService, EncryptionService>();
         services.AddScoped<ILanguageService, LanguageService>();
+        services.AddScoped<IScheduleTaskService, ScheduleTaskService>();
+        services.AddScoped<IQueuedEmailService, QueuedEmailService>();
 
         //register all settings
         services.RegisterAllSettings();
