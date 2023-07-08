@@ -17,10 +17,10 @@ public interface IRepository<T> where T : BaseEntity
         Func<IStaticCacheManager, CacheKey>? getCacheKey = null, 
         bool includeDeleted = true);
 
-    Task<IList<T>> GetAllAsync(
+    /*Task<IList<T>> GetAllAsync(
         Func<IQueryable<T>, Task<IQueryable<T>>>? func = null,
         Func<IStaticCacheManager, CacheKey>? getCacheKey = null, 
-        bool includeDeleted = true);
+        bool includeDeleted = true);*/
 
     Task<IPagedList<T>> GetAllPagedAsync(
         Func<IQueryable<T>, IQueryable<T>>? func = null,
