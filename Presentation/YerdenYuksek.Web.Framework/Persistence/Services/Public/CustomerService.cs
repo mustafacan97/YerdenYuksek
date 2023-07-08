@@ -69,12 +69,6 @@ public class CustomerService : ICustomerService
         return customer;
     }
 
-    public async Task<Customer> GetCustomerByIdAsync(Guid customerId)
-    {
-        return await _customerRepository.GetByIdAsync(customerId,
-            cache => cache.PrepareKeyForShortTermCache(YerdenYuksekEntityCacheDefaults<Customer>.ByIdCacheKey, customerId));
-    }
-
     public virtual async Task<string> GetCustomerFullNameAsync(Customer customer)
     {
         if (customer is null)
