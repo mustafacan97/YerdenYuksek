@@ -16,7 +16,7 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 ## Techologies 
 1. .NET 6.0
 2. Repository Pattern
-3. CQRS
+3. Mediator Pattern (CQRS)
 4. Entity Framework
 
 ## Tables And RelationShips
@@ -31,3 +31,9 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 
 1. Create Migration
 * dotnet ef migrations add InitialMigration --output-dir Migrations/{date} --startup-project "../YerdenYuksek.Web"
+
+## Topics
+#### Security
+1. ***Role*** tabanlı bir Authorization yapısı kullanılmıştır.
+2. Authentication ve Authorization işlemleri için ***JWT*** teknolojisi kullanılmıştır.
+3. DB tarafında detaylı bilgi için ***Permission*** and ***PermissionCustomerRoleMapping*** tabloları incelenmelidir.
