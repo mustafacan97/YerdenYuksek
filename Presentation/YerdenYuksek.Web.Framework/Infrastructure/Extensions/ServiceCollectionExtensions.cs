@@ -107,7 +107,6 @@ public static class ServiceCollectionExtensions
     private static IServiceCollection AddServices(this IServiceCollection services)
     {
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-        //services.AddScoped(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
         services.AddUnitOfWork<ApplicationDbContext>();
         services.AddSingleton<IStaticCacheManager, MemoryCacheManager>();
 
@@ -120,6 +119,9 @@ public static class ServiceCollectionExtensions
         //web helper
         services.AddScoped<IWebHelper, WebHelper>();
 
+        //work context
+        services.AddScoped<IWorkContext, WorkContext>();
+
         //static cache manager
         services.AddTransient(typeof(IConcurrentCollection<>), typeof(ConcurrentTrie<>));
         services.AddSingleton<ICacheKeyManager, CacheKeyManager>();
@@ -131,6 +133,8 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ICustomerService, CustomerService>();
         services.AddScoped<IEncryptionService, EncryptionService>();
         services.AddScoped<ILanguageService, LanguageService>();
+        services.AddScoped<ILocalizationService, LocalizationService>();
+        services.AddScoped<ILocalizedEntityService, LocalizedEntityService>();
         services.AddScoped<IScheduleTaskService, ScheduleTaskService>();
         services.AddScoped<IQueuedEmailService, QueuedEmailService>();
 

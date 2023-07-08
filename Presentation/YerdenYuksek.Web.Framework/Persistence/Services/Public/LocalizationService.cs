@@ -30,8 +30,6 @@ public class LocalizationService : ILocalizationService
 
     private readonly IUnitOfWork _unitOfWork;
 
-    private readonly ILogger _logger;
-
     private readonly IWorkContext _workContext;
 
     #endregion
@@ -42,7 +40,6 @@ public class LocalizationService : ILocalizationService
         ILanguageService languageService,
         IUnitOfWork unitOfWork,
         IStaticCacheManager staticCacheManager,
-        ILogger logger,
         IWorkContext workContext,
         ILocalizedEntityService localizedEntityService,
         ISettingService settingService,
@@ -51,7 +48,6 @@ public class LocalizationService : ILocalizationService
         _languageService = languageService;
         _unitOfWork = unitOfWork;
         _staticCacheManager = staticCacheManager;
-        _logger = logger;
         _workContext = workContext;
         _localizedEntityService = localizedEntityService;
         _settingService = settingService;
@@ -307,7 +303,6 @@ public class LocalizationService : ILocalizationService
 
         if (localeStringResource is null && logIfNotFound)
         {
-            _logger.LogWarning($"Resource string ({resourceName}) not found. Language ID = {languageId}");
             return null;
         }
 
@@ -325,7 +320,6 @@ public class LocalizationService : ILocalizationService
 
         if (localeStringResource == null && logIfNotFound)
         {
-            _logger.LogWarning($"Resource string ({resourceName}) not found. Language ID = {languageId}");
             return null;
         }
 
@@ -487,7 +481,7 @@ public class LocalizationService : ILocalizationService
 
         if (logIfNotFound)
         {
-            _logger.LogWarning($"Resource string ({resourceKey}) is not found. Language ID = {languageId}");
+            // TODO
         }
 
         if (!string.IsNullOrEmpty(defaultValue))

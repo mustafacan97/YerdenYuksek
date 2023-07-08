@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using YerdenYuksek.Application.Services.Public.Customers;
-using YerdenYuksek.Application.Services.Public.Localization;
 using YerdenYuksek.Core;
 using YerdenYuksek.Core.Domain.Customers;
 using YerdenYuksek.Core.Domain.Localization;
@@ -16,8 +16,6 @@ public class WorkContext : IWorkContext
 
     private readonly ICustomerService _customerService;
 
-    private readonly ILanguageService _languageService;
-
     private readonly IUnitOfWork _unitOfWork;
 
     private readonly IHttpContextAccessor _httpContextAccessor;
@@ -27,12 +25,10 @@ public class WorkContext : IWorkContext
     #region Constructure and Destructure
 
     public WorkContext(
-        ILanguageService languageService,
         IHttpContextAccessor httpContextAccessor,
         ICustomerService customerService,
         IUnitOfWork unitOfWork)
     {
-        _languageService = languageService;
         _httpContextAccessor = httpContextAccessor;
         _customerService = customerService;
         _unitOfWork = unitOfWork;
@@ -65,7 +61,9 @@ public class WorkContext : IWorkContext
         var requestCultureFeature = _httpContextAccessor.HttpContext?.Features.Get<IRequestCultureFeature>();
         if (requestCultureFeature is null || requestCultureFeature.RequestCulture is null)
         {
-            return await _languageService.GetDefaultLanguageAsync();
+            return (await (from l in _unitOfWork.GetRepository<Language>().Table
+                          where l.IsDefaultLanguage
+                          select l).FirstOrDefaultAsync())!;
         }
 
         var requestLanguage = await _unitOfWork.GetRepository<Language>().GetFirstOrDefaultAsync<Language>(l =>
@@ -73,7 +71,9 @@ public class WorkContext : IWorkContext
             l.Active && !l.Deleted, false);
         if (requestLanguage is null)
         {
-            return await _languageService.GetDefaultLanguageAsync();
+            return (await (from l in _unitOfWork.GetRepository<Language>().Table
+                           where l.IsDefaultLanguage
+                           select l).FirstOrDefaultAsync())!;
         }
 
         return requestLanguage;

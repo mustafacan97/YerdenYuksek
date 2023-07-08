@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using YerdenYuksek.Application.Services.Public.Customers;
-using YerdenYuksek.Application.Services.Public.Localization;
 using YerdenYuksek.Application.Services.Public.Security;
 using YerdenYuksek.Core;
 using YerdenYuksek.Core.Caching;
@@ -16,8 +15,6 @@ public class CustomerService : ICustomerService
     private readonly CustomerSettings _customerSettings;
 
     private readonly IEncryptionService _encryptionService;
-
-    private readonly ILocalizationService _localizationService;
 
     private readonly IRepository<Customer> _customerRepository;
 
@@ -37,8 +34,7 @@ public class CustomerService : ICustomerService
         IRepository<Customer> customerRepository,
         IStaticCacheManager staticCacheManager,
         IRepository<CustomerRole> customerRoleRepository,
-        IWebHelper webHelper,
-        ILocalizationService localizationService)
+        IWebHelper webHelper)
     {
         _customerSettings = customerSettings;
         _customerRepository = customerRepository;
@@ -46,7 +42,6 @@ public class CustomerService : ICustomerService
         _staticCacheManager = staticCacheManager;
         _customerRoleRepository = customerRoleRepository;
         _webHelper = webHelper;
-        _localizationService = localizationService;
     }
 
     #endregion
@@ -82,8 +77,7 @@ public class CustomerService : ICustomerService
 
         if (!string.IsNullOrWhiteSpace(firstName) && !string.IsNullOrWhiteSpace(lastName))
         {
-            var format = await _localizationService.GetResourceAsync("Customer.FullNameFormat");
-            fullName = string.Format(format, firstName, lastName);
+            fullName = $"{firstName} {lastName}";
         }
         else
         {
