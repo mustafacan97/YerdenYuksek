@@ -1,11 +1,10 @@
-﻿using Quartz;
-using YerdenYuksek.Application.Services.Public.Messages;
+﻿using YerdenYuksek.Application.Services.Public.Messages;
 using YerdenYuksek.Core.Domain.Messages;
 using YerdenYuksek.Core.Primitives;
 
 namespace YerdenYuksek.Application.Services.Public.ScheduleTasks;
 
-public class QueuedMessagesSendTask : IJob
+public class QueuedMessagesSendTask
 {
     #region Fields
 
@@ -33,7 +32,7 @@ public class QueuedMessagesSendTask : IJob
 
     #region Methods
 
-    public async Task Execute(IJobExecutionContext context)
+    public async Task Execute()
     {
         var maxTries = 3;
         var queuedEmails = await _queuedEmailService.SearchEmailsAsync(
