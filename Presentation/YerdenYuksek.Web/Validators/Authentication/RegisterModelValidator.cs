@@ -1,10 +1,10 @@
 ﻿using FluentValidation;
+using YerdenYuksek.Application.Models.Customers;
 using YerdenYuksek.Core.Domain.Customers;
-using YerdenYuksek.Web.Contract.Models.Customer;
 
 namespace YerdenYuksek.Web.Validators.Authentication;
 
-public class RegisterModelValidator : AbstractValidator<RegisterModel>
+public class RegisterModelValidator : AbstractValidator<RegisterRequestModel>
 {
     #region Constructure and Destructure
 

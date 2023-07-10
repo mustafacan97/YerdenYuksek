@@ -91,7 +91,7 @@ public class Customer : BaseEntity, ISoftDeletedEntity
         CustomerPassword = customerPassword;
     }
 
-    public void AddCustomerRole(CustomerRole customerRole)
+    public void SetCustomerRole(CustomerRole customerRole)
     {
         var isAlreadyExists = CustomerRoles.FirstOrDefault(q => q.Id == customerRole.Id);
         if (isAlreadyExists is null)

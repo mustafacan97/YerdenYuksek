@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using YerdenYuksek.Application.Models.Customers;
 using YerdenYuksek.Application.Services.Public.Customers;
 using YerdenYuksek.Application.Services.Public.Security;
 using YerdenYuksek.Core;
@@ -43,6 +44,57 @@ public class CustomerService : ICustomerService
     #endregion
 
     #region Public Methods
+
+    #region Commands
+
+    public async Task<RegisterResponseModel> RegisterCustomerAsync(string email, string password)
+    {
+        var result = new RegisterResponseModel();
+
+        if (await GetCustomerByEmailAsync(email) is not null)
+        {
+            result.AddError(Error.Conflict(description: "Email is already registered!"));
+            return result;
+        }
+
+        var saltKey = _encryptionService.CreateSaltKey(YerdenYuksekCustomerServicesDefaults.PasswordSaltKeySize);
+        var customer = Customer.Create(email);
+        var customerPassword = new CustomerPassword
+        {
+            CustomerId = customer.Id,
+            PasswordFormatId = (int)_customerSettings.DefaultPasswordFormat,
+            PasswordSalt = saltKey,
+            Password = _encryptionService.CreatePasswordHash(password, saltKey, _customerSettings.HashedPasswordFormat),
+            CreatedOnUtc = DateTime.UtcNow,
+        };
+
+        var registeredRole = await GetCustomerRoleByNameAsync(CustomerDefaults.RegisteredRoleName);
+        if (registeredRole is null)
+        {
+            result.AddError(Error.Failure(description: "Related customer role not found!"));
+            return result;
+        }
+
+        customer.SetIpAddress(_webHelper.GetCurrentIpAddress());
+        customer.SetCustomerPassword(customerPassword);
+        customer.SetCustomerRole(registeredRole);
+
+        await InsertCustomerAsync(customer);
+
+        result.SetCustomer(customer);
+
+        return result;
+    }
+
+    public async Task InsertCustomerAsync(Customer customer)
+    {
+        await _unitOfWork.GetRepository<Customer>().InsertAsync(customer);
+        await _unitOfWork.SaveChangesAsync();
+    }
+
+    #endregion
+
+    #region Queries
 
     public async Task<Customer?> GetCustomerByEmailAsync(string email)
     {
@@ -109,57 +161,7 @@ public class CustomerService : ICustomerService
         return customerRole;
     }
 
-    public async Task<Result> RegisterCustomerAsync(string email, string password)
-    {
-        if (await GetCustomerByEmailAsync(email) is not null)
-        {
-            return Result.Failure(Error.Conflict(description: "Email is already registered!"));
-        }
-        
-        var customer = Customer.Create(email);
-        customer.SetIpAddress(_webHelper.GetCurrentIpAddress());
-        var customerPassword = new CustomerPassword
-        {
-            CustomerId = customer.Id,
-            PasswordFormatId = (int)_customerSettings.DefaultPasswordFormat,
-            CreatedOnUtc = DateTime.UtcNow
-        };
-
-        switch (customerPassword.GetPasswordFormat())
-        {
-            case PasswordFormat.Clear:
-                customerPassword.Password = password;
-                break;
-            case PasswordFormat.Encrypted:
-                customerPassword.Password = _encryptionService.EncryptText(password);
-                break;
-            case PasswordFormat.Hashed:
-                var saltKey = _encryptionService.CreateSaltKey(YerdenYuksekCustomerServicesDefaults.PasswordSaltKeySize);
-                customerPassword.PasswordSalt = saltKey;
-                customerPassword.Password = _encryptionService.CreatePasswordHash(password, saltKey, _customerSettings.HashedPasswordFormat);
-                break;
-        }
-
-        customer.SetCustomerPassword(customerPassword);
-
-        var registeredRole = await GetCustomerRoleByNameAsync(CustomerDefaults.RegisteredRoleName);
-        if (registeredRole is null)
-        {
-            return Result.Failure(Error.Failure(description: "Related customer role not found!"));
-        }
-
-        customer.AddCustomerRole(registeredRole);
-
-        await InsertCustomerAsync(customer);
-
-        return Result.Success();
-    }
-
-    public async Task InsertCustomerAsync(Customer customer)
-    {
-        await _unitOfWork.GetRepository<Customer>().InsertAsync(customer);
-        await _unitOfWork.SaveChangesAsync();
-    }
+    #endregion
 
     #endregion
 }

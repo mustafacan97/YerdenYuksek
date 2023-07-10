@@ -1,17 +1,25 @@
-﻿using YerdenYuksek.Core.Domain.Customers;
-using YerdenYuksek.Core.Primitives;
+﻿using YerdenYuksek.Application.Models.Customers;
+using YerdenYuksek.Core.Domain.Customers;
 
 namespace YerdenYuksek.Application.Services.Public.Customers;
 
 public partial interface ICustomerService
 {
+    #region Commands
+
+    Task InsertCustomerAsync(Customer customer);
+
+    Task<RegisterResponseModel> RegisterCustomerAsync(string email, string password);
+
+    #endregion
+
+    #region Queries
+
     Task<Customer?> GetCustomerByEmailAsync(string email);
 
     string GetCustomerFullName(Customer customer);
 
-    Task<Result> RegisterCustomerAsync(string email, string password);
-
     Task<CustomerRole?> GetCustomerRoleByNameAsync(string name);
 
-    Task InsertCustomerAsync(Customer customer);
+    #endregion
 }
