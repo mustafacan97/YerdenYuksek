@@ -78,7 +78,7 @@ public class WorkflowMessageService : IWorkflowMessageService
 
 
             var toEmail = customer.Email;
-            var toName = await _customerService.GetCustomerFullNameAsync(customer);
+            var toName = _customerService.GetCustomerFullName(customer);
 
             return await SendNotificationAsync(messageTemplate, emailAccount, languageId, tokens, toEmail, toName);
         }).ToListAsync();

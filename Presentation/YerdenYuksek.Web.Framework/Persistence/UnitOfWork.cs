@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Transactions;
+using YerdenYuksek.Core.Caching;
 using YerdenYuksek.Core.Primitives;
 
 namespace YerdenYuksek.Web.Framework.Persistence;
@@ -12,15 +13,18 @@ public sealed class UnitOfWork<TContext> : IUnitOfWork<TContext>, IUnitOfWork wh
 
     private bool _disposed;
 
-    private Dictionary<Type, object> repositories;    
+    private Dictionary<Type, object> repositories;
+
+    private readonly IStaticCacheManager _staticCacheManager;
 
     #endregion
 
     #region Constructors and Destructors
 
-    public UnitOfWork(TContext dbContext)
+    public UnitOfWork(TContext dbContext, IStaticCacheManager staticCacheManager)
     {
         _dbContext = dbContext ?? throw new ArgumentNullException(nameof(_dbContext));
+        _staticCacheManager = staticCacheManager;
     }
 
     #endregion
@@ -76,8 +80,7 @@ public sealed class UnitOfWork<TContext> : IUnitOfWork<TContext>, IUnitOfWork wh
         var type = typeof(T);
         if (!repositories.ContainsKey(type))
         {
-            var newRepository = Activator.CreateInstance(type, _dbContext);
-            repositories[type] = newRepository!;
+            repositories[type] = new Repository<T>(_dbContext, _staticCacheManager);
         }
 
         return (IRepository<T>)repositories[type];

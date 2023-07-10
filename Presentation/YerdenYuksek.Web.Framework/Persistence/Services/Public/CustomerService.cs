@@ -16,13 +16,11 @@ public class CustomerService : ICustomerService
 
     private readonly IEncryptionService _encryptionService;
 
-    private readonly IRepository<Customer> _customerRepository;
-
-    private readonly IRepository<CustomerRole> _customerRoleRepository;
-
     private readonly IStaticCacheManager _staticCacheManager;
 
     private readonly IWebHelper _webHelper;
+
+    private readonly IUnitOfWork _unitOfWork;
 
     #endregion
 
@@ -31,17 +29,15 @@ public class CustomerService : ICustomerService
     public CustomerService(
         CustomerSettings customerSettings,
         IEncryptionService encryptionService,
-        IRepository<Customer> customerRepository,
         IStaticCacheManager staticCacheManager,
-        IRepository<CustomerRole> customerRoleRepository,
-        IWebHelper webHelper)
+        IWebHelper webHelper,
+        IUnitOfWork unitOfWork)
     {
         _customerSettings = customerSettings;
-        _customerRepository = customerRepository;
         _encryptionService = encryptionService;
         _staticCacheManager = staticCacheManager;
-        _customerRoleRepository = customerRoleRepository;
         _webHelper = webHelper;
+        _unitOfWork = unitOfWork;
     }
 
     #endregion
@@ -55,7 +51,7 @@ public class CustomerService : ICustomerService
             return null;
         }
 
-        var query = from c in _customerRepository.Table
+        var query = from c in _unitOfWork.GetRepository<Customer>().Table
                     orderby c.Id
                     where c.Email == email
                     select c;
@@ -64,7 +60,7 @@ public class CustomerService : ICustomerService
         return customer;
     }
 
-    public virtual async Task<string> GetCustomerFullNameAsync(Customer customer)
+    public string GetCustomerFullName(Customer customer)
     {
         if (customer is null)
         {
@@ -73,22 +69,25 @@ public class CustomerService : ICustomerService
 
         var firstName = customer.FirstName;
         var lastName = customer.LastName;
-        var fullName = string.Empty;
 
         if (!string.IsNullOrWhiteSpace(firstName) && !string.IsNullOrWhiteSpace(lastName))
         {
-            fullName = $"{firstName} {lastName}";
+            return $"{firstName} {lastName}";
         }
         else
         {
             if (!string.IsNullOrWhiteSpace(firstName))
-                fullName = firstName;
+            {
+                return firstName;
+            }
 
             if (!string.IsNullOrWhiteSpace(lastName))
-                fullName = lastName;
+            {
+                return lastName;
+            }
         }
 
-        return fullName;
+        return string.Empty;
     }
 
     public async Task<CustomerRole?> GetCustomerRoleByNameAsync(string name)
@@ -100,7 +99,7 @@ public class CustomerService : ICustomerService
 
         var key = _staticCacheManager.PrepareKeyForDefaultCache(YerdenYuksekCustomerServicesDefaults.CustomerRolesByNameCacheKey, name);
 
-        var query = from cr in _customerRoleRepository.Table
+        var query = from cr in _unitOfWork.GetRepository<CustomerRole>().Table
                     orderby cr.Id
                     where cr.Name == name
         select cr;
@@ -150,6 +149,7 @@ public class CustomerService : ICustomerService
         }
 
         customer.AddCustomerRole(registeredRole);
+
         await InsertCustomerAsync(customer);
 
         return Result.Success();
@@ -157,7 +157,8 @@ public class CustomerService : ICustomerService
 
     public async Task InsertCustomerAsync(Customer customer)
     {
-        await _customerRepository.InsertAsync(customer);
+        await _unitOfWork.GetRepository<Customer>().InsertAsync(customer);
+        await _unitOfWork.SaveChangesAsync();
     }
 
     #endregion

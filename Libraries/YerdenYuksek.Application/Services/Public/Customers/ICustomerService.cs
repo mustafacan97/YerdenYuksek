@@ -7,7 +7,7 @@ public partial interface ICustomerService
 {
     Task<Customer?> GetCustomerByEmailAsync(string email);
 
-    Task<string> GetCustomerFullNameAsync(Customer customer);
+    string GetCustomerFullName(Customer customer);
 
     Task<Result> RegisterCustomerAsync(string email, string password);
 

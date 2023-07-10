@@ -38,7 +38,7 @@ public class MessageTokenProvider : IMessageTokenProvider
     public async Task AddCustomerTokensAsync(IList<Token> tokens, Customer customer)
     {
         tokens.Add(new Token("Customer.Email", customer.Email));
-        tokens.Add(new Token("Customer.FullName", await _customerService.GetCustomerFullNameAsync(customer)));
+        tokens.Add(new Token("Customer.FullName", _customerService.GetCustomerFullName(customer)));
         tokens.Add(new Token("Customer.FirstName", customer.FirstName));
         tokens.Add(new Token("Customer.LastName", customer.LastName));
     }

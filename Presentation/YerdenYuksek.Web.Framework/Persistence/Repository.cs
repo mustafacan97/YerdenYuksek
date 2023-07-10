@@ -1,6 +1,4 @@
-﻿using eCommerce.Infrastructure.Persistence.Primitives;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using YerdenYuksek.Core.Caching;
 using YerdenYuksek.Core.Primitives;
@@ -12,7 +10,7 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
 {
     #region Fields
 
-    private readonly ApplicationDbContext _dbContext;
+    private readonly DbContext _dbContext;
 
     private readonly DbSet<T> _dbSet;
 
@@ -23,7 +21,7 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
     #region Constructure and Destructure
 
     public Repository(
-        ApplicationDbContext dbContext,
+        DbContext dbContext,
         IStaticCacheManager staticCacheManager)
     {
         _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
