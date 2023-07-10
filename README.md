@@ -10,7 +10,6 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
    - eCommerce.Core
 2. Presentation
    - eCommerce.Web
-   - eCommerce.Web.Contract
    - eCommerce.Web.Framework
 
 ## Techologies 
@@ -18,7 +17,6 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 2. Repository Pattern
 3. Mediator Pattern (CQRS)
 4. Entity Framework
-5. Quartz.net
 
 ## Tables And RelationShips
 #### Main Tables
