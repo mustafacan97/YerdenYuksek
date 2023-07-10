@@ -108,6 +108,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddUnitOfWork<ApplicationDbContext>();
+        services.AddSingleton<ILocker, MemoryCacheLocker>();
         services.AddSingleton<IStaticCacheManager, MemoryCacheManager>();
 
         //file provider
