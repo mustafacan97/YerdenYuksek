@@ -7,7 +7,6 @@ using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using YerdenYuksek.Application.Services.Public.Messages;
 using YerdenYuksek.Core.Domain.Messages;
-using YerdenYuksek.Core.Infrastructure;
 using YerdenYuksek.Core.Primitives;
 
 namespace YerdenYuksek.Web.Framework.Persistence.Services.Public;
@@ -45,7 +44,7 @@ public class EmailSender : IEmailSender
         IEnumerable<string>? cc = null,
         string? attachmentFilePath = null,
         string? attachmentFileName = null,
-        int attachedDownloadId = 0,
+        int? attachedDownloadId = null,
         IDictionary<string, string>? headers = null)
     {
         var message = new MimeMessage();

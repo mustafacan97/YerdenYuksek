@@ -1,5 +1,4 @@
 ﻿using System.Linq.Dynamic.Core;
-using YerdenYuksek.Application.Services.Public.Customers;
 using YerdenYuksek.Application.Services.Public.Localization;
 using YerdenYuksek.Application.Services.Public.Messages;
 using YerdenYuksek.Core;
@@ -14,19 +13,15 @@ public class WorkflowMessageService : IWorkflowMessageService
 {
     #region Fields
 
-    private readonly EmailAccountSettings _emailAccountSettings;
-
     private readonly IUnitOfWork _unitOfWork;
 
     private readonly ILanguageService _languageService;
 
     private readonly IMessageTemplateService _messageTemplateService;
 
-    private readonly IMessageTokenProvider _messageTokenProvider;
-
     private readonly ILocalizationService _localizationService;
 
-    private readonly ICustomerService _customerService;
+    private readonly IMessageTokenProvider _messageTokenProvider;    
 
     private readonly ITokenizer _tokenizer;
 
@@ -35,15 +30,18 @@ public class WorkflowMessageService : IWorkflowMessageService
     #region Constructure and Destructure
 
     public WorkflowMessageService(
-        IUnitOfWork unitOfWork, ILanguageService languageService, IMessageTemplateService messageTemplateService, IMessageTokenProvider messageTokenProvider, ILocalizationService localizationService, ICustomerService customerService, EmailAccountSettings emailAccountSettings, ITokenizer tokenizer)
+        IUnitOfWork unitOfWork,
+        ILanguageService languageService,
+        IMessageTemplateService messageTemplateService,
+        IMessageTokenProvider messageTokenProvider,
+        ILocalizationService localizationService,
+        ITokenizer tokenizer)
     {
         _unitOfWork = unitOfWork;
         _languageService = languageService;
         _messageTemplateService = messageTemplateService;
         _messageTokenProvider = messageTokenProvider;
         _localizationService = localizationService;
-        _customerService = customerService;
-        _emailAccountSettings = emailAccountSettings;
         _tokenizer = tokenizer;
     }
 
@@ -71,14 +69,10 @@ public class WorkflowMessageService : IWorkflowMessageService
 
         return await messageTemplates.ToAsyncEnumerable().SelectAwait(async messageTemplate =>
         {
-            //email account
             var emailAccount = await GetEmailAccountOfMessageTemplateAsync(messageTemplate);
-
             var tokens = new List<Token>(commonTokens);
-
-
             var toEmail = customer.Email;
-            var toName = _customerService.GetCustomerFullName(customer);
+            var toName = $"{customer.FirstName} {customer.LastName}";
 
             return await SendNotificationAsync(messageTemplate, emailAccount, languageId, tokens, toEmail, toName);
         }).ToListAsync();

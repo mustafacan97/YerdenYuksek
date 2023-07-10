@@ -32,7 +32,7 @@ public class Engine : IEngine
 
     public object ResolveUnregistered(Type type)
     {
-        Exception innerException = null;
+        Exception? innerException = null;
         foreach (var constructor in type.GetConstructors())
         {
             try

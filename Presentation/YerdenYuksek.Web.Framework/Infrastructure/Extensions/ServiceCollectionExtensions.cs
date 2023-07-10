@@ -20,8 +20,11 @@ using YerdenYuksek.Core.Configuration;
 using YerdenYuksek.Core.Infrastructure;
 using YerdenYuksek.Core.Primitives;
 using YerdenYuksek.Web.Framework.Common;
+using YerdenYuksek.Web.Framework.Infrastructure;
 using YerdenYuksek.Web.Framework.Persistence;
 using YerdenYuksek.Web.Framework.Persistence.Services.Public;
+using TaskScheduler = YerdenYuksek.Web.Framework.Persistence.Services.Public.ScheduleTasks.TaskScheduler;
+using ScheduleTaskRunner = YerdenYuksek.Web.Framework.Persistence.Services.Public.ScheduleTasks.ScheduleTaskRunner;
 
 namespace eCommerce.Framework.Infrastructure.Extensions;
 
@@ -106,6 +109,9 @@ public static class ServiceCollectionExtensions
 
     private static IServiceCollection AddServices(this IServiceCollection services)
     {
+        //register engine
+        services.AddSingleton<IEngine, Engine>();
+
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddUnitOfWork<ApplicationDbContext>();
         services.AddSingleton<ILocker, MemoryCacheLocker>();
@@ -129,6 +135,10 @@ public static class ServiceCollectionExtensions
         services.AddMemoryCache();
         services.AddSingleton<IStaticCacheManager, MemoryCacheManager>();
 
+        //email
+        services.AddScoped<ITokenizer, Tokenizer>();
+        services.AddScoped<IEmailSender, EmailSender>();
+
         //services
         services.AddScoped<ISettingService, SettingService>();
         services.AddScoped<ICustomerService, CustomerService>();
@@ -138,9 +148,16 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ILocalizedEntityService, LocalizedEntityService>();
         services.AddScoped<IScheduleTaskService, ScheduleTaskService>();
         services.AddScoped<IQueuedEmailService, QueuedEmailService>();
+        services.AddScoped<IWorkflowMessageService, WorkflowMessageService>();
+        services.AddScoped<IMessageTemplateService, MessageTemplateService>();
+        services.AddScoped<IMessageTokenProvider, MessageTokenProvider>();
 
         //register all settings
         services.RegisterAllSettings();
+
+        //schedule tasks
+        services.AddSingleton<ITaskScheduler, TaskScheduler>();
+        services.AddTransient<IScheduleTaskRunner, ScheduleTaskRunner>();
 
         return services;
     }

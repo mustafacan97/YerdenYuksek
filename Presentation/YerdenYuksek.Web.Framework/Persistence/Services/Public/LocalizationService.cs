@@ -363,7 +363,7 @@ public class LocalizationService : ILocalizationService
         var loadLocalizedValue = true;
         if (ensureTwoPublishedLanguages)
         {
-            var totalPublishedLanguages = (await _languageService.GetAllLanguagesAsync()).Count;
+            var totalPublishedLanguages = (await _unitOfWork.GetRepository<Language>().GetAllAsync()).Count;
             loadLocalizedValue = totalPublishedLanguages >= 2;
         }
         

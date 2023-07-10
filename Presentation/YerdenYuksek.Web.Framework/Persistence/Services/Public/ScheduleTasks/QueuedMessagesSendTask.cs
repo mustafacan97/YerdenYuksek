@@ -1,10 +1,11 @@
 ﻿using YerdenYuksek.Application.Services.Public.Messages;
+using YerdenYuksek.Application.Services.Public.ScheduleTasks;
 using YerdenYuksek.Core.Domain.Messages;
 using YerdenYuksek.Core.Primitives;
 
-namespace YerdenYuksek.Application.Services.Public.ScheduleTasks;
+namespace YerdenYuksek.Web.Framework.Persistence.Services.Public.ScheduleTasks;
 
-public class QueuedMessagesSendTask
+public class QueuedMessagesSendTask : IScheduleTask
 {
     #region Fields
 
@@ -32,7 +33,7 @@ public class QueuedMessagesSendTask
 
     #region Methods
 
-    public async Task Execute()
+    public async Task ExecuteAsync()
     {
         var maxTries = 3;
         var queuedEmails = await _queuedEmailService.SearchEmailsAsync(

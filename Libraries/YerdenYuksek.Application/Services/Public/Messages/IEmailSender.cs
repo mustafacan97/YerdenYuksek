@@ -18,6 +18,6 @@ public interface IEmailSender
         IEnumerable<string>? cc = null,
         string? attachmentFilePath = null,
         string? attachmentFileName = null,
-        int attachedDownloadId = 0,
+        int? attachedDownloadId = null,
         IDictionary<string, string>? headers = null);
 }
