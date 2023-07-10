@@ -13,9 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentatio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YerdenYuksek.Web.Framework", "Presentation\YerdenYuksek.Web.Framework\YerdenYuksek.Web.Framework.csproj", "{71423802-4799-4D83-A33A-0C18E4050322}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YerdenYuksek.Web.Contract", "Presentation\YerdenYuksek.Web.Contract\YerdenYuksek.Web.Contract.csproj", "{23D8EC83-6EEB-4477-AC24-63870E4B120B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YerdenYuksek.Web", "Presentation\YerdenYuksek.Web\YerdenYuksek.Web.csproj", "{AB055405-5410-44FC-ADF3-12119CF3B8AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YerdenYuksek.Web", "Presentation\YerdenYuksek.Web\YerdenYuksek.Web.csproj", "{AB055405-5410-44FC-ADF3-12119CF3B8AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +33,6 @@ Global
 		{71423802-4799-4D83-A33A-0C18E4050322}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{71423802-4799-4D83-A33A-0C18E4050322}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{71423802-4799-4D83-A33A-0C18E4050322}.Release|Any CPU.Build.0 = Release|Any CPU
-		{23D8EC83-6EEB-4477-AC24-63870E4B120B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{23D8EC83-6EEB-4477-AC24-63870E4B120B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{23D8EC83-6EEB-4477-AC24-63870E4B120B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{23D8EC83-6EEB-4477-AC24-63870E4B120B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AB055405-5410-44FC-ADF3-12119CF3B8AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AB055405-5410-44FC-ADF3-12119CF3B8AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB055405-5410-44FC-ADF3-12119CF3B8AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -51,7 +45,6 @@ Global
 		{B9817E90-EC2B-4FD8-A7E5-C9023EF01287} = {69B3E1FC-3CDB-4632-94AD-97D87CB68FE2}
 		{44AA7B53-1AD0-4B3B-8B82-2009BC07AACA} = {69B3E1FC-3CDB-4632-94AD-97D87CB68FE2}
 		{71423802-4799-4D83-A33A-0C18E4050322} = {FC101677-1482-4492-975F-91ADFAB7E737}
-		{23D8EC83-6EEB-4477-AC24-63870E4B120B} = {FC101677-1482-4492-975F-91ADFAB7E737}
 		{AB055405-5410-44FC-ADF3-12119CF3B8AE} = {FC101677-1482-4492-975F-91ADFAB7E737}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

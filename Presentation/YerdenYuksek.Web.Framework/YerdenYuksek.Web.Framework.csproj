@@ -20,7 +20,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Libraries\YerdenYuksek.Application\YerdenYuksek.Application.csproj" />
-    <ProjectReference Include="..\YerdenYuksek.Web.Contract\YerdenYuksek.Web.Contract.csproj" />
   </ItemGroup>
 
 </Project>

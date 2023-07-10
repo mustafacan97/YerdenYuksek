@@ -15,7 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\YerdenYuksek.Web.Contract\YerdenYuksek.Web.Contract.csproj" />
     <ProjectReference Include="..\YerdenYuksek.Web.Framework\YerdenYuksek.Web.Framework.csproj" />
   </ItemGroup>
 
