@@ -1,4 +1,4 @@
-﻿namespace YerdenYuksek.Core.Primitives;
+﻿namespace eCommerce.Core.Primitives;
 
 public class BaseEntity
 {

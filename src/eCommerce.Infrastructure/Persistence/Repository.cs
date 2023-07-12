@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using YerdenYuksek.Core.Caching;
-using YerdenYuksek.Core.Primitives;
+using eCommerce.Core.Primitives;
 using YerdenYuksek.Web.Framework.Persistence.Extensions;
 
 namespace YerdenYuksek.Web.Framework.Persistence;

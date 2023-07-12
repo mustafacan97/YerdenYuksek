@@ -11,7 +11,7 @@ using YerdenYuksek.Application.Services.Public.Localization;
 using YerdenYuksek.Core.Caching;
 using YerdenYuksek.Core.Configuration;
 using YerdenYuksek.Core.Domain.Localization;
-using YerdenYuksek.Core.Primitives;
+using eCommerce.Core.Primitives;
 
 namespace YerdenYuksek.Web.Framework.Persistence.Services.Public;
 

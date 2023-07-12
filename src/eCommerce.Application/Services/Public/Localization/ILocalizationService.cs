@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using YerdenYuksek.Core.Configuration;
 using YerdenYuksek.Core.Domain.Localization;
-using YerdenYuksek.Core.Primitives;
+using eCommerce.Core.Primitives;
 
 namespace YerdenYuksek.Application.Services.Public.Localization;
 

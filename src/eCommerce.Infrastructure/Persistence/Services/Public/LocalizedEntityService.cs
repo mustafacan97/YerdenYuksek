@@ -6,7 +6,7 @@ using System.Reflection;
 using YerdenYuksek.Application.Services.Public.Localization;
 using YerdenYuksek.Core.Caching;
 using YerdenYuksek.Core.Domain.Localization;
-using YerdenYuksek.Core.Primitives;
+using eCommerce.Core.Primitives;
 using YerdenYuksek.Web.Framework.Common;
 
 namespace YerdenYuksek.Web.Framework.Persistence.Services.Public;

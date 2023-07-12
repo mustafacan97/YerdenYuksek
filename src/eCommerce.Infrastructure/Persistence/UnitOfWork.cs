@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Transactions;
 using YerdenYuksek.Core.Caching;
-using YerdenYuksek.Core.Primitives;
+using eCommerce.Core.Primitives;
 
 namespace YerdenYuksek.Web.Framework.Persistence;
 

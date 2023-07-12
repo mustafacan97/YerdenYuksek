@@ -1,5 +1,5 @@
 ﻿using YerdenYuksek.Core.Domain.Localization;
-using YerdenYuksek.Core.Primitives;
+using eCommerce.Core.Primitives;
 
 namespace YerdenYuksek.Core.Domain.Configuration;
 

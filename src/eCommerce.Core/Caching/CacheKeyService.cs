@@ -2,7 +2,7 @@
 using System.Text;
 using eCommerce.Core.Helpers;
 using YerdenYuksek.Core.Configuration;
-using YerdenYuksek.Core.Primitives;
+using eCommerce.Core.Primitives;
 
 namespace YerdenYuksek.Core.Caching;
 

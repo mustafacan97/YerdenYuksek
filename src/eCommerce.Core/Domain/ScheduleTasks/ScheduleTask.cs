@@ -1,4 +1,4 @@
-﻿using YerdenYuksek.Core.Primitives;
+﻿using eCommerce.Core.Primitives;
 
 namespace YerdenYuksek.Core.Domain.ScheduleTasks;
 
