@@ -1,10 +1,11 @@
-﻿using YerdenYuksek.Core.Domain.Common;
+﻿using eCommerce.Core.Interfaces;
+using eCommerce.Core.Primitives;
+using YerdenYuksek.Core.Domain.Common;
 using YerdenYuksek.Core.Domain.Logging;
-using YerdenYuksek.Core.Primitives;
 
 namespace YerdenYuksek.Core.Domain.Customers;
 
-public class Customer : BaseEntity, ISoftDeletedEntity
+public class Customer : SoftDeletedEntity, ISoftDeletedEntity
 {
     #region Constructure and Destructure
 
