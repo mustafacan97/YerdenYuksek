@@ -1,4 +1,4 @@
-﻿namespace YerdenYuksek.Core.Infrastructure;
+﻿namespace eCommerce.Core.Infrastructure;
 
 public class SingletonDictionary<TKey, TValue> : Singleton<IDictionary<TKey, TValue>>
 {

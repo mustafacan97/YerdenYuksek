@@ -1,4 +1,4 @@
-﻿namespace YerdenYuksek.Core.Infrastructure;
+﻿namespace eCommerce.Core.Infrastructure;
 
 public class Singleton<T> : BaseSingleton
 {

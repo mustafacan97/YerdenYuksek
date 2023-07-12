@@ -25,6 +25,7 @@ using TaskScheduler = YerdenYuksek.Web.Framework.Persistence.Services.Public.Sch
 using ScheduleTaskRunner = YerdenYuksek.Web.Framework.Persistence.Services.Public.ScheduleTasks.ScheduleTaskRunner;
 using eCommerce.Core.Interfaces;
 using eCommerce.Core.Helpers;
+using eCommerce.Core.Infrastructure;
 
 namespace eCommerce.Framework.Infrastructure.Extensions;
 

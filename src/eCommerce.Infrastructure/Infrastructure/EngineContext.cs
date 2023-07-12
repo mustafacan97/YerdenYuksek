@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
+using eCommerce.Core.Infrastructure;
 using eCommerce.Core.Interfaces;
-using YerdenYuksek.Core.Infrastructure;
 
 namespace YerdenYuksek.Web.Framework.Infrastructure;
 

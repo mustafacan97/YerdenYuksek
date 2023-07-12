@@ -1,5 +1,5 @@
-﻿using YerdenYuksek.Core.Configuration;
-using YerdenYuksek.Core.Infrastructure;
+﻿using eCommerce.Core.Infrastructure;
+using YerdenYuksek.Core.Configuration;
 
 namespace YerdenYuksek.Core.Caching;
 
