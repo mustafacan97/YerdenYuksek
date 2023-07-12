@@ -1,9 +1,9 @@
 ﻿using eCommerce.Core.Interfaces;
+using eCommerce.Core.Primitives;
 using Microsoft.AspNetCore.Mvc;
 using YerdenYuksek.Application.Models.Customers;
 using YerdenYuksek.Application.Services.Public.Customers;
 using YerdenYuksek.Application.Services.Public.Messages;
-using YerdenYuksek.Core.Primitives;
 
 namespace YerdenYuksek.Web.Controllers;
 
@@ -44,11 +44,15 @@ public class AuthenticationController : Controller
     {
         if (!ModelState.IsValid)
         {
+            var abc = ModelState.Values
+                    .SelectMany(q => q.Errors)
+                    .Select(x => Error.Validation(description: x.ErrorMessage));
+
             var result = Result.Failure(
                 ModelState.Values
                     .SelectMany(q => q.Errors)
                     .Select(x => Error.Validation(description: x.ErrorMessage))
-                    .ToList());
+                    .ToArray());
 
             return BadRequest(result);
         }

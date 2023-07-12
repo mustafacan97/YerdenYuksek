@@ -1,10 +1,10 @@
 ﻿namespace YerdenYuksek.Core.Primitives;
 
-public sealed class PagedList<T> : List<T>, IPagedList<T>
+public sealed class PagedInfo<T> : List<T>, IPagedList<T>
 {
     #region Constructure and Destructure
 
-    public PagedList(IList<T> source, int pageIndex, int pageSize, int? totalCount = null)
+    public PagedInfo(IList<T> source, int pageIndex, int pageSize, int? totalCount = null)
     {
         pageSize = Math.Max(pageSize, 1);
 
@@ -32,6 +32,10 @@ public sealed class PagedList<T> : List<T>, IPagedList<T>
     public int TotalCount { get; }
 
     public int TotalPages { get; }
+
+    #endregion
+
+    #region Public Methods
 
     public bool HasPreviousPage => PageIndex > 0;
 

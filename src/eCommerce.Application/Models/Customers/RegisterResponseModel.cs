@@ -1,4 +1,5 @@
-﻿using YerdenYuksek.Core.Domain.Customers;
+﻿using eCommerce.Core.Primitives;
+using YerdenYuksek.Core.Domain.Customers;
 using YerdenYuksek.Core.Primitives;
 
 namespace YerdenYuksek.Application.Models.Customers;

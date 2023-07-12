@@ -1,4 +1,4 @@
-﻿namespace YerdenYuksek.Core.Primitives;
+﻿namespace eCommerce.Core.Primitives;
 
 public sealed class Error : IEquatable<Error>
 {
@@ -28,6 +28,8 @@ public sealed class Error : IEquatable<Error>
 	public ErrorType? ErrorType { get; private set; }
 
     #endregion
+
+    #region Public Methods
 
     public static implicit operator string(Error error) => error?.Code ?? string.Empty;
 
@@ -86,4 +88,6 @@ public sealed class Error : IEquatable<Error>
         string description = "A 'Not Found' error has occurred.") => new(code, description, Primitives.ErrorType.NotFound);
 
     public static Error Custom(string code, string description, ErrorType errorType) => new(code, description, errorType);
+
+    #endregion
 }

@@ -1,4 +1,5 @@
 ﻿using eCommerce.Core.Interfaces;
+using eCommerce.Core.Primitives;
 using Microsoft.EntityFrameworkCore;
 using YerdenYuksek.Application.Models.Customers;
 using YerdenYuksek.Application.Services.Public.Customers;

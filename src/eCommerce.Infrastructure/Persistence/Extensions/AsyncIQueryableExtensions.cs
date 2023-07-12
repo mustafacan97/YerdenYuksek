@@ -9,7 +9,7 @@ public static class AsyncIQueryableExtensions
     {
         if (source == null)
         {
-            return new PagedList<T>(new List<T>(), pageIndex, pageSize);
+            return new PagedInfo<T>(new List<T>(), pageIndex, pageSize);
         }
         
         pageSize = Math.Max(pageSize, 1);
@@ -23,6 +23,6 @@ public static class AsyncIQueryableExtensions
             data.AddRange(await source.Skip(pageIndex * pageSize).Take(pageSize).ToListAsync());
         }
 
-        return new PagedList<T>(data, pageIndex, pageSize, count);
+        return new PagedInfo<T>(data, pageIndex, pageSize, count);
     }
 }
