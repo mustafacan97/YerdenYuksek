@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eCommerce.Core", "src\eComm
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eCommerce.Application", "src\eCommerce.Application\eCommerce.Application.csproj", "{44AA7B53-1AD0-4B3B-8B82-2009BC07AACA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eCommerce.Web.Framework", "src\eCommerce.Web.Framework\eCommerce.Web.Framework.csproj", "{71423802-4799-4D83-A33A-0C18E4050322}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eCommerce.Infrastructure", "src\eCommerce.Infrastructure\eCommerce.Infrastructure.csproj", "{71423802-4799-4D83-A33A-0C18E4050322}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eCommerce.Web", "src\eCommerce.Web\eCommerce.Web.csproj", "{AB055405-5410-44FC-ADF3-12119CF3B8AE}"
 EndProject
