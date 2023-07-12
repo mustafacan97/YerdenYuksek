@@ -1,6 +1,8 @@
-﻿namespace YerdenYuksek.Core.Primitives;
+﻿using eCommerce.Core.Interfaces;
 
-public sealed class PagedInfo<T> : List<T>, IPagedList<T>
+namespace eCommerce.Core.Primitives;
+
+public sealed class PagedInfo<T> : List<T>, IPagedInfo<T>
 {
     #region Constructure and Destructure
 

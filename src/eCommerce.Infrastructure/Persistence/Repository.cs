@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using eCommerce.Core.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using YerdenYuksek.Core.Caching;
 using YerdenYuksek.Core.Primitives;
@@ -87,7 +88,7 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
         return await GetEntitiesAsync(getAllAsync, getCacheKey);
     }
 
-    public async Task<IPagedList<T>> GetAllPagedAsync(
+    public async Task<IPagedInfo<T>> GetAllPagedAsync(
         Func<IQueryable<T>, IQueryable<T>>? func = null,
         int pageIndex = 0, 
         int pageSize = int.MaxValue, 

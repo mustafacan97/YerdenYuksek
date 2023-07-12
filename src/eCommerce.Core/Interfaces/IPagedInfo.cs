@@ -1,7 +1,9 @@
-﻿namespace YerdenYuksek.Core.Primitives;
+﻿namespace eCommerce.Core.Interfaces;
 
-public interface IPagedList<T> : IList<T>
+public interface IPagedInfo<T> : IList<T>
 {
+    #region Public Properties
+
     int PageIndex { get; }
 
     int PageSize { get; }
@@ -13,4 +15,6 @@ public interface IPagedList<T> : IList<T>
     bool HasPreviousPage { get; }
 
     bool HasNextPage { get; }
+
+    #endregion
 }

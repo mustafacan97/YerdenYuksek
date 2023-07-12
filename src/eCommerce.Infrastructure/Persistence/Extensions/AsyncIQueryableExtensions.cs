@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
-using YerdenYuksek.Core.Primitives;
+﻿using eCommerce.Core.Interfaces;
+using eCommerce.Core.Primitives;
+using Microsoft.EntityFrameworkCore;
 
 namespace YerdenYuksek.Web.Framework.Persistence.Extensions;
 
 public static class AsyncIQueryableExtensions
 {
-    public static async Task<IPagedList<T>> ToPagedListAsync<T>(this IQueryable<T> source, int pageIndex, int pageSize, bool getOnlyTotalCount = false)
+    public static async Task<IPagedInfo<T>> ToPagedListAsync<T>(this IQueryable<T> source, int pageIndex, int pageSize, bool getOnlyTotalCount = false)
     {
         if (source == null)
         {

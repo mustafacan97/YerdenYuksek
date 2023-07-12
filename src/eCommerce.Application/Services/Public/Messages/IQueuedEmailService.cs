@@ -1,4 +1,5 @@
-﻿using YerdenYuksek.Core.Domain.Messages;
+﻿using eCommerce.Core.Interfaces;
+using YerdenYuksek.Core.Domain.Messages;
 using YerdenYuksek.Core.Primitives;
 
 namespace YerdenYuksek.Application.Services.Public.Messages;
@@ -17,7 +18,7 @@ public interface IQueuedEmailService
 
     Task<IList<QueuedEmail>> GetQueuedEmailsByIdsAsync(Guid[] queuedEmailIds);
 
-    Task<IPagedList<QueuedEmail>> SearchEmailsAsync(
+    Task<IPagedInfo<QueuedEmail>> SearchEmailsAsync(
         string fromEmail,
         string toEmail,
         DateTime? createdFromUtc,

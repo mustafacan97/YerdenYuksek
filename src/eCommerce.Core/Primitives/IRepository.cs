@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using eCommerce.Core.Interfaces;
+using System.Linq.Expressions;
 using YerdenYuksek.Core.Caching;
 
 namespace YerdenYuksek.Core.Primitives;
@@ -17,7 +18,7 @@ public interface IRepository<T> where T : BaseEntity
         Func<IStaticCacheManager, CacheKey>? getCacheKey = null, 
         bool includeDeleted = true);
 
-    Task<IPagedList<T>> GetAllPagedAsync(
+    Task<IPagedInfo<T>> GetAllPagedAsync(
         Func<IQueryable<T>, IQueryable<T>>? func = null,
         int pageIndex = 0, 
         int pageSize = int.MaxValue, 

@@ -1,4 +1,5 @@
-﻿using YerdenYuksek.Application.Services.Public.Messages;
+﻿using eCommerce.Core.Interfaces;
+using YerdenYuksek.Application.Services.Public.Messages;
 using YerdenYuksek.Core.Domain.Messages;
 using YerdenYuksek.Core.Primitives;
 using YerdenYuksek.Web.Framework.Persistence.Extensions;
@@ -62,7 +63,7 @@ public class QueuedEmailService : IQueuedEmailService
         return await _unitOfWork.GetRepository<QueuedEmail>().GetByIdsAsync(queuedEmailIds);
     }
 
-    public async Task<IPagedList<QueuedEmail>> SearchEmailsAsync(
+    public async Task<IPagedInfo<QueuedEmail>> SearchEmailsAsync(
         string fromEmail,
         string toEmail,
         DateTime? createdFromUtc,
