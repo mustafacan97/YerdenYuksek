@@ -1,7 +1,6 @@
 ﻿using eCommerce.Core.Interfaces;
 using YerdenYuksek.Application.Services.Public.Messages;
 using YerdenYuksek.Core.Domain.Messages;
-using YerdenYuksek.Core.Primitives;
 using YerdenYuksek.Web.Framework.Persistence.Extensions;
 
 namespace YerdenYuksek.Web.Framework.Persistence.Services.Public;

@@ -1,8 +1,8 @@
-﻿using YerdenYuksek.Application.Services.Public.Customers;
+﻿using eCommerce.Core.Interfaces;
+using YerdenYuksek.Application.Services.Public.Customers;
 using YerdenYuksek.Application.Services.Public.Messages;
 using YerdenYuksek.Core.Domain.Customers;
 using YerdenYuksek.Core.Domain.Messages;
-using YerdenYuksek.Core.Primitives;
 
 namespace YerdenYuksek.Web.Framework.Persistence.Services.Public;
 

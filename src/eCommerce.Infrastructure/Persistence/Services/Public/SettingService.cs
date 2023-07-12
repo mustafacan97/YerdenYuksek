@@ -2,11 +2,11 @@
 using System.Linq.Expressions;
 using System.Reflection;
 using eCommerce.Core.Helpers;
+using eCommerce.Core.Interfaces;
 using YerdenYuksek.Application.Services.Public.Configuration;
 using YerdenYuksek.Core.Caching;
 using YerdenYuksek.Core.Configuration;
 using YerdenYuksek.Core.Domain.Configuration;
-using YerdenYuksek.Core.Primitives;
 
 namespace YerdenYuksek.Web.Framework.Persistence.Services.Public;
 

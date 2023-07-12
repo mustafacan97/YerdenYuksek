@@ -6,7 +6,6 @@ using System.Security.Claims;
 using YerdenYuksek.Application.Services.Public.Customers;
 using YerdenYuksek.Core.Domain.Customers;
 using YerdenYuksek.Core.Domain.Localization;
-using YerdenYuksek.Core.Primitives;
 
 namespace YerdenYuksek.Web.Framework.Common;
 

@@ -1,4 +1,5 @@
-﻿using MailKit.Net.Smtp;
+﻿using eCommerce.Core.Interfaces;
+using MailKit.Net.Smtp;
 using MailKit.Security;
 using MimeKit;
 using MimeKit.Text;
@@ -7,7 +8,6 @@ using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using YerdenYuksek.Application.Services.Public.Messages;
 using YerdenYuksek.Core.Domain.Messages;
-using YerdenYuksek.Core.Primitives;
 
 namespace YerdenYuksek.Web.Framework.Persistence.Services.Public;
 

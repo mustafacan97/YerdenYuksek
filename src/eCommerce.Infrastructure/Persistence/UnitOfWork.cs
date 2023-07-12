@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using eCommerce.Core.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System.Transactions;
 using YerdenYuksek.Core.Caching;
 using YerdenYuksek.Core.Primitives;

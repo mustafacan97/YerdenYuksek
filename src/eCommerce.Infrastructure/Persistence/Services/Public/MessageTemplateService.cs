@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using eCommerce.Core.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using YerdenYuksek.Application.Services.Public.Messages;
 using YerdenYuksek.Core.Caching;
 using YerdenYuksek.Core.Domain.Messages;
-using YerdenYuksek.Core.Primitives;
 
 namespace YerdenYuksek.Web.Framework.Persistence.Services.Public;
 

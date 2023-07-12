@@ -6,7 +6,6 @@ using YerdenYuksek.Application.Services.Public.Customers;
 using YerdenYuksek.Application.Services.Public.Security;
 using YerdenYuksek.Core.Caching;
 using YerdenYuksek.Core.Domain.Customers;
-using YerdenYuksek.Core.Primitives;
 
 namespace YerdenYuksek.Web.Framework.Persistence.Services.Public;
 

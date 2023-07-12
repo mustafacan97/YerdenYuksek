@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using eCommerce.Core.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using YerdenYuksek.Application.Services.Public.ScheduleTasks;
 using YerdenYuksek.Core.Domain.ScheduleTasks;
-using YerdenYuksek.Core.Primitives;
 
 namespace YerdenYuksek.Web.Framework.Persistence.Services.Public;
 

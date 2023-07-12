@@ -1,8 +1,8 @@
-﻿using eCommerce.Core.Interfaces;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 using YerdenYuksek.Core.Caching;
+using YerdenYuksek.Core.Primitives;
 
-namespace YerdenYuksek.Core.Primitives;
+namespace eCommerce.Core.Interfaces;
 
 public interface IRepository<T> where T : BaseEntity
 {
@@ -10,28 +10,28 @@ public interface IRepository<T> where T : BaseEntity
 
     IList<T> GetAll(
         Func<IQueryable<T>, IQueryable<T>>? func = null,
-        Func<IStaticCacheManager, CacheKey>? getCacheKey = null, 
+        Func<IStaticCacheManager, CacheKey>? getCacheKey = null,
         bool includeDeleted = true);
 
     Task<IList<T>> GetAllAsync(
         Func<IQueryable<T>, IQueryable<T>>? func = null,
-        Func<IStaticCacheManager, CacheKey>? getCacheKey = null, 
+        Func<IStaticCacheManager, CacheKey>? getCacheKey = null,
         bool includeDeleted = true);
 
     Task<IPagedInfo<T>> GetAllPagedAsync(
         Func<IQueryable<T>, IQueryable<T>>? func = null,
-        int pageIndex = 0, 
-        int pageSize = int.MaxValue, 
-        bool getOnlyTotalCount = false, 
+        int pageIndex = 0,
+        int pageSize = int.MaxValue,
+        bool getOnlyTotalCount = false,
         bool includeDeleted = true);
 
-    Task<T?> GetFirstOrDefaultAsync<TResult>(        
+    Task<T?> GetFirstOrDefaultAsync<TResult>(
         Expression<Func<T, bool>> predicate,
         bool includeDeleted = true);
 
     Task<T> GetByIdAsync(
-        Guid id, 
-        Func<IStaticCacheManager, CacheKey>? getCacheKey = null, 
+        Guid id,
+        Func<IStaticCacheManager, CacheKey>? getCacheKey = null,
         bool includeDeleted = true);
 
     T GetById(
@@ -40,8 +40,8 @@ public interface IRepository<T> where T : BaseEntity
         bool includeDeleted = true);
 
     Task<IList<T>> GetByIdsAsync(
-        IList<Guid> ids, 
-        Func<IStaticCacheManager, CacheKey>? getCacheKey = null, 
+        IList<Guid> ids,
+        Func<IStaticCacheManager, CacheKey>? getCacheKey = null,
         bool includeDeleted = true);
 
     Task InsertAsync(T entity);

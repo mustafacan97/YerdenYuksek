@@ -1,4 +1,6 @@
-﻿namespace YerdenYuksek.Core.Primitives;
+﻿using YerdenYuksek.Core.Primitives;
+
+namespace eCommerce.Core.Interfaces;
 
 public interface IUnitOfWork : IDisposable
 {
@@ -8,7 +10,7 @@ public interface IUnitOfWork : IDisposable
 
     Task<int> SaveChangesAsync(params IUnitOfWork[] unitOfWorks);
 
-    void Rollback();    
+    void Rollback();
 
     IRepository<T> GetRepository<T>() where T : BaseEntity;
 }

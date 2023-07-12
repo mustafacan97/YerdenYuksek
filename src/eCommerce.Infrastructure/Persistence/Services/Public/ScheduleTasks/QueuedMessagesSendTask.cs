@@ -1,7 +1,7 @@
-﻿using YerdenYuksek.Application.Services.Public.Messages;
+﻿using eCommerce.Core.Interfaces;
+using YerdenYuksek.Application.Services.Public.Messages;
 using YerdenYuksek.Application.Services.Public.ScheduleTasks;
 using YerdenYuksek.Core.Domain.Messages;
-using YerdenYuksek.Core.Primitives;
 
 namespace YerdenYuksek.Web.Framework.Persistence.Services.Public.ScheduleTasks;
 
