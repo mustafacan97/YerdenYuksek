@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace YerdenYuksek.Core;
+namespace eCommerce.Core.Interfaces;
 
 public interface IEngine
 {

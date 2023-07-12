@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using eCommerce.Core.Helpers;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using System.Reflection;
 using YerdenYuksek.Application.Services.Public.Localization;
-using YerdenYuksek.Core;
 using YerdenYuksek.Core.Caching;
 using YerdenYuksek.Core.Domain.Localization;
 using YerdenYuksek.Core.Primitives;

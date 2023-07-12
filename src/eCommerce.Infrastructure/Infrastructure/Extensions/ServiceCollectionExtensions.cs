@@ -14,7 +14,6 @@ using YerdenYuksek.Application.Services.Public.Localization;
 using YerdenYuksek.Application.Services.Public.Messages;
 using YerdenYuksek.Application.Services.Public.ScheduleTasks;
 using YerdenYuksek.Application.Services.Public.Security;
-using YerdenYuksek.Core;
 using YerdenYuksek.Core.Caching;
 using YerdenYuksek.Core.Configuration;
 using YerdenYuksek.Core.Infrastructure;
@@ -25,6 +24,8 @@ using YerdenYuksek.Web.Framework.Persistence;
 using YerdenYuksek.Web.Framework.Persistence.Services.Public;
 using TaskScheduler = YerdenYuksek.Web.Framework.Persistence.Services.Public.ScheduleTasks.TaskScheduler;
 using ScheduleTaskRunner = YerdenYuksek.Web.Framework.Persistence.Services.Public.ScheduleTasks.ScheduleTaskRunner;
+using eCommerce.Core.Interfaces;
+using eCommerce.Core.Helpers;
 
 namespace eCommerce.Framework.Infrastructure.Extensions;
 

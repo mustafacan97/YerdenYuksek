@@ -1,4 +1,4 @@
-﻿namespace YerdenYuksek.Core;
+﻿namespace eCommerce.Core.Interfaces;
 
 public interface IWebHelper
 {

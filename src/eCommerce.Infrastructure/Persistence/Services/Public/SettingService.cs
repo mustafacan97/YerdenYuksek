@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Reflection;
+using eCommerce.Core.Helpers;
 using YerdenYuksek.Application.Services.Public.Configuration;
-using YerdenYuksek.Core;
 using YerdenYuksek.Core.Caching;
 using YerdenYuksek.Core.Configuration;
 using YerdenYuksek.Core.Domain.Configuration;

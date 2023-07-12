@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using eCommerce.Core.Helpers;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.ComponentModel;
-using YerdenYuksek.Core;
 using YerdenYuksek.Core.Domain.Configuration;
 using YerdenYuksek.Core.Domain.Customers;
 using YerdenYuksek.Core.Domain.Localization;

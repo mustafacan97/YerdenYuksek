@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using eCommerce.Core.Interfaces;
+using Microsoft.AspNetCore.Http;
 using System.Net;
-using YerdenYuksek.Core;
 
 namespace YerdenYuksek.Web.Framework.Common;
 

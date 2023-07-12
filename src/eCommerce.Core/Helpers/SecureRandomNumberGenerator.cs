@@ -1,13 +1,13 @@
 ﻿using System.Security.Cryptography;
 
-namespace YerdenYuksek.Core;
+namespace eCommerce.Core.Helpers;
 
 public class SecureRandomNumberGenerator : RandomNumberGenerator
 {
     #region Field
 
     protected bool _disposed;
-    
+
     private readonly RandomNumberGenerator _rng;
 
     #endregion
@@ -27,7 +27,7 @@ public class SecureRandomNumberGenerator : RandomNumberGenerator
     {
         var data = new byte[sizeof(int)];
         _rng.GetBytes(data);
-        return BitConverter.ToInt32(data, 0) & (int.MaxValue - 1);
+        return BitConverter.ToInt32(data, 0) & int.MaxValue - 1;
     }
 
     public int Next(int maxValue)

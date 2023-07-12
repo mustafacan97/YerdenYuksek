@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using eCommerce.Core.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using YerdenYuksek.Application.Models.Customers;
 using YerdenYuksek.Application.Services.Public.Customers;
 using YerdenYuksek.Application.Services.Public.Messages;
-using YerdenYuksek.Core;
 using YerdenYuksek.Core.Primitives;
 
 namespace YerdenYuksek.Web.Controllers;

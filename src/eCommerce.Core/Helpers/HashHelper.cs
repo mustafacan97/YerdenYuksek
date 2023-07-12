@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace YerdenYuksek.Core;
+namespace eCommerce.Core.Helpers;
 
 public static class HashHelper
 {

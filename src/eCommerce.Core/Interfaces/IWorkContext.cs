@@ -1,7 +1,7 @@
 ﻿using YerdenYuksek.Core.Domain.Customers;
 using YerdenYuksek.Core.Domain.Localization;
 
-namespace YerdenYuksek.Core;
+namespace eCommerce.Core.Interfaces;
 
 public interface IWorkContext
 {

@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using eCommerce.Core.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using YerdenYuksek.Application.Models.Customers;
 using YerdenYuksek.Application.Services.Public.Customers;
 using YerdenYuksek.Application.Services.Public.Security;
-using YerdenYuksek.Core;
 using YerdenYuksek.Core.Caching;
 using YerdenYuksek.Core.Domain.Customers;
 using YerdenYuksek.Core.Primitives;
