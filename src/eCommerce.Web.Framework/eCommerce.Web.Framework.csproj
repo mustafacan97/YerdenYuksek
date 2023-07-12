@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Libraries\YerdenYuksek.Application\YerdenYuksek.Application.csproj" />
+    <ProjectReference Include="..\eCommerce.Application\eCommerce.Application.csproj" />
   </ItemGroup>
 
 </Project>

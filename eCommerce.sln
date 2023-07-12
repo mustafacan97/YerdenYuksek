@@ -3,17 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33627.172
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YerdenYuksek.Core", "Libraries\YerdenYuksek.Core\YerdenYuksek.Core.csproj", "{B9817E90-EC2B-4FD8-A7E5-C9023EF01287}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eCommerce.Core", "src\eCommerce.Core\eCommerce.Core.csproj", "{B9817E90-EC2B-4FD8-A7E5-C9023EF01287}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{69B3E1FC-3CDB-4632-94AD-97D87CB68FE2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eCommerce.Application", "src\eCommerce.Application\eCommerce.Application.csproj", "{44AA7B53-1AD0-4B3B-8B82-2009BC07AACA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YerdenYuksek.Application", "Libraries\YerdenYuksek.Application\YerdenYuksek.Application.csproj", "{44AA7B53-1AD0-4B3B-8B82-2009BC07AACA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eCommerce.Web.Framework", "src\eCommerce.Web.Framework\eCommerce.Web.Framework.csproj", "{71423802-4799-4D83-A33A-0C18E4050322}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{FC101677-1482-4492-975F-91ADFAB7E737}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eCommerce.Web", "src\eCommerce.Web\eCommerce.Web.csproj", "{AB055405-5410-44FC-ADF3-12119CF3B8AE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YerdenYuksek.Web.Framework", "Presentation\YerdenYuksek.Web.Framework\YerdenYuksek.Web.Framework.csproj", "{71423802-4799-4D83-A33A-0C18E4050322}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YerdenYuksek.Web", "Presentation\YerdenYuksek.Web\YerdenYuksek.Web.csproj", "{AB055405-5410-44FC-ADF3-12119CF3B8AE}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{7B2016F1-0CFF-498D-88C4-AD5E30AEA206}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,10 +40,10 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{B9817E90-EC2B-4FD8-A7E5-C9023EF01287} = {69B3E1FC-3CDB-4632-94AD-97D87CB68FE2}
-		{44AA7B53-1AD0-4B3B-8B82-2009BC07AACA} = {69B3E1FC-3CDB-4632-94AD-97D87CB68FE2}
-		{71423802-4799-4D83-A33A-0C18E4050322} = {FC101677-1482-4492-975F-91ADFAB7E737}
-		{AB055405-5410-44FC-ADF3-12119CF3B8AE} = {FC101677-1482-4492-975F-91ADFAB7E737}
+		{B9817E90-EC2B-4FD8-A7E5-C9023EF01287} = {7B2016F1-0CFF-498D-88C4-AD5E30AEA206}
+		{44AA7B53-1AD0-4B3B-8B82-2009BC07AACA} = {7B2016F1-0CFF-498D-88C4-AD5E30AEA206}
+		{71423802-4799-4D83-A33A-0C18E4050322} = {7B2016F1-0CFF-498D-88C4-AD5E30AEA206}
+		{AB055405-5410-44FC-ADF3-12119CF3B8AE} = {7B2016F1-0CFF-498D-88C4-AD5E30AEA206}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F078FE7B-EFBE-456C-8376-C9C729079D50}
