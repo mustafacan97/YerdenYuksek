@@ -10,7 +10,6 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
    - eCommerce.Core
 2. Presentation
    - eCommerce.Web
-   - eCommerce.Web.Contract
    - eCommerce.Web.Framework
 
 ## Techologies 
@@ -18,7 +17,6 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 2. Repository Pattern
 3. Mediator Pattern (CQRS)
 4. Entity Framework
-5. Quartz.net
 
 ## Tables And RelationShips
 #### Main Tables
@@ -30,14 +28,14 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 6. City
 7. Currency
 8. Customer
-9. CustomerPassword
+9. CustomerSecurity
 10. EmailAccount
 11. Language
 12. LocaleStringResource
 13. LocalizedProperty
 14. Log
 15. Manufacturer
-16. MailTemplate
+16. EmailTemplate
 17. Order
 18. OrderItem
 19. OrderNote
@@ -46,19 +44,17 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 22. Product
 23. ProductAttribute
 24. ProductAttributeValue
-25. QueuedEmail
-26. ReturnRequest
-27. ReturnRequestAction
-28. ReturnRequestReason
-29. ScheduleTask
-30. Setting
-31. Shipment
-32. ShippingDeliveryDate
-33. ShipmentItem
-34. ShoppingCartItem
-35. TaxCategory
-36. Permission
-37. Role
+25. ProductAttributeValuePicture
+26. QueuedEmail
+27. ReturnRequest
+28. ScheduleTask
+29. Setting
+30. Shipment
+31. ShippingDeliveryDate
+32. ShipmentItem
+33. ShoppingCartItem
+34. TaxCategory
+35. Role
 #### Mapping Tables
 1. CustomerRoleMapping
 2. CustomerAddressMapping
