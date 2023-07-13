@@ -4,7 +4,7 @@ public interface ISoftDeletedEntity
 {
     #region Public Properties
 
-    bool IsActive { get; set; }
+    bool Active { get; set; }
 
     bool Deleted { get; set; }
 

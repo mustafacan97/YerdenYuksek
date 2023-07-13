@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using eCommerce.Core.Domain.ScheduleTasks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using YerdenYuksek.Core.Domain.ScheduleTasks;
 
-namespace YerdenYuksek.Web.Framework.Persistence.Builders.ScheduleTasks;
+namespace eCommerce.Infrastructure.Persistence.Builders.ScheduleTasks;
 
 public class ScheduleTaskBuilder : IEntityTypeConfiguration<ScheduleTask>
 {
@@ -15,16 +15,10 @@ public class ScheduleTaskBuilder : IEntityTypeConfiguration<ScheduleTask>
         builder.HasKey(x => x.Id);
 
         builder.Property(e => e.Name)
-            .HasMaxLength(512);
+            .HasMaxLength(256);
 
         builder.Property(e => e.Type)
-            .HasMaxLength(512);
-
-        builder.Property(e => e.LastEnabledUtc)
-            .HasPrecision(6);
-
-        builder.Property(e => e.Enabled)
-            .HasDefaultValue(true);
+            .HasMaxLength(512);        
 
         builder.Property(e => e.LastStartUtc)
             .HasPrecision(6);
@@ -34,6 +28,9 @@ public class ScheduleTaskBuilder : IEntityTypeConfiguration<ScheduleTask>
 
         builder.Property(e => e.LastSuccessUtc)
             .HasPrecision(6);
+
+        builder.Property(e => e.Active)
+            .HasDefaultValue(true);
 
         builder.HasData(SeedScheduleTaskData());
     }
@@ -49,12 +46,10 @@ public class ScheduleTaskBuilder : IEntityTypeConfiguration<ScheduleTask>
             new ScheduleTask
             {
                 Id = Guid.NewGuid(),
-                Name = "Send emails",
+                Name = "Send emails from queue",
                 Seconds = 60,
-                Type = "YerdenYuksek.Services.Messages.QueuedMessagesSendTask",
-                Enabled = true,
-                LastEnabledUtc = DateTime.UtcNow,
-                StopOnError = false
+                Type = "eCommerce.Infrastructure.Persistence.Services.Public.ScheduleTasks.QueuedMessagesSendTask",
+                Active = true
             }
         };
 

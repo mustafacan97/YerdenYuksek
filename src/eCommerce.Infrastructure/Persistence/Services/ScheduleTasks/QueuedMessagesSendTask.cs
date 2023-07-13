@@ -1,9 +1,9 @@
-﻿using eCommerce.Core.Interfaces;
+﻿using eCommerce.Application.Services.ScheduleTasks;
+using eCommerce.Core.Interfaces;
 using YerdenYuksek.Application.Services.Public.Messages;
-using YerdenYuksek.Application.Services.Public.ScheduleTasks;
 using YerdenYuksek.Core.Domain.Messages;
 
-namespace YerdenYuksek.Web.Framework.Persistence.Services.Public.ScheduleTasks;
+namespace eCommerce.Infrastructure.Persistence.Services.ScheduleTasks;
 
 public class QueuedMessagesSendTask : IScheduleTask
 {

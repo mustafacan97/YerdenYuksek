@@ -1,20 +1,14 @@
 ﻿using eCommerce.Core.Primitives;
 
-namespace YerdenYuksek.Core.Domain.ScheduleTasks;
+namespace eCommerce.Core.Domain.ScheduleTasks;
 
-public class ScheduleTask : BaseEntity
+public class ScheduleTask : SoftDeletedEntity
 {
     public string Name { get; set; }
 
     public int Seconds { get; set; }
 
     public string Type { get; set; }
-
-    public DateTime? LastEnabledUtc { get; set; }
-
-    public bool Enabled { get; set; }
-
-    public bool StopOnError { get; set; }
 
     public DateTime? LastStartUtc { get; set; }
 

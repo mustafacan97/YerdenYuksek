@@ -1,9 +1,8 @@
-﻿using eCommerce.Core.Interfaces;
-using YerdenYuksek.Application.Services.Public.ScheduleTasks;
-using YerdenYuksek.Core.Domain.ScheduleTasks;
-using YerdenYuksek.Web.Framework.Infrastructure;
+﻿using eCommerce.Application.Services.ScheduleTasks;
+using eCommerce.Core.Domain.ScheduleTasks;
+using eCommerce.Core.Interfaces;
 
-namespace YerdenYuksek.Web.Framework.Persistence.Services.Public.ScheduleTasks;
+namespace eCommerce.Infrastructure.Persistence.Services.ScheduleTasks;
 
 public class TaskScheduler : ITaskScheduler
 {
@@ -19,7 +18,9 @@ public class TaskScheduler : ITaskScheduler
 
     #region Constructure and Destructure
 
-    public TaskScheduler(IUnitOfWork unitOfWork, IScheduleTaskRunner scheduleTaskRunner)
+    public TaskScheduler(
+        IUnitOfWork unitOfWork, 
+        IScheduleTaskRunner scheduleTaskRunner)
     {
         _unitOfWork = unitOfWork;
         _scheduleTaskRunner = scheduleTaskRunner;
@@ -40,11 +41,9 @@ public class TaskScheduler : ITaskScheduler
             .OrderBy(x => x.Seconds)
             .ToList();
 
-        var timeout = 60;
-
         foreach (var scheduleTask in scheduleTasks)
         {
-            var taskThread = new TaskThread(timeout, scheduleTask, _scheduleTaskRunner)
+            var taskThread = new TaskThread(scheduleTask, _scheduleTaskRunner)
             {
                 Seconds = scheduleTask.Seconds
             };
@@ -52,19 +51,6 @@ public class TaskScheduler : ITaskScheduler
             if (scheduleTask.LastStartUtc.HasValue)
             {
                 var secondsLeft = (DateTime.UtcNow - scheduleTask.LastStartUtc).Value.TotalSeconds;
-
-                if (secondsLeft >= scheduleTask.Seconds)
-                {
-                    taskThread.InitSeconds = 0;
-                }
-                else
-                {
-                    taskThread.InitSeconds = (int)(scheduleTask.Seconds - secondsLeft) + 1;
-                }
-            }
-            else if (scheduleTask.LastEnabledUtc.HasValue)
-            {
-                var secondsLeft = (DateTime.UtcNow - scheduleTask.LastEnabledUtc).Value.TotalSeconds;
 
                 if (secondsLeft >= scheduleTask.Seconds)
                 {
@@ -111,8 +97,6 @@ public class TaskScheduler : ITaskScheduler
         private readonly IScheduleTaskRunner _scheduleTaskRunner;
 
         private readonly ScheduleTask _scheduleTask;
-        
-        private readonly int? _timeout;
 
         private Timer _timer;
 
@@ -123,13 +107,11 @@ public class TaskScheduler : ITaskScheduler
         #region Constructure and Destructure
 
         public TaskThread(
-            int? timeout,
             ScheduleTask task,
             IScheduleTaskRunner scheduleTaskRunner)
         {
-            _scheduleTask = task;
-            _timeout = timeout;
             Seconds = 10 * 60;
+            _scheduleTask = task;
             _scheduleTaskRunner = scheduleTaskRunner;
         }
 

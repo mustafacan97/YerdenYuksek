@@ -1,10 +1,10 @@
-﻿using eCommerce.Core.Interfaces;
-using YerdenYuksek.Application.Services.Public.ScheduleTasks;
+﻿using eCommerce.Application.Services.ScheduleTasks;
+using eCommerce.Core.Domain.ScheduleTasks;
+using eCommerce.Core.Interfaces;
 using YerdenYuksek.Core.Caching;
-using YerdenYuksek.Core.Domain.ScheduleTasks;
 using YerdenYuksek.Web.Framework.Infrastructure;
 
-namespace YerdenYuksek.Web.Framework.Persistence.Services.Public.ScheduleTasks;
+namespace eCommerce.Infrastructure.Persistence.Services.ScheduleTasks;
 
 public class ScheduleTaskRunner : IScheduleTaskRunner
 {
@@ -36,24 +36,16 @@ public class ScheduleTaskRunner : IScheduleTaskRunner
         bool throwException = false,
         bool ensureRunOncePerPeriod = true)
     {
-        var enabled = forceRun || (scheduleTask?.Enabled ?? false);
+        if (scheduleTask is null) return;
 
-        if (scheduleTask == null || !enabled)
-        {
-            return;
-        }
+        var enabled = forceRun || (scheduleTask.Active && !scheduleTask.Deleted);
+
+        if (!enabled) return;
 
         if (ensureRunOncePerPeriod)
         {
-            if (IsTaskAlreadyRunning(scheduleTask))
-            {
-                return;
-            }
-
-            if (scheduleTask.LastStartUtc.HasValue && (DateTime.UtcNow - scheduleTask.LastStartUtc).Value.TotalSeconds < scheduleTask.Seconds)
-            {
-                return;
-            }
+            if (IsTaskAlreadyRunning(scheduleTask)) return;
+            if (scheduleTask.LastStartUtc.HasValue && (DateTime.UtcNow - scheduleTask.LastStartUtc).Value.TotalSeconds < scheduleTask.Seconds) return;
         }
 
         try

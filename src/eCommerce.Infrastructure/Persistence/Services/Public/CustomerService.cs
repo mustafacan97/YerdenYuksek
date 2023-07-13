@@ -104,7 +104,7 @@ public class CustomerService : ICustomerService
             return Result.NotFound(Error.Failure(description: "Customer is deleted!"));
         }
             
-        if (!customer.IsActive)
+        if (!customer.Active)
         {
             return Result.NotFound(Error.Failure(description: "Customer is active!"));
         }

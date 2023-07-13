@@ -1,6 +1,6 @@
-﻿using YerdenYuksek.Core.Domain.ScheduleTasks;
+﻿using eCommerce.Core.Domain.ScheduleTasks;
 
-namespace YerdenYuksek.Application.Services.Public.ScheduleTasks;
+namespace eCommerce.Application.Services.ScheduleTasks;
 
 public interface IScheduleTaskRunner
 {

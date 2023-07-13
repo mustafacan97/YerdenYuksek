@@ -62,7 +62,7 @@ public class Customer : SoftDeletedEntity, ISoftDeletedEntity
         return new Customer()
         {
             Email = email,
-            IsActive = true,
+            Active = true,
             CreatedOnUtc = DateTime.UtcNow
         };
     }

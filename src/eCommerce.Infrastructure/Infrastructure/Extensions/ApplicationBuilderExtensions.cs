@@ -1,8 +1,8 @@
-﻿using eCommerce.Infrastructure.Persistence.Primitives;
+﻿using eCommerce.Application.Services.ScheduleTasks;
+using eCommerce.Infrastructure.Persistence.Primitives;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using YerdenYuksek.Application.Services.Public.ScheduleTasks;
 using YerdenYuksek.Web.Framework.Infrastructure;
 
 namespace eCommerce.Framework.Infrastructure.Extensions;

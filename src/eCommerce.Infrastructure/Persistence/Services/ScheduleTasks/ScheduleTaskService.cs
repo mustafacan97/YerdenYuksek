@@ -1,9 +1,8 @@
-﻿using eCommerce.Core.Interfaces;
+﻿using eCommerce.Application.Services.ScheduleTasks;
+using eCommerce.Core.Domain.ScheduleTasks;
+using eCommerce.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using YerdenYuksek.Application.Services.Public.ScheduleTasks;
-using YerdenYuksek.Core.Domain.ScheduleTasks;
-
-namespace YerdenYuksek.Web.Framework.Persistence.Services.Public.ScheduleTasks;
+namespace eCommerce.Infrastructure.Persistence.Services.ScheduleTasks;
 
 public class ScheduleTaskService : IScheduleTaskService
 {
@@ -37,31 +36,27 @@ public class ScheduleTaskService : IScheduleTaskService
 
     public async Task<ScheduleTask> GetTaskByTypeAsync(string type)
     {
-        if (string.IsNullOrWhiteSpace(type))
-        {
-            return null;
-        }
-
         var query = from st in _unitOfWork.GetRepository<ScheduleTask>().Table
                     where st.Type == type
-                    orderby st.Id descending
                     select st;
 
-        return await query.FirstOrDefaultAsync();
+        return await query.FirstAsync();
     }
 
-    public async Task<IList<ScheduleTask>> GetAllTasksAsync(bool showHidden = false)
+    public async Task<IList<ScheduleTask>> GetAllTasksAsync(bool onlyActive = true, bool includeDeleted = false)
     {
         var tasks = await _unitOfWork.GetRepository<ScheduleTask>().GetAllAsync(query =>
         {
-            if (!showHidden)
+            if (onlyActive)
             {
-                query = query.Where(task => task.Enabled);
+                query = query.Where(t => t.Active && !t.Deleted);
+            }
+            else if (!includeDeleted)
+            {
+                query = query.Where(t => !t.Deleted);
             }
 
-            query = query.OrderByDescending(t => t.Seconds);
-
-            return query;
+            return query.OrderByDescending(t => t.Seconds);
         });
 
         return tasks;
@@ -72,11 +67,6 @@ public class ScheduleTaskService : IScheduleTaskService
         if (task is null)
         {
             throw new ArgumentNullException(nameof(task));
-        }
-
-        if (task.Enabled && !task.LastEnabledUtc.HasValue)
-        {
-            task.LastEnabledUtc = DateTime.UtcNow;
         }
 
         await _unitOfWork.GetRepository<ScheduleTask>().InsertAsync(task);

@@ -1,4 +1,4 @@
-﻿namespace YerdenYuksek.Application.Services.Public.ScheduleTasks;
+﻿namespace eCommerce.Application.Services.ScheduleTasks;
 
 public interface ITaskScheduler
 {

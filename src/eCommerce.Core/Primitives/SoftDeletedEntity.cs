@@ -1,5 +1,4 @@
 ﻿using eCommerce.Core.Interfaces;
-using eCommerce.Core.Primitives;
 
 namespace eCommerce.Core.Primitives;
 
@@ -7,7 +6,7 @@ public class SoftDeletedEntity : BaseEntity, ISoftDeletedEntity
 {
     #region Public Properties
 
-    public bool IsActive { get; set; }
+    public bool Active { get; set; }
 
     public bool Deleted { get; set; }
 
@@ -20,14 +19,14 @@ public class SoftDeletedEntity : BaseEntity, ISoftDeletedEntity
         // Silinmiş entity activate edilemez!
         if (Deleted) return;
 
-        IsActive = true;
+        Active = true;
     }
 
-    public void DeActivateEntity() => IsActive = false;
+    public void DeActivateEntity() => Active = false;
 
     public void DeleteEntity()
     {
-        IsActive = false;
+        Active = false;
         Deleted = true;
     }
 
