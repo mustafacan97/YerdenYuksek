@@ -97,6 +97,8 @@ public class Result<T> : IResult<T>
 
     public static Result<T> Forbidden() => new(ResultStatus.Forbidden);
 
+    public static Result<T> Forbidden(params Error[] errors) => new(ResultStatus.Forbidden) { Errors = errors };
+
     public static Result<T> Unauthorized() => new (ResultStatus.Unauthorized);
 
     public static Result<T> Conflict() => new(ResultStatus.Conflict);

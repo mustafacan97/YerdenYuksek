@@ -33,6 +33,8 @@ public class Result : Result<Result>
 
     public new static Result Forbidden() => new(ResultStatus.Forbidden);
 
+    public new static Result Forbidden(params Error[] errors) => new(ResultStatus.NotFound) { Errors = errors };
+
     public new static Result Unauthorized() => new(ResultStatus.Unauthorized);
 
     public new static Result Conflict() => new(ResultStatus.Conflict);
