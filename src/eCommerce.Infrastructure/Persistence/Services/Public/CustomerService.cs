@@ -1,4 +1,5 @@
 ﻿using eCommerce.Core.Caching;
+using eCommerce.Core.Domain.Configuration.CustomSettings;
 using eCommerce.Core.Interfaces;
 using eCommerce.Core.Primitives;
 using Microsoft.EntityFrameworkCore;

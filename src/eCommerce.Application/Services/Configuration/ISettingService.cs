@@ -1,8 +1,8 @@
-﻿using System.Linq.Expressions;
-using YerdenYuksek.Core.Configuration;
-using YerdenYuksek.Core.Domain.Configuration;
+﻿using eCommerce.Core.Configuration;
+using eCommerce.Core.Domain.Configuration;
+using System.Linq.Expressions;
 
-namespace YerdenYuksek.Application.Services.Public.Configuration;
+namespace eCommerce.Application.Services.Configuration;
 
 public interface ISettingService
 {

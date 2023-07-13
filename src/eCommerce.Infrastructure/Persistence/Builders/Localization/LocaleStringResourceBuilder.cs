@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using YerdenYuksek.Core.Domain.Localization;
 using System.Xml;
+using eCommerce.Core.Domain.Configuration.CustomSettings;
 
 namespace YerdenYuksek.Web.Framework.Persistence.Builders.Localization;
 

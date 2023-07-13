@@ -1,14 +1,14 @@
 ﻿using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Reflection;
+using eCommerce.Application.Services.Configuration;
+using eCommerce.Core.Configuration;
+using eCommerce.Core.Domain.Configuration;
 using eCommerce.Core.Helpers;
 using eCommerce.Core.Interfaces;
-using YerdenYuksek.Application.Services.Public.Configuration;
 using YerdenYuksek.Core.Caching;
-using YerdenYuksek.Core.Configuration;
-using YerdenYuksek.Core.Domain.Configuration;
 
-namespace YerdenYuksek.Web.Framework.Persistence.Services.Public;
+namespace eCommerce.Infrastructure.Persistence.Services.Public;
 
 public class SettingService : ISettingService
 {
@@ -280,8 +280,6 @@ public class SettingService : ISettingService
         return settings as ISettings;
     }
 
-    
-
     #endregion
 
     #endregion
@@ -290,7 +288,7 @@ public class SettingService : ISettingService
 
     private IDictionary<string, IList<Setting>> GetAllSettingsDictionary()
     {
-        return _staticCacheManager.Get(YerdenYuksekSettingsDefaults.SettingsAllAsDictionaryCacheKey, () =>
+        return _staticCacheManager.Get(SettingsDefaults.SettingsAllAsDictionaryCacheKey, () =>
         {
             var settings = GetAllSettings();
             var dictionary = new Dictionary<string, IList<Setting>>();
@@ -319,7 +317,7 @@ public class SettingService : ISettingService
 
     private async Task<IDictionary<string, IList<Setting>>> GetAllSettingsDictionaryAsync()
     {
-        return await _staticCacheManager.GetAsync(YerdenYuksekSettingsDefaults.SettingsAllAsDictionaryCacheKey, async () =>
+        return await _staticCacheManager.GetAsync(SettingsDefaults.SettingsAllAsDictionaryCacheKey, async () =>
         {
             var settings = await GetAllSettingsAsync();
 

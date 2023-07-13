@@ -1,7 +1,7 @@
 ﻿using YerdenYuksek.Core.Domain.Localization;
 using eCommerce.Core.Primitives;
 
-namespace YerdenYuksek.Core.Domain.Configuration;
+namespace eCommerce.Core.Domain.Configuration;
 
 public class Setting : BaseEntity, ILocalizedEntity
 {
@@ -24,15 +24,6 @@ public class Setting : BaseEntity, ILocalizedEntity
     public string Name { get; set; }
 
     public string? Value { get; set; }
-
-    #endregion
-
-    #region Public Methods
-
-    public override string ToString()
-    {
-        return Name;
-    }
 
     #endregion
 }

@@ -1,8 +1,8 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
+using eCommerce.Core.Domain.Configuration.CustomSettings;
 using eCommerce.Core.Helpers;
 using YerdenYuksek.Application.Services.Public.Security;
-using YerdenYuksek.Core.Domain.Security;
 
 namespace YerdenYuksek.Web.Framework.Persistence.Services.Public;
 

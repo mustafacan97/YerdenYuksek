@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
+using eCommerce.Application.Services.Configuration;
+using eCommerce.Core.Domain.Configuration.CustomSettings;
 using eCommerce.Core.Interfaces;
-using YerdenYuksek.Application.Services.Public.Configuration;
 using YerdenYuksek.Application.Services.Public.Localization;
 using YerdenYuksek.Core.Caching;
 using YerdenYuksek.Core.Domain.Localization;

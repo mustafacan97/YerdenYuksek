@@ -1,4 +1,5 @@
 ﻿using System.Linq.Dynamic.Core;
+using eCommerce.Core.Domain.Configuration.CustomSettings;
 using eCommerce.Core.Helpers;
 using eCommerce.Core.Interfaces;
 using YerdenYuksek.Application.Services.Public.Localization;

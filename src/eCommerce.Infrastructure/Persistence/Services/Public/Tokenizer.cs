@@ -1,8 +1,8 @@
 ﻿using System.Linq.Dynamic.Core;
 using System.Net;
 using System.Text.RegularExpressions;
+using eCommerce.Core.Domain.Configuration.CustomSettings;
 using YerdenYuksek.Application.Services.Public.Messages;
-using YerdenYuksek.Core.Domain.Messages;
 
 namespace YerdenYuksek.Web.Framework.Persistence.Services.Public;
 

@@ -8,7 +8,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Net;
 using System.Reflection;
-using YerdenYuksek.Application.Services.Public.Configuration;
 using YerdenYuksek.Application.Services.Public.Customers;
 using YerdenYuksek.Application.Services.Public.Localization;
 using YerdenYuksek.Application.Services.Public.Messages;
@@ -33,6 +32,7 @@ using eCommerce.Infrastructure.Persistence.Services.Public;
 using eCommerce.Infrastructure.Persistence.Services.ScheduleTasks;
 using eCommerce.Application.Services.ScheduleTasks;
 using eCommerce.Core.Configuration;
+using eCommerce.Application.Services.Configuration;
 
 namespace eCommerce.Framework.Infrastructure.Extensions;
 

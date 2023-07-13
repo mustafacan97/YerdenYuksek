@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using YerdenYuksek.Core.Domain.Messages;
+using eCommerce.Core.Domain.Configuration.CustomSettings;
 
 namespace YerdenYuksek.Web.Framework.Persistence.Builders.Localization;
 

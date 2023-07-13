@@ -1,6 +1,6 @@
-﻿using FluentValidation;
+﻿using eCommerce.Core.Domain.Configuration.CustomSettings;
+using FluentValidation;
 using YerdenYuksek.Application.Models.Customers;
-using YerdenYuksek.Core.Domain.Customers;
 
 namespace YerdenYuksek.Web.Validators.Authentication;
 

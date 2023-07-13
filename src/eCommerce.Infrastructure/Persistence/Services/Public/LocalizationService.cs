@@ -6,12 +6,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
 using System.Reflection;
-using YerdenYuksek.Application.Services.Public.Configuration;
 using YerdenYuksek.Application.Services.Public.Localization;
 using YerdenYuksek.Core.Caching;
 using YerdenYuksek.Core.Configuration;
 using YerdenYuksek.Core.Domain.Localization;
 using eCommerce.Core.Primitives;
+using eCommerce.Core.Domain.Configuration.CustomSettings;
+using eCommerce.Application.Services.Configuration;
 
 namespace YerdenYuksek.Web.Framework.Persistence.Services.Public;
 

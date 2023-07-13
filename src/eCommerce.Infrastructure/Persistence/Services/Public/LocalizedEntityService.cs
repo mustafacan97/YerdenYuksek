@@ -8,6 +8,7 @@ using YerdenYuksek.Core.Caching;
 using YerdenYuksek.Core.Domain.Localization;
 using eCommerce.Core.Primitives;
 using YerdenYuksek.Web.Framework.Common;
+using eCommerce.Core.Domain.Configuration.CustomSettings;
 
 namespace YerdenYuksek.Web.Framework.Persistence.Services.Public;
 
