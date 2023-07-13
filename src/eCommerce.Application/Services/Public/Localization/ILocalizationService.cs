@@ -1,5 +1,5 @@
 ﻿using System.Linq.Expressions;
-using YerdenYuksek.Core.Configuration;
+using eCommerce.Core.Configuration;
 using YerdenYuksek.Core.Domain.Localization;
 using eCommerce.Core.Primitives;
 

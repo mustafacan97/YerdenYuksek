@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using System.Reflection;
 using YerdenYuksek.Application.Services.Public.Localization;
-using YerdenYuksek.Core.Caching;
+using eCommerce.Core.Caching;
 using YerdenYuksek.Core.Domain.Localization;
 using eCommerce.Core.Primitives;
 using YerdenYuksek.Web.Framework.Common;

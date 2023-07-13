@@ -4,7 +4,7 @@ using eCommerce.Core.Helpers;
 using eCommerce.Core.Configuration;
 using eCommerce.Core.Primitives;
 
-namespace YerdenYuksek.Core.Caching;
+namespace eCommerce.Core.Caching;
 
 public abstract class CacheKeyService
 {

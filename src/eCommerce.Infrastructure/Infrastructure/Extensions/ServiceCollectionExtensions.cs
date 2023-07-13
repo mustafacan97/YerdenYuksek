@@ -12,7 +12,7 @@ using YerdenYuksek.Application.Services.Public.Customers;
 using YerdenYuksek.Application.Services.Public.Localization;
 using YerdenYuksek.Application.Services.Public.Messages;
 using YerdenYuksek.Application.Services.Public.Security;
-using YerdenYuksek.Core.Caching;
+using eCommerce.Core.Caching;
 using YerdenYuksek.Core.Infrastructure;
 using YerdenYuksek.Web.Framework.Common;
 using YerdenYuksek.Web.Framework.Infrastructure;

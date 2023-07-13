@@ -1,7 +1,7 @@
 ﻿using eCommerce.Core.Infrastructure;
 using eCommerce.Core.Configuration;
 
-namespace YerdenYuksek.Core.Caching;
+namespace eCommerce.Core.Caching;
 
 public class CacheKey
 {

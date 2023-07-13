@@ -1,6 +1,6 @@
 ﻿using YerdenYuksek.Core.Infrastructure;
 
-namespace YerdenYuksek.Core.Caching;
+namespace eCommerce.Core.Caching;
 
 public class CacheKeyManager : ICacheKeyManager
 {

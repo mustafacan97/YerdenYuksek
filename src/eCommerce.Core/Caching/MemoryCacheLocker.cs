@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 
-namespace YerdenYuksek.Core.Caching;
+namespace eCommerce.Core.Caching;
 
 public class MemoryCacheLocker : ILocker
 {

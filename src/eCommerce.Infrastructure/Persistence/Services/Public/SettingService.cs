@@ -6,7 +6,7 @@ using eCommerce.Core.Configuration;
 using eCommerce.Core.Domain.Configuration;
 using eCommerce.Core.Helpers;
 using eCommerce.Core.Interfaces;
-using YerdenYuksek.Core.Caching;
+using eCommerce.Core.Caching;
 
 namespace eCommerce.Infrastructure.Persistence.Services.Public;
 
@@ -38,12 +38,12 @@ public class SettingService : ISettingService
 
     public void ClearCache()
     {
-        _staticCacheManager.RemoveByPrefix(YerdenYuksekEntityCacheDefaults<Setting>.Prefix);
+        _staticCacheManager.RemoveByPrefix(EntityCacheDefaults<Setting>.Prefix);
     }
 
     public async Task ClearCacheAsync()
     {
-        await _staticCacheManager.RemoveByPrefixAsync(YerdenYuksekEntityCacheDefaults<Setting>.Prefix);
+        await _staticCacheManager.RemoveByPrefixAsync(EntityCacheDefaults<Setting>.Prefix);
     }
 
     public void InsertSetting(Setting setting, bool clearCache = true)

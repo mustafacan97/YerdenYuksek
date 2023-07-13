@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using YerdenYuksek.Core.Domain.Common;
-using YerdenYuksek.Core.Domain.Configuration;
+using eCommerce.Core.Domain.Configuration;
 using YerdenYuksek.Core.Domain.Customers;
 using YerdenYuksek.Core.Domain.Localization;
 using YerdenYuksek.Core.Domain.Logging;

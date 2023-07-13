@@ -1,7 +1,7 @@
 ﻿using eCommerce.Application.Services.ScheduleTasks;
 using eCommerce.Core.Domain.ScheduleTasks;
 using eCommerce.Core.Interfaces;
-using YerdenYuksek.Core.Caching;
+using eCommerce.Core.Caching;
 using YerdenYuksek.Web.Framework.Infrastructure;
 
 namespace eCommerce.Infrastructure.Persistence.Services.ScheduleTasks;

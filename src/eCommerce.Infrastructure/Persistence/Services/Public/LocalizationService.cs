@@ -7,8 +7,8 @@ using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
 using System.Reflection;
 using YerdenYuksek.Application.Services.Public.Localization;
-using YerdenYuksek.Core.Caching;
-using YerdenYuksek.Core.Configuration;
+using eCommerce.Core.Caching;
+using eCommerce.Core.Configuration;
 using YerdenYuksek.Core.Domain.Localization;
 using eCommerce.Core.Primitives;
 using eCommerce.Core.Domain.Configuration.CustomSettings;
@@ -80,7 +80,7 @@ public class LocalizationService : ILocalizationService
             _unitOfWork.SaveChanges();
         }
         
-        _staticCacheManager.RemoveByPrefix(YerdenYuksekEntityCacheDefaults<LocaleStringResource>.Prefix);
+        _staticCacheManager.RemoveByPrefix(EntityCacheDefaults<LocaleStringResource>.Prefix);
     }
 
     public async Task AddOrUpdateLocaleResourceAsync(string resourceName, string resourceValue, string? languageCulture = null)
@@ -132,7 +132,7 @@ public class LocalizationService : ILocalizationService
             await _unitOfWork.GetRepository<LocaleStringResource>().InsertAsync(locales);
         }
 
-        await _staticCacheManager.RemoveByPrefixAsync(YerdenYuksekEntityCacheDefaults<LocaleStringResource>.Prefix);
+        await _staticCacheManager.RemoveByPrefixAsync(EntityCacheDefaults<LocaleStringResource>.Prefix);
         await _unitOfWork.SaveChangesAsync();
     }
 
@@ -171,7 +171,7 @@ public class LocalizationService : ILocalizationService
             _unitOfWork.GetRepository<LocaleStringResource>().Delete(resource);
         }
 
-        _staticCacheManager.RemoveByPrefix(YerdenYuksekEntityCacheDefaults<LocaleStringResource>.Prefix);
+        _staticCacheManager.RemoveByPrefix(EntityCacheDefaults<LocaleStringResource>.Prefix);
         _unitOfWork.SaveChanges();
     }
 
@@ -196,7 +196,7 @@ public class LocalizationService : ILocalizationService
             _unitOfWork.GetRepository<LocaleStringResource>().Delete(resource);
         }
 
-        await _staticCacheManager.RemoveByPrefixAsync(YerdenYuksekEntityCacheDefaults<LocaleStringResource>.Prefix);
+        await _staticCacheManager.RemoveByPrefixAsync(EntityCacheDefaults<LocaleStringResource>.Prefix);
         await _unitOfWork.SaveChangesAsync();
     }
 
@@ -222,7 +222,7 @@ public class LocalizationService : ILocalizationService
             _unitOfWork.GetRepository<LocaleStringResource>().Delete(resource);
         }
 
-        await _staticCacheManager.RemoveByPrefixAsync(YerdenYuksekEntityCacheDefaults<LocaleStringResource>.Prefix);
+        await _staticCacheManager.RemoveByPrefixAsync(EntityCacheDefaults<LocaleStringResource>.Prefix);
         await _unitOfWork.SaveChangesAsync();
     }
 
@@ -571,7 +571,7 @@ public class LocalizationService : ILocalizationService
 
         if (clearCache)
         {
-            _staticCacheManager.RemoveByPrefix(YerdenYuksekEntityCacheDefaults<LocaleStringResource>.Prefix);
+            _staticCacheManager.RemoveByPrefix(EntityCacheDefaults<LocaleStringResource>.Prefix);
         }
 
         return localResources
@@ -611,7 +611,7 @@ public class LocalizationService : ILocalizationService
 
         if (clearCache)
         {
-            await _staticCacheManager.RemoveByPrefixAsync(YerdenYuksekEntityCacheDefaults<LocaleStringResource>.Prefix);
+            await _staticCacheManager.RemoveByPrefixAsync(EntityCacheDefaults<LocaleStringResource>.Prefix);
         }
 
         return localResources

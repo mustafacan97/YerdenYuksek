@@ -1,7 +1,7 @@
 ﻿using eCommerce.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using YerdenYuksek.Core.Caching;
+using eCommerce.Core.Caching;
 using eCommerce.Core.Primitives;
 using YerdenYuksek.Web.Framework.Persistence.Extensions;
 
@@ -128,7 +128,7 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
 
         //caching
         var cacheKey = getCacheKey(_staticCacheManager)
-            ?? _staticCacheManager.PrepareKeyForDefaultCache(YerdenYuksekEntityCacheDefaults<T>.ByIdCacheKey, id);
+            ?? _staticCacheManager.PrepareKeyForDefaultCache(EntityCacheDefaults<T>.ByIdCacheKey, id);
 
         return await _staticCacheManager.GetAsync(cacheKey, getEntityAsync);
     }
@@ -150,7 +150,7 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
 
         //caching
         var cacheKey = getCacheKey(_staticCacheManager)
-                       ?? _staticCacheManager.PrepareKeyForDefaultCache(YerdenYuksekEntityCacheDefaults<T>.ByIdCacheKey, id);
+                       ?? _staticCacheManager.PrepareKeyForDefaultCache(EntityCacheDefaults<T>.ByIdCacheKey, id);
 
         return _staticCacheManager.Get(cacheKey, getEntity);
     }
@@ -194,7 +194,7 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
 
         //caching
         var cacheKey = getCacheKey(_staticCacheManager)
-            ?? _staticCacheManager.PrepareKeyForDefaultCache(YerdenYuksekEntityCacheDefaults<T>.ByIdsCacheKey, ids);
+            ?? _staticCacheManager.PrepareKeyForDefaultCache(EntityCacheDefaults<T>.ByIdsCacheKey, ids);
 
         return await _staticCacheManager.GetAsync(cacheKey, getByIdsAsync);
     }
@@ -320,7 +320,7 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
         }
 
         var cacheKey = getCacheKey(_staticCacheManager)
-                       ?? _staticCacheManager.PrepareKeyForDefaultCache(YerdenYuksekEntityCacheDefaults<T>.AllCacheKey);
+                       ?? _staticCacheManager.PrepareKeyForDefaultCache(EntityCacheDefaults<T>.AllCacheKey);
         return await _staticCacheManager.GetAsync(cacheKey, getAllAsync);
     }
 
@@ -333,7 +333,7 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
 
         //caching
         var cacheKey = getCacheKey(_staticCacheManager)
-                       ?? _staticCacheManager.PrepareKeyForDefaultCache(YerdenYuksekEntityCacheDefaults<T>.AllCacheKey);
+                       ?? _staticCacheManager.PrepareKeyForDefaultCache(EntityCacheDefaults<T>.AllCacheKey);
 
         return _staticCacheManager.Get(cacheKey, getAll);
     }

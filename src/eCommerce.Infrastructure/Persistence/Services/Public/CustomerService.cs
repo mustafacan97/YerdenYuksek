@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using YerdenYuksek.Application.Models.Customers;
 using YerdenYuksek.Application.Services.Public.Customers;
 using YerdenYuksek.Application.Services.Public.Security;
-using YerdenYuksek.Core.Caching;
+using eCommerce.Core.Caching;
 using YerdenYuksek.Core.Domain.Customers;
 
 namespace YerdenYuksek.Web.Framework.Persistence.Services.Public;

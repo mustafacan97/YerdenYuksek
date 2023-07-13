@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Primitives;
-using YerdenYuksek.Core.Configuration;
+using eCommerce.Core.Configuration;
 
-namespace YerdenYuksek.Core.Caching;
+namespace eCommerce.Core.Caching;
 
 public class MemoryCacheManager : CacheKeyService, IStaticCacheManager
 {

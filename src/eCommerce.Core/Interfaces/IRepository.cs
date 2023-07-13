@@ -1,5 +1,5 @@
 ﻿using System.Linq.Expressions;
-using YerdenYuksek.Core.Caching;
+using eCommerce.Core.Caching;
 using eCommerce.Core.Primitives;
 
 namespace eCommerce.Core.Interfaces;

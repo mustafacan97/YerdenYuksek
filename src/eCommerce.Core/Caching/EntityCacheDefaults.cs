@@ -1,8 +1,8 @@
 ﻿using eCommerce.Core.Primitives;
 
-namespace YerdenYuksek.Core.Caching;
+namespace eCommerce.Core.Caching;
 
-public static class YerdenYuksekEntityCacheDefaults<TEntity> where TEntity : BaseEntity
+public static class EntityCacheDefaults<TEntity> where TEntity : BaseEntity
 {
     public static string EntityTypeName => typeof(TEntity).Name.ToLowerInvariant();
 

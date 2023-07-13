@@ -1,4 +1,4 @@
-﻿using YerdenYuksek.Core.Caching;
+﻿using eCommerce.Core.Caching;
 using YerdenYuksek.Core.Domain.Messages;
 
 namespace YerdenYuksek.Application.Services.Public.Messages;
@@ -9,7 +9,7 @@ public static class MessageDefaults
 
     #region Caching defaults
 
-    public static CacheKey MessageTemplatesAllCacheKey => new("YerdenYuksek.messagetemplate.all.{0}-{1}", YerdenYuksekEntityCacheDefaults<MessageTemplate>.AllPrefix);
+    public static CacheKey MessageTemplatesAllCacheKey => new("YerdenYuksek.messagetemplate.all.{0}-{1}", EntityCacheDefaults<MessageTemplate>.AllPrefix);
 
     public static CacheKey MessageTemplatesByNameCacheKey => new("YerdenYuksek.messagetemplate.byname.{0}", MessageTemplatesByNamePrefix);
 

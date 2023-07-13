@@ -1,4 +1,4 @@
-﻿namespace YerdenYuksek.Core.Caching;
+﻿namespace eCommerce.Core.Caching;
 
 public static class CachingExtensions
 {
