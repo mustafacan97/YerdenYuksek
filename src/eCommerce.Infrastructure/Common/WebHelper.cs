@@ -30,7 +30,7 @@ public class WebHelper : IWebHelper
             return string.Empty;
         }
 
-        if (_httpContextAccessor.HttpContext.Connection?.RemoteIpAddress is not IPAddress remoteIp)
+        if (_httpContextAccessor.HttpContext?.Connection?.RemoteIpAddress is not IPAddress remoteIp)
         {
             return "";
         }

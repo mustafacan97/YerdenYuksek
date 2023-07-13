@@ -1,4 +1,5 @@
-﻿using eCommerce.Core.Interfaces;
+﻿using eCommerce.Core.Caching;
+using eCommerce.Core.Interfaces;
 using eCommerce.Core.Primitives;
 using Microsoft.EntityFrameworkCore;
 using YerdenYuksek.Application.Models.Customers;
@@ -59,13 +60,11 @@ public class CustomerService : ICustomerService
 
         var saltKey = _encryptionService.CreateSaltKey(YerdenYuksekCustomerServicesDefaults.PasswordSaltKeySize);
         var customer = Customer.Create(email);
-        var customerPassword = new CustomerPassword
+        var customerPassword = new CustomerSecurity
         {
             CustomerId = customer.Id,
-            PasswordFormatId = (int)_customerSettings.DefaultPasswordFormat,
             PasswordSalt = saltKey,
             Password = _encryptionService.CreatePasswordHash(password, saltKey, _customerSettings.HashedPasswordFormat),
-            CreatedOnUtc = DateTime.UtcNow,
         };
 
         var registeredRole = await GetCustomerRoleByNameAsync(CustomerDefaults.RegisteredRoleName);
@@ -92,24 +91,90 @@ public class CustomerService : ICustomerService
         await _unitOfWork.SaveChangesAsync();
     }
 
+    public async Task<Result> ValidateCustomerAsync(string email, string password)
+    {
+        var customer = await GetCustomerByEmailAsync(email);
+        if (customer is null)
+        {
+            return Result.NotFound(Error.NotFound(description: "Customer not found!"));
+        }
+            
+        if (customer.Deleted)
+        {
+            return Result.NotFound(Error.Failure(description: "Customer is deleted!"));
+        }
+            
+        if (!customer.IsActive)
+        {
+            return Result.NotFound(Error.Failure(description: "Customer is active!"));
+        }
+
+        // Only registered can login
+        if (customer.CustomerHasSpecifiedRole(CustomerDefaults.RegisteredRoleName))
+        {
+            return Result.Forbidden(Error.Failure(description: "Customer must be registered!"));
+        }
+
+        var maxFailedLoginAttempts = _customerSettings.FailedPasswordAllowedAttempts;
+
+        //check whether a customer is locked out
+        if (customer.CustomerHasLoginRestrictions())
+        {
+            return Result.Forbidden(Error.Failure(description: "Account is locked out!"));
+        }
+
+        if (!PasswordsMatch(customer.CustomerSecurity, password))
+        {
+            customer.CustomerSecurity.FailedLoginAttempts++;
+            if (_customerSettings.FailedPasswordAllowedAttempts > 0 && 
+                customer.CustomerSecurity.FailedLoginAttempts >= maxFailedLoginAttempts)
+            {
+                customer.LockOutCustomerAccount(_customerSettings.FailedPasswordLockoutMinutes);
+            }
+
+            _unitOfWork.GetRepository<Customer>().Update(customer);
+            await _unitOfWork.SaveChangesAsync();
+
+            return Result.Failure(Error.Failure(description: "Email or password is not correect!"));
+        }
+        
+        customer.CustomerSecurity.FailedLoginAttempts = 0;
+        customer.CustomerSecurity.CannotLoginUntilDateUtc = null;
+        customer.CustomerSecurity.RequireReLogin = false;
+        customer.CustomerSecurity.LastIpAddress = _webHelper.GetCurrentIpAddress();
+        customer.LastLoginDateUtc = DateTime.UtcNow;
+        
+        _unitOfWork.GetRepository<Customer>().Update(customer);
+
+        return Result.Success();
+    }
+
     #endregion
 
     #region Queries
 
-    public async Task<Customer?> GetCustomerByEmailAsync(string email)
+    public async Task<Customer?> GetCustomerByEmailAsync(string email, bool includeDeleted = false)
     {
-        if (string.IsNullOrWhiteSpace(email))
+        var cacheKey = _staticCacheManager.PrepareKeyForDefaultCache(CustomerEntityCacheDefaults.ByEmailCacheKey, email);
+
+        async Task<Customer?> getEntityAsync()
         {
-            return null;
+            var query = _unitOfWork.GetRepository<Customer>();
+
+            if (includeDeleted)
+            {
+                return await query.Table.FirstOrDefaultAsync(q => q.Email == email);
+            }
+
+            if (typeof(Customer).GetInterface(nameof(ISoftDeletedEntity)) == null)
+            {
+                return await query.Table.FirstOrDefaultAsync(q => q.Email == email);
+            }
+
+            return await query.Table.FirstOrDefaultAsync(q => q.Email == email && !q.Deleted);
         }
 
-        var query = from c in _unitOfWork.GetRepository<Customer>().Table
-                    orderby c.Id
-                    where c.Email == email
-                    select c;
-        var customer = await query.FirstOrDefaultAsync();
-
-        return customer;
+        return await _staticCacheManager.GetAsync(cacheKey, getEntityAsync);
     }
 
     public string GetCustomerFullName(Customer customer)
@@ -162,6 +227,29 @@ public class CustomerService : ICustomerService
     }
 
     #endregion
+
+    #endregion
+
+    #region Methods
+
+    private bool PasswordsMatch(CustomerSecurity customerSecurity, string enteredPassword)
+    {
+        if (customerSecurity is null || string.IsNullOrEmpty(enteredPassword))
+        {
+            return false;
+        }
+
+        if (customerSecurity.Password is null)
+        {
+            return false;
+        }
+
+        var savedPassword = _encryptionService.CreatePasswordHash(enteredPassword,
+                                                                  customerSecurity.PasswordSalt,
+                                                                  _customerSettings.HashedPasswordFormat);
+
+        return customerSecurity.Password.Equals(savedPassword);
+    }
 
     #endregion
 }

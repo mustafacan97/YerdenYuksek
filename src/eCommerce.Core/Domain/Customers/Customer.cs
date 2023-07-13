@@ -37,25 +37,13 @@ public class Customer : SoftDeletedEntity, ISoftDeletedEntity
 
     public bool PhoneNumberValidated { get; set; }
 
-    public bool RequireReLogin { get; set; }
-
-    public int FailedLoginAttempts { get; set; }
-
-    public DateTime? CannotLoginUntilDateUtc { get; set; }
-
-    public bool Active { get; set; }
-
-    public bool Deleted { get; set; }
-
-    public string? LastIpAddress { get; private set; }
-
     public DateTime CreatedOnUtc { get; set; }
 
     public DateTime? LastLoginDateUtc { get; set; }
 
     public DateTime? LastActivityDateUtc { get; set; }
 
-    public CustomerPassword CustomerPassword { get; private set; }
+    public CustomerSecurity CustomerSecurity { get; private set; }
 
     public ICollection<Address> Addresses { get; set; }
 
@@ -74,7 +62,7 @@ public class Customer : SoftDeletedEntity, ISoftDeletedEntity
         return new Customer()
         {
             Email = email,
-            Active = true,
+            IsActive = true,
             CreatedOnUtc = DateTime.UtcNow
         };
     }
@@ -83,13 +71,13 @@ public class Customer : SoftDeletedEntity, ISoftDeletedEntity
     {
         if (!string.IsNullOrEmpty(ipAddress))
         {
-            LastIpAddress = ipAddress;
+            CustomerSecurity.LastIpAddress = ipAddress;
         }
     }
 
-    public void SetCustomerPassword(CustomerPassword customerPassword)
+    public void SetCustomerPassword(CustomerSecurity customerSecuirty)
     {
-        CustomerPassword = customerPassword;
+        CustomerSecurity = customerSecuirty;
     }
 
     public void SetCustomerRole(CustomerRole customerRole)
@@ -99,6 +87,23 @@ public class Customer : SoftDeletedEntity, ISoftDeletedEntity
         {
             CustomerRoles.Add(customerRole);
         }
+    }
+
+    public bool CustomerHasSpecifiedRole(string roleName)
+    {
+        return CustomerRoles.FirstOrDefault(cr => cr.Name == roleName) is not null;
+    }
+
+    public bool CustomerHasLoginRestrictions()
+    {
+        return CustomerSecurity.CannotLoginUntilDateUtc.HasValue &&
+            CustomerSecurity.CannotLoginUntilDateUtc.Value > DateTime.UtcNow;
+    }
+
+    public void LockOutCustomerAccount(double lockOutMinutes)
+    {
+        CustomerSecurity.CannotLoginUntilDateUtc = DateTime.UtcNow.AddMinutes(lockOutMinutes);
+        CustomerSecurity.FailedLoginAttempts = 0;
     }
 
     #endregion

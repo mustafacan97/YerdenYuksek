@@ -4,9 +4,9 @@ using YerdenYuksek.Core.Domain.Customers;
 
 namespace eCommerce.Framework.Persistence.Builders;
 
-public sealed class CustomerPasswordBuilder : IEntityTypeConfiguration<CustomerPassword>
+public sealed class CustomerPasswordBuilder : IEntityTypeConfiguration<CustomerSecurity>
 {
-    public void Configure(EntityTypeBuilder<CustomerPassword> builder)
+    public void Configure(EntityTypeBuilder<CustomerSecurity> builder)
     {
         builder.ToTable("CustomerPassword");
 
@@ -14,8 +14,5 @@ public sealed class CustomerPasswordBuilder : IEntityTypeConfiguration<CustomerP
 
         builder.Property(q => q.PasswordSalt)
             .HasMaxLength(16);
-
-        builder.Property(e => e.CreatedOnUtc)
-            .HasPrecision(6);
     }
 }

@@ -27,9 +27,6 @@ public sealed class CustomerBuilder : IEntityTypeConfiguration<Customer>
         builder.Property(e => e.DateOfBirth)
             .HasPrecision(6);
 
-        builder.Property(e => e.CannotLoginUntilDateUtc)
-            .HasPrecision(6);
-
         builder.Property(e => e.CreatedOnUtc)
             .HasPrecision(6);
 
@@ -39,12 +36,9 @@ public sealed class CustomerBuilder : IEntityTypeConfiguration<Customer>
         builder.Property(e => e.LastActivityDateUtc)
             .HasPrecision(6);
 
-        builder.Property(q => q.Active)
-            .HasDefaultValue(true);
-
-        builder.HasOne(q => q.CustomerPassword)
+        builder.HasOne(q => q.CustomerSecurity)
             .WithOne()
-            .HasForeignKey<CustomerPassword>(q => q.CustomerId)
+            .HasForeignKey<CustomerSecurity>(q => q.CustomerId)
             .IsRequired();
 
         builder.HasMany(q => q.Addresses)

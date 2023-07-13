@@ -41,7 +41,7 @@ public class ApplicationDbContext : DbContext
 
     public virtual DbSet<Customer> Customer { get; set; }
 
-    public virtual DbSet<CustomerPassword> CustomerPassword { get; set; }
+    public virtual DbSet<CustomerSecurity> CustomerPassword { get; set; }
 
     public virtual DbSet<CustomerRole> CustomerRole { get; set; }
 
