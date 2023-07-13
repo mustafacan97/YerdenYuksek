@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace YerdenYuksek.Core.Configuration;
+namespace eCommerce.Core.Configuration;
 
 public class AppSettings
 {

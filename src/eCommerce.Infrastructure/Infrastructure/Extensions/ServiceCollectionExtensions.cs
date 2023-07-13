@@ -14,7 +14,6 @@ using YerdenYuksek.Application.Services.Public.Localization;
 using YerdenYuksek.Application.Services.Public.Messages;
 using YerdenYuksek.Application.Services.Public.Security;
 using YerdenYuksek.Core.Caching;
-using YerdenYuksek.Core.Configuration;
 using YerdenYuksek.Core.Infrastructure;
 using YerdenYuksek.Web.Framework.Common;
 using YerdenYuksek.Web.Framework.Infrastructure;
@@ -33,6 +32,7 @@ using eCommerce.Application.Services.Public.Security;
 using eCommerce.Infrastructure.Persistence.Services.Public;
 using eCommerce.Infrastructure.Persistence.Services.ScheduleTasks;
 using eCommerce.Application.Services.ScheduleTasks;
+using eCommerce.Core.Configuration;
 
 namespace eCommerce.Framework.Infrastructure.Extensions;
 
@@ -71,6 +71,9 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
+    /// <summary>
+    /// Get all config files in solution and save them to appsettings.json file
+    /// </summary>
     private static IServiceCollection ConfigureApplicationSettings(this IServiceCollection services, IHostEnvironment environment)
     {
         ServicePointManager.SecurityProtocol = SecurityProtocolType.SystemDefault;

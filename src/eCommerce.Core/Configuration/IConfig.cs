@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace YerdenYuksek.Core.Configuration;
+namespace eCommerce.Core.Configuration;
 
 public interface IConfig
 {

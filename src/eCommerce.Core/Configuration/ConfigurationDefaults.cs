@@ -1,6 +1,6 @@
-﻿namespace YerdenYuksek.Core.Configuration;
+﻿namespace eCommerce.Core.Configuration;
 
-public static class YerdenYuksekConfigurationDefaults
+public static class ConfigurationDefaults
 {
     public static string AppSettingsFilePath => "appsettings.json";
 

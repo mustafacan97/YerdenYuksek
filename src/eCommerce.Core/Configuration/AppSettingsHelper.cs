@@ -3,7 +3,7 @@ using System.Text;
 using System.Text.Json;
 using YerdenYuksek.Core.Infrastructure;
 
-namespace YerdenYuksek.Core.Configuration;
+namespace eCommerce.Core.Configuration;
 
 public class AppSettingsHelper
 {
@@ -23,7 +23,7 @@ public class AppSettingsHelper
         appSettings.Update(configurations);
         Singleton<AppSettings>.Instance = appSettings;
 
-        var filePath = fileProvider.MapPath(YerdenYuksekConfigurationDefaults.AppSettingsFilePath);
+        var filePath = fileProvider.MapPath(ConfigurationDefaults.AppSettingsFilePath);
         var fileExists = fileProvider.FileExists(filePath);
         fileProvider.CreateFile(filePath);
 

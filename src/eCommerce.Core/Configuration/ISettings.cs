@@ -1,4 +1,4 @@
-﻿namespace YerdenYuksek.Core.Configuration;
+﻿namespace eCommerce.Core.Configuration;
 
 public interface ISettings
 {
