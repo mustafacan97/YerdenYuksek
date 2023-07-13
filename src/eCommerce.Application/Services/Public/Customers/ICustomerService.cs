@@ -21,8 +21,6 @@ public partial interface ICustomerService
 
     Task<Customer?> GetCustomerByEmailAsync(string email, bool includeDeleted = false);
 
-    string GetCustomerFullName(Customer customer);
-
     Task<CustomerRole?> GetCustomerRoleByNameAsync(string name);
 
     #endregion

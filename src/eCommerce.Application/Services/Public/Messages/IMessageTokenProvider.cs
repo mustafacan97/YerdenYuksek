@@ -7,7 +7,7 @@ public interface IMessageTokenProvider
 {
     Task AddCustomerTokensAsync(IList<Token> tokens, Guid customerId);
 
-    Task AddCustomerTokensAsync(IList<Token> tokens, Customer customer);
+    void AddCustomerTokens(IList<Token> tokens, Customer customer);
 
     IEnumerable<string> GetTokenGroups(MessageTemplate messageTemplate);
 }

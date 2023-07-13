@@ -177,36 +177,6 @@ public class CustomerService : ICustomerService
         return await _staticCacheManager.GetAsync(cacheKey, getEntityAsync);
     }
 
-    public string GetCustomerFullName(Customer customer)
-    {
-        if (customer is null)
-        {
-            throw new ArgumentNullException(nameof(customer));
-        }
-
-        var firstName = customer.FirstName;
-        var lastName = customer.LastName;
-
-        if (!string.IsNullOrWhiteSpace(firstName) && !string.IsNullOrWhiteSpace(lastName))
-        {
-            return $"{firstName} {lastName}";
-        }
-        else
-        {
-            if (!string.IsNullOrWhiteSpace(firstName))
-            {
-                return firstName;
-            }
-
-            if (!string.IsNullOrWhiteSpace(lastName))
-            {
-                return lastName;
-            }
-        }
-
-        return string.Empty;
-    }
-
     public async Task<CustomerRole?> GetCustomerRoleByNameAsync(string name)
     {
         if (string.IsNullOrWhiteSpace(name))

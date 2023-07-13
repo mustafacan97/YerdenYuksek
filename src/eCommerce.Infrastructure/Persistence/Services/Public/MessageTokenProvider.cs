@@ -32,15 +32,27 @@ public class MessageTokenProvider : IMessageTokenProvider
     public async Task AddCustomerTokensAsync(IList<Token> tokens, Guid customerId)
     {
         var customer = await _unitOfWork.GetRepository<Customer>().GetByIdAsync(customerId);
-        await AddCustomerTokensAsync(tokens, customer);
+        AddCustomerTokens(tokens, customer);
     }
 
-    public async Task AddCustomerTokensAsync(IList<Token> tokens, Customer customer)
+    public void AddCustomerTokens(IList<Token> tokens, Customer customer)
     {
         tokens.Add(new Token("Customer.Email", customer.Email));
-        tokens.Add(new Token("Customer.FullName", _customerService.GetCustomerFullName(customer)));
-        tokens.Add(new Token("Customer.FirstName", customer.FirstName));
-        tokens.Add(new Token("Customer.LastName", customer.LastName));
+
+        if (!string.IsNullOrEmpty(customer.FirstName))
+        {
+            tokens.Add(new Token("Customer.FirstName", customer.FirstName));
+        }
+
+        if (!string.IsNullOrEmpty(customer.LastName))
+        {
+            tokens.Add(new Token("Customer.LastName", customer.LastName));
+        }
+
+        if (!string.IsNullOrWhiteSpace(customer.FirstName) && !string.IsNullOrWhiteSpace(customer.LastName))
+        {
+            tokens.Add(new Token("Customer.FullName", $"{customer.FirstName} {customer.LastName}"));
+        }
     }
 
     public IEnumerable<string> GetTokenGroups(MessageTemplate messageTemplate)

@@ -65,7 +65,7 @@ public class WorkflowMessageService : IWorkflowMessageService
         }
         
         var commonTokens = new List<Token>();
-        await _messageTokenProvider.AddCustomerTokensAsync(commonTokens, customer);
+        _messageTokenProvider.AddCustomerTokens(commonTokens, customer);
 
         return await messageTemplates.ToAsyncEnumerable().SelectAwait(async messageTemplate =>
         {
