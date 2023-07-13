@@ -26,6 +26,11 @@ using ScheduleTaskRunner = YerdenYuksek.Web.Framework.Persistence.Services.Publi
 using eCommerce.Core.Interfaces;
 using eCommerce.Core.Helpers;
 using eCommerce.Core.Infrastructure;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using eCommerce.Application.Services.Public.Security;
+using eCommerce.Infrastructure.Persistence.Services.Public;
 
 namespace eCommerce.Framework.Infrastructure.Extensions;
 
@@ -41,6 +46,7 @@ public static class ServiceCollectionExtensions
         services
             .ConfigureApiBehaviorOptions()
             .ConfigureApplicationSettings(environment)
+            .AddJwtBearer(configuration)
             .AddServices()
             .RegisterAllSettings()
             .AddEntityFramework(configuration)
@@ -152,6 +158,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IWorkflowMessageService, WorkflowMessageService>();
         services.AddScoped<IMessageTemplateService, MessageTemplateService>();
         services.AddScoped<IMessageTokenProvider, MessageTokenProvider>();
+        services.AddScoped<IJwtService, JwtService>();
 
         //register all settings
         services.RegisterAllSettings();
@@ -185,6 +192,37 @@ public static class ServiceCollectionExtensions
             .AddFluentValidationAutoValidation()
             .AddValidatorsFromAssembly(Assembly.GetEntryAssembly())
             .AddFluentValidationClientsideAdapters();
+
+        return services;
+    }
+
+    private static IServiceCollection AddJwtBearer(this IServiceCollection services, IConfiguration configuration)
+    {
+        var jwtKey = configuration["Jwt:Key"];
+        if (string.IsNullOrEmpty(jwtKey))
+        {
+            throw new Exception("JWT Key Not Found!");
+        }
+
+        services.AddAuthentication(x =>
+        {
+            x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(o =>
+        {
+            var Key = Encoding.UTF8.GetBytes(jwtKey);
+            o.SaveToken = true;
+            o.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = configuration["Jwt:Issuer"],
+                ValidAudience = configuration["Jwt:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(Key)
+            };
+        });
 
         return services;
     }
