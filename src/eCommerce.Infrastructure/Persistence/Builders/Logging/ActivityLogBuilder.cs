@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using YerdenYuksek.Core.Domain.Logging;
 
-namespace YerdenYuksek.Web.Framework.Persistence.Builders.Logging;
+namespace eCommerce.Infrastructure.Framework.Persistence.Builders.Logging;
 
 public sealed class ActivityLogBuilder : IEntityTypeConfiguration<ActivityLog>
 {
@@ -12,15 +12,10 @@ public sealed class ActivityLogBuilder : IEntityTypeConfiguration<ActivityLog>
         
         builder.HasKey(x => x.Id);
 
-        builder.Property(q => q.IpAddress)
-            .HasMaxLength(16);
+        builder.Property(q => q.EntityName)
+            .HasMaxLength(256);
 
         builder.Property(e => e.CreatedOnUtc)
             .HasPrecision(6);
-
-        builder.HasOne(q => q.ActivityLogType)
-            .WithMany()
-            .HasForeignKey(q => q.ActivityLogTypeId)
-            .IsRequired();
     }
 }

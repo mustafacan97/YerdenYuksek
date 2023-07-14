@@ -1,4 +1,5 @@
-﻿using eCommerce.Core.Primitives;
+﻿using eCommerce.Core.Domain.Logging;
+using eCommerce.Core.Primitives;
 
 namespace YerdenYuksek.Core.Domain.Logging;
 
@@ -10,11 +11,11 @@ public class ActivityLog : BaseEntity
 
     public Guid CustomerId { get; set; }
 
+    public string? EntityName { get; set; }
+
     public Guid? EntityId { get; set; }
 
-    public string IpAddress { get; set; }
-
-    public string Comment { get; set; }
+    public string? Comment { get; set; }
 
     public DateTime CreatedOnUtc { get; set; }
 

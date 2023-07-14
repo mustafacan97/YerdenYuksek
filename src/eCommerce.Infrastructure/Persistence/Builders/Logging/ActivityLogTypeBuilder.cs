@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using eCommerce.Core.Domain.Logging;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using YerdenYuksek.Core.Domain.Logging;
 
-namespace YerdenYuksek.Web.Framework.Persistence.Builders.Logging;
+namespace eCommerce.Infrastructure.Persistence.Builders.Logging;
 
 public sealed class ActivityLogTypeBuilder : IEntityTypeConfiguration<ActivityLogType>
 {
@@ -13,9 +13,14 @@ public sealed class ActivityLogTypeBuilder : IEntityTypeConfiguration<ActivityLo
         builder.HasKey(x => x.Id);
 
         builder.Property(q => q.SystemKeyword)
-            .HasMaxLength(255);
+            .HasMaxLength(128);
 
         builder.Property(q => q.Name)
-            .HasMaxLength(255);
+            .HasMaxLength(256);
+
+        builder.HasMany(q => q.ActivityLogs)
+            .WithOne(q => q.ActivityLogType)
+            .HasForeignKey(q => q.ActivityLogTypeId)
+            .IsRequired();
     }
 }

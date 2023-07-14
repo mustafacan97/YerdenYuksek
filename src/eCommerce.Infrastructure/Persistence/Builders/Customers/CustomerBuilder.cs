@@ -63,6 +63,11 @@ public sealed class CustomerBuilder : IEntityTypeConfiguration<Customer>
             .HasForeignKey(x => x.CustomerId)
             .IsRequired(false);
 
+        builder.HasMany(q => q.ActivityLogs)
+            .WithOne()
+            .HasForeignKey(x => x.CustomerId)
+            .IsRequired();
+
         builder.HasMany(q => q.CustomerRoles)
             .WithMany(q => q.Customers)
             .UsingEntity(
