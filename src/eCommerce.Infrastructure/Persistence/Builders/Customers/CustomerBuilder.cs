@@ -2,9 +2,8 @@
 using eCommerce.Core.Domain.Security;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System.Reflection.Emit;
 
-namespace eCommerce.Framework.Persistence.Builders;
+namespace eCommerce.Infrastructure.Persistence.Builders.Customers;
 
 public sealed class CustomerBuilder : IEntityTypeConfiguration<Customer>
 {
@@ -23,11 +22,8 @@ public sealed class CustomerBuilder : IEntityTypeConfiguration<Customer>
         builder.Property(e => e.LastName)
             .HasMaxLength(128);
 
-        builder.Property(e => e.Gender)
-            .HasMaxLength(64);
-
-        builder.Property(e => e.DateOfBirth)
-            .HasPrecision(6);
+        builder.Property(e => e.PhoneNumber)
+            .HasMaxLength(12);
 
         builder.Property(e => e.CreatedOnUtc)
             .HasPrecision(6);
@@ -38,29 +34,17 @@ public sealed class CustomerBuilder : IEntityTypeConfiguration<Customer>
         builder.Property(e => e.LastActivityDateUtc)
             .HasPrecision(6);
 
+        builder.Property(q => q.Active)
+            .HasDefaultValue(true);
+
         builder.HasOne(q => q.CustomerSecurity)
             .WithOne()
             .HasForeignKey<CustomerSecurity>(q => q.CustomerId)
             .IsRequired();
 
-        builder.HasMany(q => q.Addresses)
-            .WithOne()
-            .HasForeignKey(q => q.CustomerId)
-            .IsRequired();
-
         builder.HasMany(q => q.Logs)
             .WithOne()
             .HasForeignKey(q => q.CustomerId)
-            .IsRequired();
-
-        builder.HasMany(q => q.ActivityLogs)
-            .WithOne()
-            .HasForeignKey(q => q.CustomerId)
-        .IsRequired();
-
-        builder.HasMany(e => e.Logs)
-            .WithOne()
-            .HasForeignKey(x => x.CustomerId)
             .IsRequired(false);
 
         builder.HasMany(q => q.ActivityLogs)
@@ -68,12 +52,17 @@ public sealed class CustomerBuilder : IEntityTypeConfiguration<Customer>
             .HasForeignKey(x => x.CustomerId)
             .IsRequired();
 
+        builder.HasMany(q => q.Addresses)
+            .WithOne()
+            .HasForeignKey(q => q.CustomerId)
+            .IsRequired();
+
         builder.HasMany(q => q.CustomerRoles)
             .WithMany(q => q.Customers)
             .UsingEntity(
                 "CustomerRoleMapping",
-                l => l.HasOne(typeof(Role)).WithMany().HasForeignKey("CustomerRoleId").HasPrincipalKey(nameof(Role.Id)),
+                l => l.HasOne(typeof(Role)).WithMany().HasForeignKey("RoleId").HasPrincipalKey(nameof(Role.Id)),
                 r => r.HasOne(typeof(Customer)).WithMany().HasForeignKey("CustomerId").HasPrincipalKey(nameof(Customer.Id)),
-                j => j.HasKey("CustomerRoleId", "CustomerId"));
+                j => j.HasKey("RoleId", "CustomerId"));
     }
 }

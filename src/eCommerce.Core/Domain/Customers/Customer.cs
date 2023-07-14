@@ -1,14 +1,14 @@
 ﻿using eCommerce.Core.Domain.Directory;
+using eCommerce.Core.Domain.Localization;
 using eCommerce.Core.Domain.Logging;
 using eCommerce.Core.Domain.Security;
-using eCommerce.Core.Interfaces;
 using eCommerce.Core.Primitives;
 using YerdenYuksek.Core.Domain.Common;
 using YerdenYuksek.Core.Domain.Logging;
 
 namespace eCommerce.Core.Domain.Customers;
 
-public class Customer : SoftDeletedEntity, ISoftDeletedEntity
+public class Customer : SoftDeletedEntity
 {
     #region Constructure and Destructure
 
@@ -30,15 +30,19 @@ public class Customer : SoftDeletedEntity, ISoftDeletedEntity
 
     public string? LastName { get; set; }
 
+    public DateTime? BirthDate { get; set; }
+
     public string? PhoneNumber { get; set; }
-
-    public string? Gender { get; set; }
-
-    public DateTime? DateOfBirth { get; set; }
 
     public bool EmailValidated { get; set; }
 
     public bool PhoneNumberValidated { get; set; }
+
+    public Guid? LanguageId { get; set; }
+
+    public Guid? CurrencyId { get; set; }
+
+    public Guid? DefaultAddressId { get; set; }
 
     public DateTime CreatedOnUtc { get; set; }
 
@@ -46,17 +50,19 @@ public class Customer : SoftDeletedEntity, ISoftDeletedEntity
 
     public DateTime? LastActivityDateUtc { get; set; }
 
-    public Guid? CurrencyId { get; set; }
+    public Language? Language { get; set; }
 
     public Currency? Currency { get; set; }
 
-    public CustomerSecurity CustomerSecurity { get; private set; }
+    public Address? DefaultAddress { get; set; }
 
-    public ICollection<Address> Addresses { get; set; }
+    public CustomerSecurity CustomerSecurity { get; private set; }    
 
     public ICollection<Log> Logs { get; set; }
 
     public ICollection<ActivityLog> ActivityLogs { get; set; }
+
+    public ICollection<Address> Addresses { get; set; }
 
     public ICollection<Role> CustomerRoles { get; private set; }
 

@@ -6,11 +6,17 @@ namespace eCommerce.Core.Domain.Directory;
 
 public partial class Currency : SoftDeletedEntity, ILocalizedEntity
 {
+    #region Constructure and Destructure
+
     public Currency()
     {
         Customers = new HashSet<Customer>();   
         Languages = new HashSet<Language>();
     }
+
+    #endregion
+
+    #region Public Properties
 
     public string Name { get; set; }
 
@@ -37,4 +43,6 @@ public partial class Currency : SoftDeletedEntity, ILocalizedEntity
         get => (RoundingType)RoundingTypeId;
         set => RoundingTypeId = (int)value;
     }
+
+    #endregion
 }

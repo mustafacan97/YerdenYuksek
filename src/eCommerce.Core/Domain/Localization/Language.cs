@@ -1,3 +1,4 @@
+using eCommerce.Core.Domain.Customers;
 using eCommerce.Core.Domain.Directory;
 using eCommerce.Core.Primitives;
 
@@ -9,6 +10,8 @@ public class Language : SoftDeletedEntity
 
     public Language()
     {
+        Customers = new HashSet<Customer>();
+        LocalizedProperties = new HashSet<LocalizedProperty>();
         LocaleStringResources = new HashSet<LocaleStringResource>();
     }
 
@@ -33,6 +36,10 @@ public class Language : SoftDeletedEntity
     public DateTime CreatedOnUtc { get; set; }
 
     public Currency DefaultCurrency { get; set; }
+
+    public ICollection<Customer> Customers { get; set; }
+
+    public ICollection<LocalizedProperty> LocalizedProperties { get; set; }
 
     public ICollection<LocaleStringResource> LocaleStringResources { get; set; }
 

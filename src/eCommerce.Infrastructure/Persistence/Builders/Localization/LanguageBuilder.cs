@@ -31,10 +31,20 @@ public sealed class LanguageBuilder : IEntityTypeConfiguration<Language>
         builder.Property(x => x.CreatedOnUtc)
             .HasPrecision(6);
 
+        builder.HasMany(q => q.LocalizedProperties)
+            .WithOne()
+            .HasForeignKey(q => q.LanguageId)
+            .IsRequired();
+
         builder.HasMany(q => q.LocaleStringResources)
             .WithOne()
             .HasForeignKey(q => q.LanguageId)
             .IsRequired();
+
+        builder.HasMany(q => q.Customers)
+            .WithOne(q => q.Language)
+            .HasForeignKey(q => q.LanguageId)
+            .IsRequired(false);
 
         builder.HasData(SeedLanguageData());
     }
