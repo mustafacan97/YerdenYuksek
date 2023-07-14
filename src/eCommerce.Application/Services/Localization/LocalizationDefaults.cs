@@ -1,5 +1,5 @@
 ﻿using eCommerce.Core.Caching;
-using YerdenYuksek.Core.Domain.Localization;
+using eCommerce.Core.Domain.Localization;
 
 namespace eCommerce.Application.Services.Localization;
 

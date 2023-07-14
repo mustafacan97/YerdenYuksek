@@ -3,7 +3,7 @@ using eCommerce.Application.Services.Configuration;
 using eCommerce.Core.Domain.Configuration.CustomSettings;
 using eCommerce.Core.Interfaces;
 using eCommerce.Core.Caching;
-using YerdenYuksek.Core.Domain.Localization;
+using eCommerce.Core.Domain.Localization;
 using eCommerce.Application.Services.Localization;
 
 namespace eCommerce.Infrastructure.Persistence.Services.Localization;

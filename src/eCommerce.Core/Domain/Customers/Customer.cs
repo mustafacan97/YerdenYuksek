@@ -1,4 +1,5 @@
-﻿using eCommerce.Core.Domain.Security;
+﻿using eCommerce.Core.Domain.Directory;
+using eCommerce.Core.Domain.Security;
 using eCommerce.Core.Interfaces;
 using eCommerce.Core.Primitives;
 using YerdenYuksek.Core.Domain.Common;
@@ -43,6 +44,10 @@ public class Customer : SoftDeletedEntity, ISoftDeletedEntity
     public DateTime? LastLoginDateUtc { get; set; }
 
     public DateTime? LastActivityDateUtc { get; set; }
+
+    public Guid? CurrencyId { get; set; }
+
+    public Currency? Currency { get; set; }
 
     public CustomerSecurity CustomerSecurity { get; private set; }
 

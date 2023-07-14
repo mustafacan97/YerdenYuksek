@@ -2,7 +2,7 @@
 using YerdenYuksek.Core.Domain.Common;
 using eCommerce.Core.Domain.Configuration;
 using YerdenYuksek.Core.Domain.Customers;
-using YerdenYuksek.Core.Domain.Localization;
+using eCommerce.Core.Domain.Localization;
 using YerdenYuksek.Core.Domain.Logging;
 using eCommerce.Core.Domain.Messages;
 using eCommerce.Core.Domain.Security;

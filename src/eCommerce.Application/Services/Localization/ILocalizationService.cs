@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 using eCommerce.Core.Configuration;
-using YerdenYuksek.Core.Domain.Localization;
+using eCommerce.Core.Domain.Localization;
 using eCommerce.Core.Primitives;
 
 namespace eCommerce.Application.Services.Localization;

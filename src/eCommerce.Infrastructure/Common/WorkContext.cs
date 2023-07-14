@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using YerdenYuksek.Core.Domain.Customers;
-using YerdenYuksek.Core.Domain.Localization;
+using eCommerce.Core.Domain.Localization;
 
 namespace YerdenYuksek.Web.Framework.Common;
 

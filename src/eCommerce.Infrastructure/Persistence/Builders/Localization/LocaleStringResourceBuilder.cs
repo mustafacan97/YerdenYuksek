@@ -1,11 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using YerdenYuksek.Core.Domain.Localization;
 using System.Xml;
-using eCommerce.Core.Domain.Configuration.CustomSettings;
 using eCommerce.Application.Services.Common;
+using eCommerce.Core.Domain.Localization;
 
-namespace YerdenYuksek.Web.Framework.Persistence.Builders.Localization;
+namespace eCommerce.Infrastructure.Persistence.Builders.Localization;
 
 public sealed class LocaleStringResourceBuilder : IEntityTypeConfiguration<LocaleStringResource>
 {
@@ -16,6 +15,9 @@ public sealed class LocaleStringResourceBuilder : IEntityTypeConfiguration<Local
         builder.ToTable("LocaleStringResource");
 
         builder.HasKey(x => x.Id);
+
+        builder.Property(x => x.ResourceName)
+            .HasMaxLength(256);
 
         builder.HasData(SeedLocaleStringResourceData());
     }

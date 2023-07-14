@@ -6,7 +6,7 @@ using eCommerce.Core.Domain.Messages;
 using eCommerce.Core.Helpers;
 using eCommerce.Core.Interfaces;
 using YerdenYuksek.Core.Domain.Customers;
-using YerdenYuksek.Core.Domain.Localization;
+using eCommerce.Core.Domain.Localization;
 using YerdenYuksek.Core.Domain.Messages;
 
 namespace eCommerce.Infrastructure.Persistence.Services.Messages;

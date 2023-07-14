@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using YerdenYuksek.Core.Domain.Localization;
+using eCommerce.Core.Domain.Localization;
 using System.Globalization;
 using eCommerce.Application.Services.Common;
 
@@ -23,10 +23,13 @@ public sealed class LanguageBuilder : IEntityTypeConfiguration<Language>
             .HasMaxLength(8);
 
         builder.Property(e => e.UniqueSeoCode)
-            .HasMaxLength(4);
+            .HasMaxLength(2);
 
         builder.Property(e => e.FlagImageFileName)
             .HasMaxLength(16);
+
+        builder.Property(x => x.CreatedOnUtc)
+            .HasPrecision(6);
 
         builder.HasMany(q => q.LocaleStringResources)
             .WithOne()
@@ -42,7 +45,7 @@ public sealed class LanguageBuilder : IEntityTypeConfiguration<Language>
 
     private static IList<Language> SeedLanguageData()
     {
-        var defaultCulture = new CultureInfo("tr-TR");
+        var defaultCulture = new CultureInfo("en-US");
         var defaultLanguage = new Language
         {
             Id = CommonDefaults.DefaultLanguageId,
@@ -50,11 +53,12 @@ public sealed class LanguageBuilder : IEntityTypeConfiguration<Language>
             LanguageCulture = defaultCulture.Name,
             UniqueSeoCode = defaultCulture.TwoLetterISOLanguageName,
             FlagImageFileName = $"{defaultCulture.Name.ToLowerInvariant()[^2..]}.png",
-            Rtl = defaultCulture.TextInfo.IsRightToLeft,
+            DefaultCurrencyId = CommonDefaults.DefaultCurrencyId,
             IsDefaultLanguage = true,
             DisplayOrder = 1,
+            CreatedOnUtc = DateTime.UtcNow,
             Active = true,
-            Deleted = false,
+            Deleted = false,            
         };
 
         return new List<Language>() { defaultLanguage };

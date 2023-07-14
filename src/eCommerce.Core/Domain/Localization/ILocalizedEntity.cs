@@ -1,4 +1,4 @@
-namespace YerdenYuksek.Core.Domain.Localization;
+namespace eCommerce.Core.Domain.Localization;
 
 public interface ILocalizedEntity
 {
