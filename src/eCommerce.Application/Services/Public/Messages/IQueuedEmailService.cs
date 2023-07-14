@@ -1,7 +1,7 @@
-﻿using eCommerce.Core.Interfaces;
-using YerdenYuksek.Core.Domain.Messages;
+﻿using eCommerce.Core.Domain.Messages;
+using eCommerce.Core.Interfaces;
 
-namespace YerdenYuksek.Application.Services.Public.Messages;
+namespace eCommerce.Application.Services.Messages;
 
 public interface IQueuedEmailService
 {

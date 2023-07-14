@@ -1,11 +1,9 @@
 ﻿using eCommerce.Core.Primitives;
 
-namespace YerdenYuksek.Core.Domain.Messages;
+namespace eCommerce.Core.Domain.Messages;
 
 public class QueuedEmail : BaseEntity
 {
-    public int PriorityId { get; set; }
-
     public string From { get; set; }
 
     public string FromName { get; set; }
@@ -18,13 +16,17 @@ public class QueuedEmail : BaseEntity
 
     public string? ReplyToName { get; set; }
 
+    public string Subject { get; set; }
+
     public string? CC { get; set; }
 
     public string? Bcc { get; set; }
 
-    public string Subject { get; set; }
-
     public string Body { get; set; }
+
+    public Guid EmailAccountId { get; set; }
+
+    public int PriorityId { get; set; }
 
     public string? AttachmentFilePath { get; set; }
 
@@ -34,11 +36,9 @@ public class QueuedEmail : BaseEntity
 
     public int SentTries { get; set; }
 
-    public DateTime CreatedOnUtc { get; set; }    
+    public DateTime CreatedOnUtc { get; set; }
 
     public DateTime? SentOnUtc { get; set; }
-
-    public Guid EmailAccountId { get; set; }
 
     public QueuedEmailPriority Priority
     {

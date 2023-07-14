@@ -1,4 +1,4 @@
-namespace YerdenYuksek.Core.Domain.Messages;
+namespace eCommerce.Core.Domain.Messages;
 
 public enum QueuedEmailPriority
 {

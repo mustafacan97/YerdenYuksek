@@ -1,9 +1,9 @@
-﻿using eCommerce.Core.Interfaces;
-using YerdenYuksek.Application.Services.Public.Messages;
-using YerdenYuksek.Core.Domain.Messages;
+﻿using eCommerce.Application.Services.Messages;
+using eCommerce.Core.Domain.Messages;
+using eCommerce.Core.Interfaces;
 using YerdenYuksek.Web.Framework.Persistence.Extensions;
 
-namespace YerdenYuksek.Web.Framework.Persistence.Services.Public;
+namespace eCommerce.Infrastructure.Persistence.Services.Messages;
 
 public class QueuedEmailService : IQueuedEmailService
 {
@@ -78,16 +78,31 @@ public class QueuedEmailService : IQueuedEmailService
         toEmail = (toEmail ?? string.Empty).Trim();
 
         var query = _unitOfWork.GetRepository<QueuedEmail>().Table;
+
         if (!string.IsNullOrEmpty(fromEmail))
+        {
             query = query.Where(qe => qe.From.Contains(fromEmail));
+        }
+
         if (!string.IsNullOrEmpty(toEmail))
+        {
             query = query.Where(qe => qe.To.Contains(toEmail));
+        }
+
         if (createdFromUtc.HasValue)
+        {
             query = query.Where(qe => qe.CreatedOnUtc >= createdFromUtc);
+        }
+
         if (createdToUtc.HasValue)
+        {
             query = query.Where(qe => qe.CreatedOnUtc <= createdToUtc);
+        }
+
         if (loadNotSentItemsOnly)
+        {
             query = query.Where(qe => !qe.SentOnUtc.HasValue);
+        }
 
         query = query.Where(qe => qe.SentTries < maxSendTries);
         query = loadNewest ?

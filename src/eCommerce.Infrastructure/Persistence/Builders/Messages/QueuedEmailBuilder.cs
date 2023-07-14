@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using eCommerce.Core.Domain.Messages;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using YerdenYuksek.Core.Domain.Messages;
 
-namespace YerdenYuksek.Web.Framework.Persistence.Builders.Messages;
+namespace eCommerce.Infrastructure.Persistence.Builders.Messages;
 
 internal class QueuedEmailBuilder : IEntityTypeConfiguration<QueuedEmail>
 {
@@ -32,17 +32,14 @@ internal class QueuedEmailBuilder : IEntityTypeConfiguration<QueuedEmail>
         builder.Property(e => e.ReplyToName)
             .HasMaxLength(128);
 
+        builder.Property(e => e.Subject)
+            .HasMaxLength(1024);
+
         builder.Property(e => e.CC)
             .HasMaxLength(512);
 
         builder.Property(e => e.Bcc)
             .HasMaxLength(512);
-
-        builder.Property(e => e.Subject)
-            .HasMaxLength(1024);
-
-        builder.Property(e => e.AttachmentFileName)
-            .HasMaxLength(256);
 
         builder.Property(e => e.CreatedOnUtc)
             .HasPrecision(6);
