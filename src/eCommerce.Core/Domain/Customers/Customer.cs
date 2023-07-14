@@ -2,6 +2,7 @@
 using eCommerce.Core.Domain.Directory;
 using eCommerce.Core.Domain.Localization;
 using eCommerce.Core.Domain.Logging;
+using eCommerce.Core.Domain.Media;
 using eCommerce.Core.Domain.Orders;
 using eCommerce.Core.Domain.Security;
 using eCommerce.Core.Primitives;
@@ -46,6 +47,8 @@ public class Customer : SoftDeletedEntity
 
     public Guid? DefaultAddressId { get; set; }
 
+    public Guid? PictureId { get; set; }
+
     public DateTime CreatedOnUtc { get; set; }
 
     public DateTime? LastLoginDateUtc { get; set; }
@@ -58,7 +61,9 @@ public class Customer : SoftDeletedEntity
 
     public Address? DefaultAddress { get; set; }
 
-    public CustomerSecurity CustomerSecurity { get; private set; }    
+    public CustomerSecurity CustomerSecurity { get; private set; }  
+    
+    public Picture Picture { get; set; }
 
     public ICollection<Log> Logs { get; set; }
 

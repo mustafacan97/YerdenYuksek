@@ -1,5 +1,6 @@
 ﻿using eCommerce.Core.Domain.Common;
 using eCommerce.Core.Domain.Customers;
+using eCommerce.Core.Domain.Media;
 using eCommerce.Core.Domain.Security;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
