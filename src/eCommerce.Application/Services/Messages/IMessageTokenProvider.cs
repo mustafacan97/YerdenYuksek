@@ -1,5 +1,5 @@
 ﻿using eCommerce.Core.Domain.Messages;
-using YerdenYuksek.Core.Domain.Customers;
+using eCommerce.Core.Domain.Customers;
 
 namespace eCommerce.Application.Services.Messages;
 

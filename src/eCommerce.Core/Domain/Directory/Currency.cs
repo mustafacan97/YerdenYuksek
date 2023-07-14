@@ -1,6 +1,6 @@
 ﻿using eCommerce.Core.Primitives;
 using eCommerce.Core.Domain.Localization;
-using YerdenYuksek.Core.Domain.Customers;
+using eCommerce.Core.Domain.Customers;
 
 namespace eCommerce.Core.Domain.Directory;
 

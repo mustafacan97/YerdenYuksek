@@ -1,7 +1,7 @@
-﻿using eCommerce.Core.Domain.Security;
+﻿using eCommerce.Core.Domain.Customers;
+using eCommerce.Core.Domain.Security;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using YerdenYuksek.Core.Domain.Customers;
 
 namespace eCommerce.Framework.Persistence.Builders;
 

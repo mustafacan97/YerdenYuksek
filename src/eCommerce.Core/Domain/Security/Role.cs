@@ -1,5 +1,5 @@
-﻿using eCommerce.Core.Primitives;
-using YerdenYuksek.Core.Domain.Customers;
+﻿using eCommerce.Core.Domain.Customers;
+using eCommerce.Core.Primitives;
 
 namespace eCommerce.Core.Domain.Security;
 

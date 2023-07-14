@@ -5,7 +5,7 @@ using eCommerce.Core.Primitives;
 using Microsoft.EntityFrameworkCore;
 using YerdenYuksek.Application.Models.Customers;
 using eCommerce.Core.Caching;
-using YerdenYuksek.Core.Domain.Customers;
+using eCommerce.Core.Domain.Customers;
 using eCommerce.Application.Services.Customers;
 using eCommerce.Application.Services.Security;
 using eCommerce.Core.Domain.Security;

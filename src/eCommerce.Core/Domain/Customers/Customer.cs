@@ -5,7 +5,7 @@ using eCommerce.Core.Primitives;
 using YerdenYuksek.Core.Domain.Common;
 using YerdenYuksek.Core.Domain.Logging;
 
-namespace YerdenYuksek.Core.Domain.Customers;
+namespace eCommerce.Core.Domain.Customers;
 
 public class Customer : SoftDeletedEntity, ISoftDeletedEntity
 {

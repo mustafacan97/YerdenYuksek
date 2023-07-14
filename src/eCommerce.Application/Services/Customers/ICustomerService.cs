@@ -2,7 +2,7 @@
 using eCommerce.Core.Domain.Security;
 using eCommerce.Core.Primitives;
 using YerdenYuksek.Application.Models.Customers;
-using YerdenYuksek.Core.Domain.Customers;
+using eCommerce.Core.Domain.Customers;
 
 namespace eCommerce.Application.Services.Customers;
 

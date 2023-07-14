@@ -1,4 +1,4 @@
-﻿namespace YerdenYuksek.Core.Domain.Customers;
+﻿namespace eCommerce.Core.Domain.Customers;
 
 public class CustomerSecurity
 {

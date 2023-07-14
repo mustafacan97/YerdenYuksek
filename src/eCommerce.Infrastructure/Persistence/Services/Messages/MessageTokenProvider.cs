@@ -2,7 +2,7 @@
 using eCommerce.Application.Services.Messages;
 using eCommerce.Core.Domain.Messages;
 using eCommerce.Core.Interfaces;
-using YerdenYuksek.Core.Domain.Customers;
+using eCommerce.Core.Domain.Customers;
 using YerdenYuksek.Core.Domain.Messages;
 
 namespace eCommerce.Infrastructure.Persistence.Services.Messages;

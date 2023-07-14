@@ -5,7 +5,7 @@ using eCommerce.Core.Domain.Configuration.CustomSettings;
 using eCommerce.Core.Domain.Messages;
 using eCommerce.Core.Helpers;
 using eCommerce.Core.Interfaces;
-using YerdenYuksek.Core.Domain.Customers;
+using eCommerce.Core.Domain.Customers;
 using eCommerce.Core.Domain.Localization;
 using YerdenYuksek.Core.Domain.Messages;
 

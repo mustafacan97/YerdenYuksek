@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using YerdenYuksek.Core.Domain.Common;
 using eCommerce.Core.Domain.Configuration;
-using YerdenYuksek.Core.Domain.Customers;
 using eCommerce.Core.Domain.Localization;
 using YerdenYuksek.Core.Domain.Logging;
 using eCommerce.Core.Domain.Messages;
 using eCommerce.Core.Domain.Security;
+using eCommerce.Core.Domain.Customers;
 
 namespace eCommerce.Infrastructure.Persistence.Primitives;
 
@@ -42,7 +42,7 @@ public class ApplicationDbContext : DbContext
 
     public virtual DbSet<Customer> Customer { get; set; }
 
-    public virtual DbSet<CustomerSecurity> CustomerPassword { get; set; }    
+    public virtual DbSet<CustomerSecurity> CustomerSecurity { get; set; }    
 
     public virtual DbSet<EmailAccount> EmailAccount { get; set; }
 
