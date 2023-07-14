@@ -34,9 +34,6 @@ public class PictureBuilder : IEntityTypeConfiguration<Picture>
         builder.Property(q => q.CreatedOnUtc)
             .HasPrecision(6);
 
-        builder.Property(q => q.Active)
-            .HasDefaultValue(true);
-
         builder.HasOne(q => q.Customer)
             .WithOne(q => q.Picture)
             .HasForeignKey<Customer>(q => q.PictureId)

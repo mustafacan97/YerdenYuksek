@@ -20,9 +20,6 @@ public sealed class RoleBuilder : IEntityTypeConfiguration<Role>
         builder.Property(e => e.CreatedOnUtc)
             .HasPrecision(6);
 
-        builder.Property(q => q.Active)
-            .HasDefaultValue(true);
-
         builder.HasMany(x => x.Permissions)
             .WithMany(x => x.Roles)
             .UsingEntity(

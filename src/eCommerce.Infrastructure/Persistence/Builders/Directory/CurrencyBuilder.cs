@@ -33,9 +33,6 @@ public class CurrencyBuilder : IEntityTypeConfiguration<Currency>
         builder.Property(x => x.CreatedOnUtc)
             .HasPrecision(6);
 
-        builder.Property(x => x.Active)
-            .HasDefaultValue(true);
-
         builder.HasMany(x => x.Customers)
             .WithOne(x => x.Currency)
             .HasForeignKey(x => x.CurrencyId)

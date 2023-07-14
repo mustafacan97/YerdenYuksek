@@ -28,9 +28,6 @@ public sealed class MesasgeTemplateBuilder : IEntityTypeConfiguration<EmailTempl
         builder.Property(q => q.CreatedOnUtc)
             .HasPrecision(6);
 
-        builder.Property(q => q.Active)
-            .HasDefaultValue(true);
-
         builder.HasData(SeedMessageTemplateData());
     }
 

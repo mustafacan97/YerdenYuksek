@@ -59,11 +59,8 @@ public sealed class ProductBuilder : IEntityTypeConfiguration<Product>
         builder.Property(q => q.CreatedOnUtc)
             .HasPrecision(6);
 
-        builder.Property(q => q.Active)
-            .HasDefaultValue(true);
-
         builder.HasMany(q => q.ProductAttributeMappings)
-            .WithOne()
+            .WithOne( q => q.Product)
             .HasForeignKey(q => q.ProductId)
             .IsRequired();
 

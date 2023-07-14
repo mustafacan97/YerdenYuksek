@@ -29,9 +29,6 @@ public class ScheduleTaskBuilder : IEntityTypeConfiguration<ScheduleTask>
         builder.Property(e => e.LastSuccessUtc)
             .HasPrecision(6);
 
-        builder.Property(e => e.Active)
-            .HasDefaultValue(true);
-
         builder.HasData(SeedScheduleTaskData());
     }
 

@@ -20,9 +20,6 @@ public sealed class CityBuilder : IEntityTypeConfiguration<City>
         builder.Property(q => q.Abbreviation)
             .HasMaxLength(8);
 
-        builder.Property(q => q.Active)
-            .HasDefaultValue(true);
-
         builder.HasMany(q => q.Addresses)
             .WithOne(q => q.City)
             .HasForeignKey(q => q.CityId)

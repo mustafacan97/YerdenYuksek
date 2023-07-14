@@ -23,9 +23,6 @@ public class CategoryBuilder : IEntityTypeConfiguration<Category>
         builder.Property(q => q.CreatedOnUtc)
             .HasPrecision(6);
 
-        builder.Property(q => q.Active)
-            .HasDefaultValue(true);
-
         builder.HasOne(q => q.ParentCategory)
             .WithOne()
             .HasForeignKey<Category>(q => q.ParentCategoryId)

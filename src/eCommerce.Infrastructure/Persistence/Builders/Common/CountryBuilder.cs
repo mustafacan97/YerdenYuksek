@@ -20,9 +20,6 @@ public sealed class CountryBuilder : IEntityTypeConfiguration<Country>
         builder.Property(q => q.TwoLetterIsoCode)
             .HasMaxLength(2);
 
-        builder.Property(q => q.Active)
-            .HasDefaultValue(true);
-
         builder.HasMany(q => q.Addresses)
             .WithOne(q => q.Country)
             .HasForeignKey(q => q.CountryId)

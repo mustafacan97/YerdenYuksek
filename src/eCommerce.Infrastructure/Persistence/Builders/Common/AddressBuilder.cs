@@ -30,9 +30,6 @@ public sealed class AddressBuilder : IEntityTypeConfiguration<Address>
         builder.Property(e => e.CreatedOnUtc)
             .HasPrecision(6);
 
-        builder.Property(q => q.Active)
-            .HasDefaultValue(true);
-
         builder.HasMany(q => q.BillingOrders)
             .WithOne()
             .HasForeignKey(q => q.BillingAddressId)

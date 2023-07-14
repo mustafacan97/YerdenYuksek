@@ -62,9 +62,6 @@ public class OrderBuilder : IEntityTypeConfiguration<Order>
         builder.Property(q => q.CreatedOnUtc)
             .HasPrecision(6);
 
-        builder.Property(q => q.Active)
-            .HasDefaultValue(true);
-
         builder.HasOne(q => q.OrderNote)
             .WithOne()
             .HasForeignKey<OrderNote>(q => q.OrderId)

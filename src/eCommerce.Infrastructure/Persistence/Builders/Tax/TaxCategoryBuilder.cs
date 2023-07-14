@@ -18,7 +18,7 @@ public class TaxCategoryBuilder : IEntityTypeConfiguration<TaxCategory>
             .HasMaxLength(256);
 
         builder.HasMany(q => q.Products)
-            .WithOne()
+            .WithOne(q => q.TaxCategory)
             .HasForeignKey(q => q.TaxCategoryId)
             .IsRequired();
     }

@@ -23,11 +23,8 @@ public class ManufacturerBuilder : IEntityTypeConfiguration<Manufacturer>
         builder.Property(q => q.CreatedOnUtc)
             .HasPrecision(6);
 
-        builder.Property(q => q.Active)
-            .HasDefaultValue(true);
-
         builder.HasMany(q => q.Products)
-            .WithOne()
+            .WithOne(q => q.Manufacturer)
             .HasForeignKey(q => q.ManufacturerId)
             .IsRequired();
     }

@@ -18,7 +18,7 @@ public class ProductAttributeBuilder : IEntityTypeConfiguration<ProductAttribute
             .HasMaxLength(256);
 
         builder.HasMany(q => q.ProductAttributeMappings)
-            .WithOne()
+            .WithOne(q => q.ProductAttribute)
             .HasForeignKey(q => q.ProductAttributeId)
             .IsRequired();
     }

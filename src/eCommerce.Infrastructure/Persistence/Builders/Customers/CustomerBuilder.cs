@@ -37,9 +37,6 @@ public sealed class CustomerBuilder : IEntityTypeConfiguration<Customer>
         builder.Property(e => e.LastActivityDateUtc)
             .HasPrecision(6);
 
-        builder.Property(q => q.Active)
-            .HasDefaultValue(true);
-
         builder.HasOne(q => q.CustomerSecurity)
             .WithOne()
             .HasForeignKey<CustomerSecurity>(q => q.CustomerId)
@@ -57,7 +54,7 @@ public sealed class CustomerBuilder : IEntityTypeConfiguration<Customer>
 
         builder.HasOne(q => q.DefaultAddress)
             .WithOne()
-            .HasForeignKey<Address>(q => q.CustomerId)
+            .HasForeignKey<Customer>(q => q.DefaultAddressId)
             .IsRequired(false);
 
         builder.HasMany(q => q.Addresses)
