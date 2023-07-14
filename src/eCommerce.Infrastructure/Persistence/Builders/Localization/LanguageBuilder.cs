@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using YerdenYuksek.Core.Domain.Localization;
 using System.Globalization;
 using eCommerce.Core.Domain.Configuration.CustomSettings;
+using eCommerce.Application.Services.Common;
 
 namespace YerdenYuksek.Web.Framework.Persistence.Builders.Localization;
 
@@ -45,7 +46,7 @@ public sealed class LanguageBuilder : IEntityTypeConfiguration<Language>
         var defaultCulture = new CultureInfo("tr-TR");
         var defaultLanguage = new Language
         {
-            Id = LanguageSettings.DefaultLanguageId,
+            Id = CommonDefaults.DefaultLanguageId,
             Name = defaultCulture.TwoLetterISOLanguageName.ToUpperInvariant(),
             LanguageCulture = defaultCulture.Name,
             UniqueSeoCode = defaultCulture.TwoLetterISOLanguageName,

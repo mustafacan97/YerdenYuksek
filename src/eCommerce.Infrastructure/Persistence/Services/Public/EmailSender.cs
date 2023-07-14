@@ -16,15 +16,18 @@ public class EmailSender : IEmailSender
 {
     #region Fields
 
+    private readonly EmailAccountSettings _emailAccountSettings;
+
     private readonly IUnitOfWork _unitOfWork;
 
     #endregion
 
     #region Constructure and Destructure
 
-    public EmailSender(IUnitOfWork unitOfWork)
+    public EmailSender(IUnitOfWork unitOfWork, EmailAccountSettings emailAccountSettings)
     {
         _unitOfWork = unitOfWork;
+        _emailAccountSettings = emailAccountSettings;
     }
 
     #endregion
@@ -109,7 +112,7 @@ public class EmailSender : IEmailSender
     {
         if (emailAccount is null)
         {
-            emailAccount = await _unitOfWork.GetRepository<EmailAccount>().GetByIdAsync(EmailAccountSettings.DefaultEmailAccountId)
+            emailAccount = await _unitOfWork.GetRepository<EmailAccount>().GetByIdAsync(_emailAccountSettings.DefaultEmailAccountId)
             ?? throw new Exception("Email account could not be loaded");
         }
 

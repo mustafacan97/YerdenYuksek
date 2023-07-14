@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using YerdenYuksek.Core.Domain.Messages;
 using eCommerce.Core.Domain.Configuration.CustomSettings;
+using eCommerce.Application.Services.Common;
 
 namespace YerdenYuksek.Web.Framework.Persistence.Builders.Localization;
 
@@ -46,7 +47,7 @@ public sealed class EmailAccountBuilder : IEntityTypeConfiguration<EmailAccount>
     {
         var defaultEmail = new EmailAccount
         {
-            Id = EmailAccountSettings.DefaultEmailAccountId,
+            Id = CommonDefaults.DefaultEmailAccountId,
             Email = "test@mail.com",
             DisplayName = "Store name",
             Host = "smtp.mail.com",

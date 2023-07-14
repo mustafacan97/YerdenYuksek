@@ -14,6 +14,8 @@ public class WorkflowMessageService : IWorkflowMessageService
 {
     #region Fields
 
+    private readonly EmailAccountSettings _emailAccountSettings;
+
     private readonly IUnitOfWork _unitOfWork;
 
     private readonly ILanguageService _languageService;
@@ -36,7 +38,8 @@ public class WorkflowMessageService : IWorkflowMessageService
         IMessageTemplateService messageTemplateService,
         IMessageTokenProvider messageTokenProvider,
         ILocalizationService localizationService,
-        ITokenizer tokenizer)
+        ITokenizer tokenizer,
+        EmailAccountSettings emailAccountSettings)
     {
         _unitOfWork = unitOfWork;
         _languageService = languageService;
@@ -44,6 +47,7 @@ public class WorkflowMessageService : IWorkflowMessageService
         _messageTokenProvider = messageTokenProvider;
         _localizationService = localizationService;
         _tokenizer = tokenizer;
+        _emailAccountSettings = emailAccountSettings;
     }
 
     #endregion
@@ -117,7 +121,7 @@ public class WorkflowMessageService : IWorkflowMessageService
     private async Task<EmailAccount> GetEmailAccountOfMessageTemplateAsync(MessageTemplate messageTemplate)
     {
         var emailAccount = 
-            (await _unitOfWork.GetRepository<EmailAccount>().GetByIdAsync(messageTemplate.EmailAccountId) ?? await _unitOfWork.GetRepository<EmailAccount>().GetByIdAsync(EmailAccountSettings.DefaultEmailAccountId)) ??
+            (await _unitOfWork.GetRepository<EmailAccount>().GetByIdAsync(messageTemplate.EmailAccountId) ?? await _unitOfWork.GetRepository<EmailAccount>().GetByIdAsync(_emailAccountSettings.DefaultEmailAccountId)) ??
             (await _unitOfWork.GetRepository<EmailAccount>().GetAllAsync()).FirstOrDefault();
         
         return emailAccount;

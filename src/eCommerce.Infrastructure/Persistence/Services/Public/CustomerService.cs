@@ -8,6 +8,7 @@ using YerdenYuksek.Application.Services.Public.Customers;
 using YerdenYuksek.Application.Services.Public.Security;
 using eCommerce.Core.Caching;
 using YerdenYuksek.Core.Domain.Customers;
+using eCommerce.Application.Services.Public.Customers;
 
 namespace YerdenYuksek.Web.Framework.Persistence.Services.Public;
 

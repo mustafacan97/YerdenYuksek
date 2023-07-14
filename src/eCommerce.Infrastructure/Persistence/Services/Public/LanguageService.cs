@@ -49,7 +49,7 @@ public class LanguageService : ILanguageService
             throw new ArgumentNullException(nameof(language));
         }
 
-        if (_localizationSettings.DefaultAdminLanguageId == language.Id)
+        if (_localizationSettings.DefaultLanguageId == language.Id)
         {
             foreach (var activeLanguage in await GetAllLanguagesAsync())
             {
@@ -58,7 +58,7 @@ public class LanguageService : ILanguageService
                     continue;
                 }
 
-                _localizationSettings.DefaultAdminLanguageId = activeLanguage.Id;
+                _localizationSettings.DefaultLanguageId = activeLanguage.Id;
                 await _settingService.SaveSettingAsync(_localizationSettings);
                 break;
             }

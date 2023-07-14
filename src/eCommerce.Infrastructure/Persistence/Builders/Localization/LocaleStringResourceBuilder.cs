@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using YerdenYuksek.Core.Domain.Localization;
 using System.Xml;
 using eCommerce.Core.Domain.Configuration.CustomSettings;
+using eCommerce.Application.Services.Common;
 
 namespace YerdenYuksek.Web.Framework.Persistence.Builders.Localization;
 
@@ -34,7 +35,7 @@ public sealed class LocaleStringResourceBuilder : IEntityTypeConfiguration<Local
         {
             resources.Add(new LocaleStringResource 
             { 
-                LanguageId = LanguageSettings.DefaultLanguageId,
+                LanguageId = CommonDefaults.DefaultLanguageId,
                 ResourceName = name, 
                 ResourceValue = value 
             });

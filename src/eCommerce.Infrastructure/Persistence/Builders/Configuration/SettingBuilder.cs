@@ -1,6 +1,8 @@
-﻿using eCommerce.Core.Configuration;
+﻿using eCommerce.Application.Services.Common;
+using eCommerce.Core.Configuration;
 using eCommerce.Core.Domain.Configuration;
 using eCommerce.Core.Domain.Configuration.CustomSettings;
+using eCommerce.Core.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.ComponentModel;
@@ -25,9 +27,9 @@ public sealed class SettingBuilder : IEntityTypeConfiguration<Setting>
 
         builder.HasData(SeedCustomerSettings());
         builder.HasData(SeedSecuritySettings());
-        builder.HasData(SeedMessageSettings());
+        builder.HasData(SeedEmailTemplateSettings());
+        builder.HasData(SeedMessagesSettings());
         builder.HasData(SeedEmailAccountSettings());
-        builder.HasData(SeedLanguageSettings());
         builder.HasData(SeedLocalizationSettings());
     }
 
@@ -37,19 +39,44 @@ public sealed class SettingBuilder : IEntityTypeConfiguration<Setting>
 
     private static IList<Setting> SeedCustomerSettings()
     {
-        var customerSettings = new SecuritySettings() { };
+        var customerSettings = new CustomerSettings() 
+        {
+            HashedPasswordFormat = "SHA512",
+            PasswordMinLength = 6,
+            PasswordMaxLength = 64,
+            PasswordRequireDigit = false,
+            PasswordRequireLowercase = false,
+            PasswordRequireNonAlphanumeric = false,
+            PasswordRequireUppercase = false,
+            FailedPasswordAllowedAttempts = 3,
+            FailedPasswordLockoutMinutes = 30,
+        };
 
         return GetSettings<CustomerSettings>(customerSettings);
     }
 
     private static IList<Setting> SeedSecuritySettings()
     {
-        var securitySettings = new SecuritySettings() { };
+        var securitySettings = new SecuritySettings() 
+        {
+            EncryptionKey = CommonHelper.GenerateRandomDigitCode(16),
+            UseAesEncryptionAlgorithm = true,
+        };
         
         return GetSettings<SecuritySettings>(securitySettings);
     }
 
-    private static IList<Setting> SeedMessageSettings()
+    private static IList<Setting> SeedEmailTemplateSettings()
+    {
+        var messageSettings = new MessageTemplatesSettings() 
+        {
+            CaseInvariantReplacement = false,
+        };
+
+        return GetSettings<MessageTemplatesSettings>(messageSettings);
+    }
+
+    private static IList<Setting> SeedMessagesSettings()
     {
         var messageSettings = new MessageSettings() { };
 
@@ -58,21 +85,22 @@ public sealed class SettingBuilder : IEntityTypeConfiguration<Setting>
 
     private static IList<Setting> SeedEmailAccountSettings()
     {
-        var emailAccountSettings = new EmailAccountSettings();
+        var emailAccountSettings = new EmailAccountSettings() 
+        {
+            DefaultEmailAccountId = CommonDefaults.DefaultEmailAccountId,
+        };
 
         return GetSettings<EmailAccountSettings>(emailAccountSettings);
     }
 
-    private static IList<Setting> SeedLanguageSettings()
-    {
-        var languageSettings = new LanguageSettings();
-
-        return GetSettings<LanguageSettings>(languageSettings);
-    }
-
     private static IList<Setting> SeedLocalizationSettings()
     {
-        var localizationSettings = new LocalizationSettings();
+        var localizationSettings = new LocalizationSettings()
+        {
+            DefaultLanguageId = CommonDefaults.DefaultLanguageId,
+            LoadAllLocaleRecordsOnStartup = true,
+            LoadAllLocalizedPropertiesOnStartup = true,
+        };
 
         return GetSettings<LocalizationSettings>(localizationSettings);
     }
