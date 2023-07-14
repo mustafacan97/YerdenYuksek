@@ -1,4 +1,5 @@
 ﻿using eCommerce.Core.Domain.Directory;
+using eCommerce.Core.Domain.Logging;
 using eCommerce.Core.Domain.Security;
 using eCommerce.Core.Interfaces;
 using eCommerce.Core.Primitives;

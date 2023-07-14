@@ -6,6 +6,7 @@ using YerdenYuksek.Core.Domain.Logging;
 using eCommerce.Core.Domain.Messages;
 using eCommerce.Core.Domain.Security;
 using eCommerce.Core.Domain.Customers;
+using eCommerce.Core.Domain.Logging;
 
 namespace eCommerce.Infrastructure.Persistence.Primitives;
 

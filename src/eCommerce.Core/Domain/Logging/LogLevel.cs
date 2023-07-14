@@ -1,4 +1,4 @@
-namespace YerdenYuksek.Core.Domain.Logging;
+namespace eCommerce.Core.Domain.Logging;
 
 public enum LogLevel
 {

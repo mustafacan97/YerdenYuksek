@@ -2,6 +2,7 @@
 using eCommerce.Core.Domain.Security;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Reflection.Emit;
 
 namespace eCommerce.Framework.Persistence.Builders;
 
@@ -55,7 +56,12 @@ public sealed class CustomerBuilder : IEntityTypeConfiguration<Customer>
         builder.HasMany(q => q.ActivityLogs)
             .WithOne()
             .HasForeignKey(q => q.CustomerId)
-            .IsRequired();
+        .IsRequired();
+
+        builder.HasMany(e => e.Logs)
+            .WithOne()
+            .HasForeignKey(x => x.CustomerId)
+            .IsRequired(false);
 
         builder.HasMany(q => q.CustomerRoles)
             .WithMany(q => q.Customers)
