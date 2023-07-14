@@ -1,4 +1,5 @@
-﻿using eCommerce.Core.Interfaces;
+﻿using eCommerce.Core.Domain.Security;
+using eCommerce.Core.Interfaces;
 using eCommerce.Core.Primitives;
 using YerdenYuksek.Core.Domain.Common;
 using YerdenYuksek.Core.Domain.Logging;
@@ -12,7 +13,7 @@ public class Customer : SoftDeletedEntity, ISoftDeletedEntity
     public Customer()
     {
         Addresses = new HashSet<Address>();
-        CustomerRoles = new HashSet<CustomerRole>();
+        CustomerRoles = new HashSet<Role>();
         Logs = new HashSet<Log>();
         ActivityLogs = new HashSet<ActivityLog>();
     }
@@ -51,7 +52,7 @@ public class Customer : SoftDeletedEntity, ISoftDeletedEntity
 
     public ICollection<ActivityLog> ActivityLogs { get; set; }
 
-    public ICollection<CustomerRole> CustomerRoles { get; private set; }
+    public ICollection<Role> CustomerRoles { get; private set; }
 
     #endregion
 
@@ -80,7 +81,7 @@ public class Customer : SoftDeletedEntity, ISoftDeletedEntity
         CustomerSecurity = customerSecuirty;
     }
 
-    public void SetCustomerRole(CustomerRole customerRole)
+    public void SetCustomerRole(Role customerRole)
     {
         var isAlreadyExists = CustomerRoles.FirstOrDefault(q => q.Id == customerRole.Id);
         if (isAlreadyExists is null)

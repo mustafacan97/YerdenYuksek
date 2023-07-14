@@ -1,4 +1,5 @@
 ﻿using eCommerce.Application.Models.Customers;
+using eCommerce.Core.Domain.Security;
 using eCommerce.Core.Primitives;
 using YerdenYuksek.Application.Models.Customers;
 using YerdenYuksek.Core.Domain.Customers;
@@ -21,7 +22,7 @@ public partial interface ICustomerService
 
     Task<Customer?> GetCustomerByEmailAsync(string email, bool includeDeleted = false);
 
-    Task<CustomerRole?> GetCustomerRoleByNameAsync(string name);
+    Task<Role?> GetCustomerRoleByNameAsync(string name);
 
     #endregion
 }

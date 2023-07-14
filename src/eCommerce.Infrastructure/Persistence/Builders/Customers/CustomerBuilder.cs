@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using eCommerce.Core.Domain.Security;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using YerdenYuksek.Core.Domain.Customers;
 
@@ -60,7 +61,7 @@ public sealed class CustomerBuilder : IEntityTypeConfiguration<Customer>
             .WithMany(q => q.Customers)
             .UsingEntity(
                 "CustomerRoleMapping",
-                l => l.HasOne(typeof(CustomerRole)).WithMany().HasForeignKey("CustomerRoleId").HasPrincipalKey(nameof(CustomerRole.Id)),
+                l => l.HasOne(typeof(Role)).WithMany().HasForeignKey("CustomerRoleId").HasPrincipalKey(nameof(Role.Id)),
                 r => r.HasOne(typeof(Customer)).WithMany().HasForeignKey("CustomerId").HasPrincipalKey(nameof(Customer.Id)),
                 j => j.HasKey("CustomerRoleId", "CustomerId"));
     }

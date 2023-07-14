@@ -8,6 +8,7 @@ using eCommerce.Core.Caching;
 using YerdenYuksek.Core.Domain.Customers;
 using eCommerce.Application.Services.Customers;
 using eCommerce.Application.Services.Security;
+using eCommerce.Core.Domain.Security;
 
 namespace eCommerce.Infrastructure.Persistence.Services.Customers;
 
@@ -68,7 +69,7 @@ public class CustomerService : ICustomerService
             Password = _encryptionService.CreatePasswordHash(password, saltKey, _customerSettings.HashedPasswordFormat),
         };
 
-        var registeredRole = await GetCustomerRoleByNameAsync(CustomerDefaults.RegisteredRoleName);
+        var registeredRole = await GetCustomerRoleByNameAsync(RoleDefaults.RegisteredRoleName);
         if (registeredRole is null)
         {
             result.AddError(Error.Failure(description: "Related customer role not found!"));
@@ -111,7 +112,7 @@ public class CustomerService : ICustomerService
         }
 
         // Only registered can login
-        if (customer.CustomerHasSpecifiedRole(CustomerDefaults.RegisteredRoleName))
+        if (customer.CustomerHasSpecifiedRole(RoleDefaults.RegisteredRoleName))
         {
             return Result.Forbidden(Error.Failure(description: "Customer must be registered!"));
         }
@@ -178,7 +179,7 @@ public class CustomerService : ICustomerService
         return await _staticCacheManager.GetAsync(cacheKey, getEntityAsync);
     }
 
-    public async Task<CustomerRole?> GetCustomerRoleByNameAsync(string name)
+    public async Task<Role?> GetCustomerRoleByNameAsync(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -187,7 +188,7 @@ public class CustomerService : ICustomerService
 
         var key = _staticCacheManager.PrepareKeyForDefaultCache(YerdenYuksekCustomerServicesDefaults.CustomerRolesByNameCacheKey, name);
 
-        var query = from cr in _unitOfWork.GetRepository<CustomerRole>().Table
+        var query = from cr in _unitOfWork.GetRepository<Role>().Table
                     orderby cr.Id
                     where cr.Name == name
                     select cr;

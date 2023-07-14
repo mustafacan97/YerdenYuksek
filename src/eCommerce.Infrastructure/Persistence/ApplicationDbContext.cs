@@ -4,8 +4,8 @@ using eCommerce.Core.Domain.Configuration;
 using YerdenYuksek.Core.Domain.Customers;
 using YerdenYuksek.Core.Domain.Localization;
 using YerdenYuksek.Core.Domain.Logging;
-using YerdenYuksek.Core.Domain.Messages;
 using eCommerce.Core.Domain.Messages;
+using eCommerce.Core.Domain.Security;
 
 namespace eCommerce.Infrastructure.Persistence.Primitives;
 
@@ -42,9 +42,7 @@ public class ApplicationDbContext : DbContext
 
     public virtual DbSet<Customer> Customer { get; set; }
 
-    public virtual DbSet<CustomerSecurity> CustomerPassword { get; set; }
-
-    public virtual DbSet<CustomerRole> CustomerRole { get; set; }
+    public virtual DbSet<CustomerSecurity> CustomerPassword { get; set; }    
 
     public virtual DbSet<EmailAccount> EmailAccount { get; set; }
 
@@ -55,6 +53,10 @@ public class ApplicationDbContext : DbContext
     public virtual DbSet<Log> Log { get; set; }
 
     public virtual DbSet<EmailTemplate> EmailTemplate { get; set; }
+
+    public virtual DbSet<Permission> Permission { get; set; }
+
+    public virtual DbSet<Role> Role { get; set; }
 
     public virtual DbSet<Setting> Setting { get; set; }
 

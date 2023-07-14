@@ -1,13 +1,15 @@
 ﻿using eCommerce.Core.Primitives;
+using YerdenYuksek.Core.Domain.Customers;
 
-namespace YerdenYuksek.Core.Domain.Customers;
+namespace eCommerce.Core.Domain.Security;
 
-public class CustomerRole : BaseEntity
+public class Role : SoftDeletedEntity
 {
     #region Constructure and Destructure
 
-    public CustomerRole()
+    public Role()
     {
+        Permissions = new HashSet<Permission>();
         Customers = new HashSet<Customer>();
     }
 
@@ -17,11 +19,9 @@ public class CustomerRole : BaseEntity
 
     public string Name { get; set; }
 
-    public bool Active { get; set; }
-
-    public bool Deleted { get; set; }
-
     public DateTime CreatedOnUtc { get; set; }
+
+    public ICollection<Permission> Permissions { get; set; }
 
     public ICollection<Customer> Customers { get; set; }
 

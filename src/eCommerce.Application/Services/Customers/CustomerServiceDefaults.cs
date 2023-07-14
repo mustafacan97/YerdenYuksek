@@ -1,5 +1,5 @@
 ﻿using eCommerce.Core.Caching;
-using YerdenYuksek.Core.Domain.Customers;
+using eCommerce.Core.Domain.Security;
 
 namespace eCommerce.Application.Services.Customers;
 
@@ -25,7 +25,7 @@ public static class YerdenYuksekCustomerServicesDefaults
 
     #region Customer roles
 
-    public static CacheKey CustomerRolesAllCacheKey => new("YerdenYuksek.customerrole.all.{0}", EntityCacheDefaults<CustomerRole>.AllPrefix);
+    public static CacheKey CustomerRolesAllCacheKey => new("YerdenYuksek.customerrole.all.{0}", EntityCacheDefaults<Role>.AllPrefix);
 
     public static CacheKey CustomerRolesByNameCacheKey => new("YerdenYuksek.customerrole.name.{0}", CustomerRolesByNamePrefix);
 
