@@ -1,5 +1,4 @@
 ﻿using eCommerce.Core.Interfaces;
-using eCommerce.Core.Primitives;
 
 namespace eCommerce.Core.Primitives;
 
