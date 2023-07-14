@@ -1,9 +1,9 @@
-﻿using eCommerce.Core.Interfaces;
+﻿using eCommerce.Application.Services.Customers;
+using eCommerce.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-using YerdenYuksek.Application.Services.Public.Customers;
 using YerdenYuksek.Core.Domain.Customers;
 using YerdenYuksek.Core.Domain.Localization;
 

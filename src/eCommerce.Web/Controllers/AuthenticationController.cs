@@ -1,12 +1,12 @@
 ﻿using eCommerce.Application.Models.Customers;
-using eCommerce.Application.Services.Public.Security;
+using eCommerce.Application.Services.Customers;
+using eCommerce.Application.Services.Messages;
+using eCommerce.Application.Services.Security;
 using eCommerce.Core.Interfaces;
 using eCommerce.Core.Primitives;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using YerdenYuksek.Application.Models.Customers;
-using YerdenYuksek.Application.Services.Public.Customers;
-using YerdenYuksek.Application.Services.Public.Messages;
 
 namespace YerdenYuksek.Web.Controllers;
 
