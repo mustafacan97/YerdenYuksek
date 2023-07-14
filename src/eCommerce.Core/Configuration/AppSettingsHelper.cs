@@ -1,7 +1,6 @@
 ﻿using eCommerce.Core.Infrastructure;
 using System.Text;
 using System.Text.Json;
-using YerdenYuksek.Core.Infrastructure;
 
 namespace eCommerce.Core.Configuration;
 
@@ -11,7 +10,7 @@ public class AppSettingsHelper
 
     public static AppSettings SaveAppSettings(
         IList<IConfig> configurations, 
-        IYerdenYuksekFileProvider fileProvider, 
+        ICustomFileProvider fileProvider, 
         bool overwrite = true)
     {
         if (configurations is null)

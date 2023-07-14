@@ -13,7 +13,6 @@ using YerdenYuksek.Application.Services.Public.Localization;
 using YerdenYuksek.Application.Services.Public.Messages;
 using YerdenYuksek.Application.Services.Public.Security;
 using eCommerce.Core.Caching;
-using YerdenYuksek.Core.Infrastructure;
 using YerdenYuksek.Web.Framework.Common;
 using YerdenYuksek.Web.Framework.Infrastructure;
 using YerdenYuksek.Web.Framework.Persistence;
@@ -29,7 +28,6 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using eCommerce.Application.Services.Public.Security;
 using eCommerce.Infrastructure.Persistence.Services.Public;
-using eCommerce.Infrastructure.Persistence.Services.ScheduleTasks;
 using eCommerce.Application.Services.ScheduleTasks;
 using eCommerce.Core.Configuration;
 using eCommerce.Application.Services.Configuration;
@@ -81,7 +79,7 @@ public static class ServiceCollectionExtensions
     {
         ServicePointManager.SecurityProtocol = SecurityProtocolType.SystemDefault;
 
-        CommonHelper.DefaultFileProvider = new YerdenYuksekFileProvider(environment);
+        CommonHelper.DefaultFileProvider = new CustomFileProvider(environment);
 
         var typeFinder = new TypeFinder(CommonHelper.DefaultFileProvider);
         Singleton<ITypeFinder>.Instance = typeFinder;
@@ -133,7 +131,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IStaticCacheManager, MemoryCacheManager>();
 
         //file provider
-        services.AddScoped<IYerdenYuksekFileProvider, YerdenYuksekFileProvider>();
+        services.AddScoped<ICustomFileProvider, CustomFileProvider>();
 
         //add accessor to HttpContext
         services.AddHttpContextAccessor();

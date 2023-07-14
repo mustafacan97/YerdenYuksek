@@ -2,7 +2,7 @@
 using System.Reflection;
 using System.Text.RegularExpressions;
 
-namespace YerdenYuksek.Core.Infrastructure;
+namespace eCommerce.Core.Infrastructure;
 
 public partial class TypeFinder : ITypeFinder
 {
@@ -10,13 +10,13 @@ public partial class TypeFinder : ITypeFinder
 
     private readonly bool _ignoreReflectionErrors = true;
 
-    private readonly IYerdenYuksekFileProvider _fileProvider;
+    private readonly ICustomFileProvider _fileProvider;
 
     #endregion
 
     #region Constructure and Destructure
 
-    public TypeFinder(IYerdenYuksekFileProvider fileProvider)
+    public TypeFinder(ICustomFileProvider fileProvider)
     {
         _fileProvider = fileProvider;
     }

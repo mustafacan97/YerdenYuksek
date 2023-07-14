@@ -2,9 +2,9 @@
 using System.Security.AccessControl;
 using System.Text;
 
-namespace YerdenYuksek.Core.Infrastructure;
+namespace eCommerce.Core.Infrastructure;
 
-public interface IYerdenYuksekFileProvider : IFileProvider
+public interface ICustomFileProvider : IFileProvider
 {
     string Combine(params string[] paths);
 

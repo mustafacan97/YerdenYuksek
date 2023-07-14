@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace YerdenYuksek.Core.Infrastructure;
+namespace eCommerce.Core.Infrastructure;
 
 public partial class ConcurrentTrie<TValue> : IConcurrentCollection<TValue>
 {

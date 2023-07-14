@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace YerdenYuksek.Core.Infrastructure;
+namespace eCommerce.Core.Infrastructure;
 
 public interface ITypeFinder
 {

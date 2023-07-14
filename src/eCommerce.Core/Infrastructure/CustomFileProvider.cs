@@ -4,13 +4,13 @@ using System.Text;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 
-namespace YerdenYuksek.Core.Infrastructure;
+namespace eCommerce.Core.Infrastructure;
 
-public class YerdenYuksekFileProvider : PhysicalFileProvider, IYerdenYuksekFileProvider
+public class CustomFileProvider : PhysicalFileProvider, ICustomFileProvider
 {
     #region Constructure and Destructure
 
-    public YerdenYuksekFileProvider(IHostEnvironment hostEnvironment)
+    public CustomFileProvider(IHostEnvironment hostEnvironment)
         : base(File.Exists(hostEnvironment.ContentRootPath) ? Path.GetDirectoryName(hostEnvironment.ContentRootPath)! : hostEnvironment.ContentRootPath)
     {
         var staticFilePath = Path.Combine(hostEnvironment.ContentRootPath, "wwwroot");

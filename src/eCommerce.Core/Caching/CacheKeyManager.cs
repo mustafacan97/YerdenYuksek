@@ -1,4 +1,4 @@
-﻿using YerdenYuksek.Core.Infrastructure;
+﻿using eCommerce.Core.Infrastructure;
 
 namespace eCommerce.Core.Caching;
 

@@ -1,9 +1,8 @@
-﻿using System.ComponentModel;
+﻿using eCommerce.Core.Infrastructure;
+using System.ComponentModel;
 using System.Globalization;
 using System.Net;
 using System.Text.RegularExpressions;
-using YerdenYuksek.Core;
-using YerdenYuksek.Core.Infrastructure;
 
 namespace eCommerce.Core.Helpers;
 
@@ -251,7 +250,7 @@ public class CommonHelper
 
     #region Properties
 
-    public static IYerdenYuksekFileProvider DefaultFileProvider { get; set; }
+    public static ICustomFileProvider DefaultFileProvider { get; set; }
 
     #endregion
 }
