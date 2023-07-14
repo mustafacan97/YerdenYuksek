@@ -1,5 +1,5 @@
-﻿using YerdenYuksek.Core.Domain.Customers;
-using YerdenYuksek.Core.Domain.Messages;
+﻿using eCommerce.Core.Domain.Messages;
+using YerdenYuksek.Core.Domain.Customers;
 
 namespace YerdenYuksek.Application.Services.Public.Messages;
 
@@ -9,5 +9,5 @@ public interface IMessageTokenProvider
 
     void AddCustomerTokens(IList<Token> tokens, Customer customer);
 
-    IEnumerable<string> GetTokenGroups(MessageTemplate messageTemplate);
+    IEnumerable<string> GetTokenGroups(EmailTemplate messageTemplate);
 }

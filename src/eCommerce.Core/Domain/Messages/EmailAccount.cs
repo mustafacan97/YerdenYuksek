@@ -1,4 +1,5 @@
-﻿using eCommerce.Core.Primitives;
+﻿using eCommerce.Core.Domain.Messages;
+using eCommerce.Core.Primitives;
 
 namespace YerdenYuksek.Core.Domain.Messages;
 
@@ -8,7 +9,7 @@ public class EmailAccount : BaseEntity
 
     public EmailAccount()
     {
-        MessageTemplates = new HashSet<MessageTemplate>();
+        EmailTemplates = new HashSet<EmailTemplate>();
     }
 
     #endregion
@@ -33,7 +34,7 @@ public class EmailAccount : BaseEntity
 
     public bool Deleted { get; set; }
 
-    public ICollection<MessageTemplate> MessageTemplates { get; set; }
+    public ICollection<EmailTemplate> EmailTemplates { get; set; }
 
     #endregion
 }

@@ -31,7 +31,7 @@ public sealed class EmailAccountBuilder : IEntityTypeConfiguration<EmailAccount>
         builder.Property(e => e.Password)
             .HasMaxLength(256);
 
-        builder.HasMany(q => q.MessageTemplates)
+        builder.HasMany(q => q.EmailTemplates)
             .WithOne()
             .HasForeignKey(q => q.EmailAccountId)
             .IsRequired();

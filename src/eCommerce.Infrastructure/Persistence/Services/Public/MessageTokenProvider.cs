@@ -1,4 +1,5 @@
-﻿using eCommerce.Core.Interfaces;
+﻿using eCommerce.Core.Domain.Messages;
+using eCommerce.Core.Interfaces;
 using YerdenYuksek.Application.Services.Public.Customers;
 using YerdenYuksek.Application.Services.Public.Messages;
 using YerdenYuksek.Core.Domain.Customers;
@@ -55,15 +56,15 @@ public class MessageTokenProvider : IMessageTokenProvider
         }
     }
 
-    public IEnumerable<string> GetTokenGroups(MessageTemplate messageTemplate)
+    public IEnumerable<string> GetTokenGroups(EmailTemplate emailTemplate)
     {
-        return messageTemplate.Name switch
+        return emailTemplate.Name switch
         {
-            MessageTemplateSystemNames.CustomerRegisteredStoreOwnerNotification or
-            MessageTemplateSystemNames.CustomerWelcomeMessage or
-            MessageTemplateSystemNames.CustomerEmailValidationMessage or
-            MessageTemplateSystemNames.CustomerEmailRevalidationMessage or
-            MessageTemplateSystemNames.CustomerPasswordRecoveryMessage => new[] { TokenGroupNames.CustomerTokens },            
+            EmailTemplateSystemNames.CustomerRegisteredStoreOwnerNotification or
+            EmailTemplateSystemNames.CustomerWelcomeMessage or
+            EmailTemplateSystemNames.CustomerEmailValidationMessage or
+            EmailTemplateSystemNames.CustomerEmailRevalidationMessage or
+            EmailTemplateSystemNames.CustomerPasswordRecoveryMessage => new[] { TokenGroupNames.CustomerTokens },            
             _ => Array.Empty<string>(),
         };
     }

@@ -33,6 +33,9 @@ using eCommerce.Infrastructure.Persistence.Services.ScheduleTasks;
 using eCommerce.Application.Services.ScheduleTasks;
 using eCommerce.Core.Configuration;
 using eCommerce.Application.Services.Configuration;
+using eCommerce.Application.Services.Messages;
+using eCommerce.Persistence.Services.Messages;
+using eCommerce.Infrastructure.Persistence.Services.Messages;
 
 namespace eCommerce.Framework.Infrastructure.Extensions;
 
@@ -161,7 +164,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IScheduleTaskService, ScheduleTaskService>();
         services.AddScoped<IQueuedEmailService, QueuedEmailService>();
         services.AddScoped<IWorkflowMessageService, WorkflowMessageService>();
-        services.AddScoped<IMessageTemplateService, MessageTemplateService>();
+        services.AddScoped<IEmailTemplateService, EmailTemplateService>();
         services.AddScoped<IMessageTokenProvider, MessageTokenProvider>();
         services.AddScoped<IJwtService, JwtService>();
 

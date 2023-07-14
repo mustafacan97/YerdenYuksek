@@ -1,6 +1,6 @@
 ﻿namespace YerdenYuksek.Core.Domain.Messages;
 
-public static class MessageTemplateSystemNames
+public static class EmailTemplateSystemNames
 {
     #region Customer
 

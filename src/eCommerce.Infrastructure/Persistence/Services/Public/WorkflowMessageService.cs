@@ -1,5 +1,7 @@
 ﻿using System.Linq.Dynamic.Core;
+using eCommerce.Application.Services.Messages;
 using eCommerce.Core.Domain.Configuration.CustomSettings;
+using eCommerce.Core.Domain.Messages;
 using eCommerce.Core.Helpers;
 using eCommerce.Core.Interfaces;
 using YerdenYuksek.Application.Services.Public.Localization;
@@ -20,7 +22,7 @@ public class WorkflowMessageService : IWorkflowMessageService
 
     private readonly ILanguageService _languageService;
 
-    private readonly IMessageTemplateService _messageTemplateService;
+    private readonly IEmailTemplateService _messageTemplateService;
 
     private readonly ILocalizationService _localizationService;
 
@@ -35,7 +37,7 @@ public class WorkflowMessageService : IWorkflowMessageService
     public WorkflowMessageService(
         IUnitOfWork unitOfWork,
         ILanguageService languageService,
-        IMessageTemplateService messageTemplateService,
+        IEmailTemplateService messageTemplateService,
         IMessageTokenProvider messageTokenProvider,
         ILocalizationService localizationService,
         ITokenizer tokenizer,
@@ -63,7 +65,7 @@ public class WorkflowMessageService : IWorkflowMessageService
 
         languageId = await EnsureLanguageIsActiveAsync(languageId);
 
-        var messageTemplates = await GetActiveMessageTemplatesAsync(MessageTemplateSystemNames.CustomerWelcomeMessage);
+        var messageTemplates = await GetActiveMessageTemplatesAsync(EmailTemplateSystemNames.CustomerWelcomeMessage);
         if (!messageTemplates.Any())
         {
             return new List<Guid>();
@@ -104,13 +106,13 @@ public class WorkflowMessageService : IWorkflowMessageService
         return language.Id;
     }
 
-    private async Task<IList<MessageTemplate>> GetActiveMessageTemplatesAsync(string messageTemplateName)
+    private async Task<IList<EmailTemplate>> GetActiveMessageTemplatesAsync(string messageTemplateName)
     {
         var messageTemplates = await _messageTemplateService.GetMessageTemplatesByNameAsync(messageTemplateName);
         
         if (!messageTemplates?.Any() ?? true)
         {
-            return new List<MessageTemplate>();
+            return new List<EmailTemplate>();
         }
 
         messageTemplates = messageTemplates.Where(mt => mt.Active && !mt.Deleted).ToList();
@@ -118,7 +120,7 @@ public class WorkflowMessageService : IWorkflowMessageService
         return messageTemplates;
     }
 
-    private async Task<EmailAccount> GetEmailAccountOfMessageTemplateAsync(MessageTemplate messageTemplate)
+    private async Task<EmailAccount> GetEmailAccountOfMessageTemplateAsync(EmailTemplate messageTemplate)
     {
         var emailAccount = 
             (await _unitOfWork.GetRepository<EmailAccount>().GetByIdAsync(messageTemplate.EmailAccountId) ?? await _unitOfWork.GetRepository<EmailAccount>().GetByIdAsync(_emailAccountSettings.DefaultEmailAccountId)) ??
@@ -128,7 +130,7 @@ public class WorkflowMessageService : IWorkflowMessageService
     }
 
     private async Task<Guid> SendNotificationAsync(
-        MessageTemplate messageTemplate,
+        EmailTemplate emailTemplate,
         EmailAccount emailAccount,
         Guid languageId,
         IList<Token> tokens,
@@ -142,9 +144,9 @@ public class WorkflowMessageService : IWorkflowMessageService
         string? fromName = null,
         string? subject = null)
     {
-        if (messageTemplate is null)
+        if (emailTemplate is null)
         {
-            throw new ArgumentNullException(nameof(messageTemplate));
+            throw new ArgumentNullException(nameof(emailTemplate));
         }
 
         if (emailAccount is null)
@@ -152,14 +154,14 @@ public class WorkflowMessageService : IWorkflowMessageService
             throw new ArgumentNullException(nameof(emailAccount));
         }
         
-        var bcc = await _localizationService.GetLocalizedAsync(messageTemplate, mt => mt.BccEmailAddresses, languageId);
+        var bcc = await _localizationService.GetLocalizedAsync(emailTemplate, et => et.Bcc, languageId);
 
         if (string.IsNullOrEmpty(subject))
         {
-            subject = await _localizationService.GetLocalizedAsync(messageTemplate, mt => mt.Subject, languageId);
+            subject = await _localizationService.GetLocalizedAsync(emailTemplate, et => et.Subject, languageId);
         }
 
-        var body = await _localizationService.GetLocalizedAsync(messageTemplate, mt => mt.Body, languageId);
+        var body = await _localizationService.GetLocalizedAsync(emailTemplate, et => et.Body, languageId);
 
         //Replace subject and body tokens 
         var subjectReplaced = _tokenizer.Replace(subject, tokens, false);

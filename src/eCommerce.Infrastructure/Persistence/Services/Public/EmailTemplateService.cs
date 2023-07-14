@@ -2,11 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using YerdenYuksek.Application.Services.Public.Messages;
 using eCommerce.Core.Caching;
-using YerdenYuksek.Core.Domain.Messages;
+using eCommerce.Application.Services.Messages;
+using eCommerce.Core.Domain.Messages;
 
-namespace YerdenYuksek.Web.Framework.Persistence.Services.Public;
+namespace eCommerce.Persistence.Services.Messages;
 
-public class MessageTemplateService : IMessageTemplateService
+public class EmailTemplateService : IEmailTemplateService
 {
     # region Fields
 
@@ -18,7 +19,7 @@ public class MessageTemplateService : IMessageTemplateService
 
     #region Constructure and Destructure
 
-    public MessageTemplateService(
+    public EmailTemplateService(
         IUnitOfWork unitOfWork, 
         IStaticCacheManager staticCacheManager)
     {
@@ -30,15 +31,15 @@ public class MessageTemplateService : IMessageTemplateService
 
     #region Public Methods
 
-    public async Task DeleteMessageTemplateAsync(MessageTemplate messageTemplate)
+    public async Task DeleteMessageTemplateAsync(EmailTemplate messageTemplate)
     {
-        _unitOfWork.GetRepository<MessageTemplate>().Delete(messageTemplate);
+        _unitOfWork.GetRepository<EmailTemplate>().Delete(messageTemplate);
         await _unitOfWork.SaveChangesAsync();
     }
 
-    public async Task<IList<MessageTemplate>> GetAllMessageTemplatesAsync(string? keywords = null, bool? isActive = null)
+    public async Task<IList<EmailTemplate>> GetAllMessageTemplatesAsync(string? keywords = null, bool? isActive = null)
     {
-        var messageTemplates = await _unitOfWork.GetRepository<MessageTemplate>().GetAllAsync(query =>
+        var messageTemplates = await _unitOfWork.GetRepository<EmailTemplate>().GetAllAsync(query =>
         {
             query = query.Where(q => !q.Deleted);
 
@@ -60,12 +61,12 @@ public class MessageTemplateService : IMessageTemplateService
         return messageTemplates;
     }
 
-    public async Task<MessageTemplate> GetMessageTemplateByIdAsync(Guid messageTemplateId)
+    public async Task<EmailTemplate> GetMessageTemplateByIdAsync(Guid messageTemplateId)
     {
-        return await _unitOfWork.GetRepository<MessageTemplate>().GetByIdAsync(messageTemplateId, cache => default);
+        return await _unitOfWork.GetRepository<EmailTemplate>().GetByIdAsync(messageTemplateId, cache => default);
     }
 
-    public async Task<IList<MessageTemplate>> GetMessageTemplatesByNameAsync(string messageTemplateName)
+    public async Task<IList<EmailTemplate>> GetMessageTemplatesByNameAsync(string messageTemplateName)
     {
         if (string.IsNullOrWhiteSpace(messageTemplateName))
         {
@@ -76,7 +77,7 @@ public class MessageTemplateService : IMessageTemplateService
 
         return await _staticCacheManager.GetAsync(key, async () =>
         {            
-            var templates = await _unitOfWork.GetRepository<MessageTemplate>().Table
+            var templates = await _unitOfWork.GetRepository<EmailTemplate>().Table
                 .Where(messageTemplate => messageTemplate.Name.Equals(messageTemplateName))
                 .OrderBy(messageTemplate => messageTemplate.Id)
                 .ToListAsync();
@@ -85,15 +86,15 @@ public class MessageTemplateService : IMessageTemplateService
         });
     }
 
-    public async Task InsertMessageTemplateAsync(MessageTemplate messageTemplate)
+    public async Task InsertMessageTemplateAsync(EmailTemplate messageTemplate)
     {
-        await _unitOfWork.GetRepository<MessageTemplate>().InsertAsync(messageTemplate);
+        await _unitOfWork.GetRepository<EmailTemplate>().InsertAsync(messageTemplate);
         await _unitOfWork.SaveChangesAsync();
     }
 
-    public async Task UpdateMessageTemplateAsync(MessageTemplate messageTemplate)
+    public async Task UpdateMessageTemplateAsync(EmailTemplate messageTemplate)
     {
-        _unitOfWork.GetRepository<MessageTemplate>().Update(messageTemplate);
+        _unitOfWork.GetRepository<EmailTemplate>().Update(messageTemplate);
         await _unitOfWork.SaveChangesAsync();
     }
 
