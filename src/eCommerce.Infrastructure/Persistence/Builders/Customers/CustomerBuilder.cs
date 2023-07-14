@@ -1,6 +1,5 @@
 ﻿using eCommerce.Core.Domain.Common;
 using eCommerce.Core.Domain.Customers;
-using eCommerce.Core.Domain.Media;
 using eCommerce.Core.Domain.Security;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -9,6 +8,8 @@ namespace eCommerce.Infrastructure.Persistence.Builders.Customers;
 
 public sealed class CustomerBuilder : IEntityTypeConfiguration<Customer>
 {
+    #region Public Methods
+
     public void Configure(EntityTypeBuilder<Customer> builder)
     {
         builder.ToTable("Customer");
@@ -76,5 +77,12 @@ public sealed class CustomerBuilder : IEntityTypeConfiguration<Customer>
             .WithOne()
             .HasForeignKey(q => q.CustomerId)
             .IsRequired();
+
+        builder.HasMany(q => q.ShoppingCartItems)
+            .WithOne()
+            .HasForeignKey(q => q.CustomerId)
+            .IsRequired();
     }
+
+    #endregion
 }

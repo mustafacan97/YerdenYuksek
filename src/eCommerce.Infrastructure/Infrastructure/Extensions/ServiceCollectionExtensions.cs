@@ -12,9 +12,6 @@ using eCommerce.Core.Caching;
 using YerdenYuksek.Web.Framework.Common;
 using YerdenYuksek.Web.Framework.Infrastructure;
 using YerdenYuksek.Web.Framework.Persistence;
-using TaskScheduler = eCommerce.Infrastructure.Persistence.Services.ScheduleTasks.TaskScheduler;
-using ScheduleTaskRunner = eCommerce.Infrastructure.Persistence.Services.ScheduleTasks.ScheduleTaskRunner;
-using ScheduleTaskService = eCommerce.Infrastructure.Persistence.Services.ScheduleTasks.ScheduleTaskService;
 using eCommerce.Core.Interfaces;
 using eCommerce.Core.Helpers;
 using eCommerce.Core.Infrastructure;
@@ -33,6 +30,7 @@ using eCommerce.Infrastructure.Persistence.Services.Secuirty;
 using eCommerce.Infrastructure.Persistence.Services.Localization;
 using eCommerce.Infrastructure.Persistence.Services.Customers;
 using eCommerce.Infrastructure.Persistence.Services.Configuration;
+using eCommerce.Infrastructure.Persistence.Services.ScheduleTasks;
 
 namespace eCommerce.Framework.Infrastructure.Extensions;
 
@@ -170,7 +168,7 @@ public static class ServiceCollectionExtensions
         services.RegisterAllSettings();
 
         //schedule tasks
-        services.AddSingleton<ITaskScheduler, TaskScheduler>();
+        services.AddSingleton<ITaskScheduler, eCommerce.Infrastructure.Persistence.Services.ScheduleTasks.TaskScheduler>();
         services.AddTransient<IScheduleTaskRunner, ScheduleTaskRunner>();
 
         return services;

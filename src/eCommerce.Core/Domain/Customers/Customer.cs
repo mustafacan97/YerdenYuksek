@@ -21,6 +21,7 @@ public class Customer : SoftDeletedEntity
         Addresses = new HashSet<Address>();
         CustomerRoles = new HashSet<Role>();
         Orders = new HashSet<Order>();
+        ShoppingCartItems = new HashSet<ShoppingCartItem>();
     }
 
     #endregion
@@ -74,6 +75,8 @@ public class Customer : SoftDeletedEntity
     public ICollection<Role> CustomerRoles { get; private set; }
 
     public ICollection<Order> Orders { get; set; }
+
+    public ICollection<ShoppingCartItem> ShoppingCartItems { get; set; }
 
     #endregion
 

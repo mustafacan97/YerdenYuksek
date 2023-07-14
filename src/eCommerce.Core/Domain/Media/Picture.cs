@@ -1,4 +1,5 @@
-﻿using eCommerce.Core.Domain.Customers;
+﻿using eCommerce.Core.Domain.Catalog;
+using eCommerce.Core.Domain.Customers;
 using eCommerce.Core.Primitives;
 
 namespace eCommerce.Core.Domain.Media;
@@ -20,4 +21,8 @@ public class Picture : SoftDeletedEntity
     public DateTime CreatedOnUtc { get; set; }
 
     public Customer? Customer { get; set; }
+
+    public Category? Category { get; set; }
+
+    public Manufacturer? Manufacturer { get; set; }
 }

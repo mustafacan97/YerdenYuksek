@@ -1,4 +1,5 @@
-﻿using eCommerce.Core.Domain.Customers;
+﻿using eCommerce.Core.Domain.Catalog;
+using eCommerce.Core.Domain.Customers;
 using eCommerce.Core.Domain.Media;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -39,7 +40,17 @@ public class PictureBuilder : IEntityTypeConfiguration<Picture>
         builder.HasOne(q => q.Customer)
             .WithOne(q => q.Picture)
             .HasForeignKey<Customer>(q => q.PictureId)
-            .IsRequired();
+            .IsRequired(false);
+
+        builder.HasOne(q => q.Category)
+            .WithOne(q => q.Picture)
+            .HasForeignKey<Category>(q => q.PictureId)
+            .IsRequired(false);
+
+        builder.HasOne(q => q.Manufacturer)
+            .WithOne(q => q.Picture)
+            .HasForeignKey<Manufacturer>(q => q.PictureId)
+            .IsRequired(false);
     }
 
     #endregion
