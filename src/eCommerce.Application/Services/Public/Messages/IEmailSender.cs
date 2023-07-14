@@ -1,4 +1,5 @@
-﻿using YerdenYuksek.Core.Domain.Messages;
+﻿using eCommerce.Core.Domain.Messages;
+using YerdenYuksek.Core.Domain.Messages;
 
 namespace YerdenYuksek.Application.Services.Public.Messages;
 

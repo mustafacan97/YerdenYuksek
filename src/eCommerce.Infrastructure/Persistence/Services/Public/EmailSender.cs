@@ -1,4 +1,5 @@
 ﻿using eCommerce.Core.Domain.Configuration.CustomSettings;
+using eCommerce.Core.Domain.Messages;
 using eCommerce.Core.Interfaces;
 using MailKit.Net.Smtp;
 using MailKit.Security;

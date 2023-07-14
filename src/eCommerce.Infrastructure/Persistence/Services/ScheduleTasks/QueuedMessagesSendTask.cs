@@ -1,5 +1,6 @@
 ﻿using eCommerce.Application.Services.Messages;
 using eCommerce.Application.Services.ScheduleTasks;
+using eCommerce.Core.Domain.Messages;
 using eCommerce.Core.Interfaces;
 using YerdenYuksek.Application.Services.Public.Messages;
 using YerdenYuksek.Core.Domain.Messages;

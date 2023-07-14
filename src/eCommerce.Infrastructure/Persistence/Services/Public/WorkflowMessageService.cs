@@ -174,7 +174,7 @@ public class WorkflowMessageService : IWorkflowMessageService
         {
             Priority = QueuedEmailPriority.High,
             From = !string.IsNullOrEmpty(fromEmail) ? fromEmail : emailAccount.Email,
-            FromName = !string.IsNullOrEmpty(fromName) ? fromName : emailAccount.DisplayName,
+            FromName = fromName ?? string.Empty,
             To = toEmailAddress,
             ToName = toName,
             ReplyTo = replyToEmailAddress,

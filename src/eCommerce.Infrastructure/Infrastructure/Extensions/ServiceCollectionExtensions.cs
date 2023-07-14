@@ -164,6 +164,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IScheduleTaskService, ScheduleTaskService>();
         services.AddScoped<IQueuedEmailService, QueuedEmailService>();
         services.AddScoped<IWorkflowMessageService, WorkflowMessageService>();
+        services.AddScoped<IEmailAccountService, EmailAccountService>();
         services.AddScoped<IEmailTemplateService, EmailTemplateService>();
         services.AddScoped<IMessageTokenProvider, MessageTokenProvider>();
         services.AddScoped<IJwtService, JwtService>();

@@ -1,10 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using YerdenYuksek.Core.Domain.Messages;
-using eCommerce.Core.Domain.Configuration.CustomSettings;
 using eCommerce.Application.Services.Common;
+using eCommerce.Core.Domain.Messages;
 
-namespace YerdenYuksek.Web.Framework.Persistence.Builders.Localization;
+namespace eCommerce.Infrastructure.Persistence.Builders.Messages;
 
 public sealed class EmailAccountBuilder : IEntityTypeConfiguration<EmailAccount>
 {
@@ -19,17 +18,19 @@ public sealed class EmailAccountBuilder : IEntityTypeConfiguration<EmailAccount>
         builder.Property(e => e.Email)
             .HasMaxLength(128);
 
-        builder.Property(e => e.DisplayName)
-            .HasMaxLength(256);
-
         builder.Property(e => e.Host)
             .HasMaxLength(256);
 
         builder.Property(e => e.Username)
-            .HasMaxLength(256);
+            .HasMaxLength(128);
 
         builder.Property(e => e.Password)
-            .HasMaxLength(256);
+            .HasMaxLength(128);
+
+        builder.HasMany(q => q.QueuedEmails)
+            .WithOne()
+            .HasForeignKey(q => q.EmailAccountId)
+            .IsRequired();
 
         builder.HasMany(q => q.EmailTemplates)
             .WithOne()
@@ -48,13 +49,12 @@ public sealed class EmailAccountBuilder : IEntityTypeConfiguration<EmailAccount>
         var defaultEmail = new EmailAccount
         {
             Id = CommonDefaults.DefaultEmailAccountId,
-            Email = "test@mail.com",
-            DisplayName = "Store name",
-            Host = "smtp.mail.com",
-            Port = 25,
-            Username = "123",
-            Password = "123",
-            EnableSsl = false,
+            Email = "info@mustafacan.co",
+            Host = "mustafacan.co",
+            Port = 465,
+            Username = "info@mustafacan.co",
+            Password = "eCommerce.2023!",
+            EnableSsl = true,
             Active = true,
             Deleted = false
         };

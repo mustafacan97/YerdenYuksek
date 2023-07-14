@@ -1,15 +1,15 @@
-﻿using eCommerce.Core.Domain.Messages;
-using eCommerce.Core.Primitives;
+﻿using eCommerce.Core.Primitives;
 
-namespace YerdenYuksek.Core.Domain.Messages;
+namespace eCommerce.Core.Domain.Messages;
 
-public class EmailAccount : BaseEntity
+public class EmailAccount : SoftDeletedEntity
 {
     #region Constructure and Destructure
 
     public EmailAccount()
     {
         EmailTemplates = new HashSet<EmailTemplate>();
+        QueuedEmails = new HashSet<QueuedEmail>();
     }
 
     #endregion
@@ -17,8 +17,6 @@ public class EmailAccount : BaseEntity
     #region Public Properties
 
     public string Email { get; set; }
-
-    public string? DisplayName { get; set; }
 
     public string Host { get; set; }
 
@@ -30,11 +28,9 @@ public class EmailAccount : BaseEntity
 
     public bool EnableSsl { get; set; }
 
-    public bool Active { get; set; }
-
-    public bool Deleted { get; set; }
-
     public ICollection<EmailTemplate> EmailTemplates { get; set; }
+
+    public ICollection<QueuedEmail> QueuedEmails { get; set; }
 
     #endregion
 }
