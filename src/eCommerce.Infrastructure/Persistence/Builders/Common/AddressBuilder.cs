@@ -32,5 +32,15 @@ public sealed class AddressBuilder : IEntityTypeConfiguration<Address>
 
         builder.Property(q => q.Active)
             .HasDefaultValue(true);
+
+        builder.HasMany(q => q.BillingOrders)
+            .WithOne()
+            .HasForeignKey(q => q.BillingAddressId)
+            .IsRequired();
+
+        builder.HasMany(q => q.ShippingOrders)
+            .WithOne()
+            .HasForeignKey(q => q.ShippingAddressId)
+            .IsRequired();
     }
 }

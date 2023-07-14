@@ -70,5 +70,10 @@ public sealed class CustomerBuilder : IEntityTypeConfiguration<Customer>
                 l => l.HasOne(typeof(Role)).WithMany().HasForeignKey("RoleId").HasPrincipalKey(nameof(Role.Id)),
                 r => r.HasOne(typeof(Customer)).WithMany().HasForeignKey("CustomerId").HasPrincipalKey(nameof(Customer.Id)),
                 j => j.HasKey("RoleId", "CustomerId"));
+
+        builder.HasMany(q => q.Orders)
+            .WithOne()
+            .HasForeignKey(q => q.CustomerId)
+            .IsRequired();
     }
 }

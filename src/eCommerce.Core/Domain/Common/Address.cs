@@ -1,9 +1,20 @@
-﻿using eCommerce.Core.Primitives;
+﻿using eCommerce.Core.Domain.Orders;
+using eCommerce.Core.Primitives;
 
 namespace eCommerce.Core.Domain.Common;
 
 public class Address : SoftDeletedEntity
 {
+    #region Constructure and Destructure
+
+    public Address()
+    {
+        BillingOrders = new HashSet<Order>();
+        ShippingOrders = new HashSet<Order>();
+    }
+
+    #endregion
+
     #region Public Properties
 
     public string FirstName { get; set; }
@@ -31,6 +42,10 @@ public class Address : SoftDeletedEntity
     public Country Country { get; set; }
 
     public City City { get; set; }
+
+    public ICollection<Order> BillingOrders { get; set; }
+
+    public ICollection<Order> ShippingOrders { get; set; }
 
     #endregion
 }

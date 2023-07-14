@@ -2,6 +2,7 @@
 using eCommerce.Core.Domain.Directory;
 using eCommerce.Core.Domain.Localization;
 using eCommerce.Core.Domain.Logging;
+using eCommerce.Core.Domain.Orders;
 using eCommerce.Core.Domain.Security;
 using eCommerce.Core.Primitives;
 using YerdenYuksek.Core.Domain.Logging;
@@ -18,6 +19,7 @@ public class Customer : SoftDeletedEntity
         ActivityLogs = new HashSet<ActivityLog>();
         Addresses = new HashSet<Address>();
         CustomerRoles = new HashSet<Role>();
+        Orders = new HashSet<Order>();
     }
 
     #endregion
@@ -65,6 +67,8 @@ public class Customer : SoftDeletedEntity
     public ICollection<Address> Addresses { get; set; }
 
     public ICollection<Role> CustomerRoles { get; private set; }
+
+    public ICollection<Order> Orders { get; set; }
 
     #endregion
 
