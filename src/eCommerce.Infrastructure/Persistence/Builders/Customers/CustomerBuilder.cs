@@ -1,4 +1,5 @@
-﻿using eCommerce.Core.Domain.Customers;
+﻿using eCommerce.Core.Domain.Common;
+using eCommerce.Core.Domain.Customers;
 using eCommerce.Core.Domain.Security;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -51,6 +52,11 @@ public sealed class CustomerBuilder : IEntityTypeConfiguration<Customer>
             .WithOne()
             .HasForeignKey(x => x.CustomerId)
             .IsRequired();
+
+        builder.HasOne(q => q.DefaultAddress)
+            .WithOne()
+            .HasForeignKey<Address>(q => q.CustomerId)
+            .IsRequired(false);
 
         builder.HasMany(q => q.Addresses)
             .WithOne()

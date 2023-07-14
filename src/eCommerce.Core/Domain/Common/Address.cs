@@ -1,12 +1,10 @@
 ﻿using eCommerce.Core.Primitives;
 
-namespace YerdenYuksek.Core.Domain.Common;
+namespace eCommerce.Core.Domain.Common;
 
-public class Address : BaseEntity
+public class Address : SoftDeletedEntity
 {
     #region Public Properties
-
-    public Guid CustomerId { get; set; }
 
     public string FirstName { get; set; }
 
@@ -14,9 +12,13 @@ public class Address : BaseEntity
 
     public string Email { get; set; }
 
+    public string PhoneNumber { get; set; }
+
+    public Guid CustomerId { get; set; }
+
     public Guid CountryId { get; set; }
 
-    public Guid City { get; set; }
+    public Guid CityId { get; set; }
 
     public string Address1 { get; set; }
 
@@ -24,9 +26,11 @@ public class Address : BaseEntity
 
     public string ZipCode { get; set; }
 
-    public string PhoneNumber { get; set; }
-
     public DateTime CreatedOnUtc { get; set; }
+
+    public Country Country { get; set; }
+
+    public City City { get; set; }
 
     #endregion
 }

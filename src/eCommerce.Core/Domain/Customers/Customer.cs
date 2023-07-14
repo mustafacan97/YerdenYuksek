@@ -1,9 +1,9 @@
-﻿using eCommerce.Core.Domain.Directory;
+﻿using eCommerce.Core.Domain.Common;
+using eCommerce.Core.Domain.Directory;
 using eCommerce.Core.Domain.Localization;
 using eCommerce.Core.Domain.Logging;
 using eCommerce.Core.Domain.Security;
 using eCommerce.Core.Primitives;
-using YerdenYuksek.Core.Domain.Common;
 using YerdenYuksek.Core.Domain.Logging;
 
 namespace eCommerce.Core.Domain.Customers;
@@ -13,11 +13,11 @@ public class Customer : SoftDeletedEntity
     #region Constructure and Destructure
 
     public Customer()
-    {
-        Addresses = new HashSet<Address>();
-        CustomerRoles = new HashSet<Role>();
+    {        
         Logs = new HashSet<Log>();
         ActivityLogs = new HashSet<ActivityLog>();
+        Addresses = new HashSet<Address>();
+        CustomerRoles = new HashSet<Role>();
     }
 
     #endregion

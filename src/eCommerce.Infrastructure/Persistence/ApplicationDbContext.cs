@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using YerdenYuksek.Core.Domain.Common;
 using eCommerce.Core.Domain.Configuration;
 using eCommerce.Core.Domain.Localization;
 using YerdenYuksek.Core.Domain.Logging;
@@ -7,6 +6,7 @@ using eCommerce.Core.Domain.Messages;
 using eCommerce.Core.Domain.Security;
 using eCommerce.Core.Domain.Customers;
 using eCommerce.Core.Domain.Logging;
+using eCommerce.Core.Domain.Common;
 
 namespace eCommerce.Infrastructure.Persistence.Primitives;
 
@@ -40,6 +40,10 @@ public class ApplicationDbContext : DbContext
     public virtual DbSet<ActivityLog> ActivityLog { get; set; }
 
     public virtual DbSet<ActivityLogType> ActivityLogType { get; set; }
+
+    public virtual DbSet<City> City { get; set; }
+
+    public virtual DbSet<Country> Country { get; set; }
 
     public virtual DbSet<Customer> Customer { get; set; }
 
