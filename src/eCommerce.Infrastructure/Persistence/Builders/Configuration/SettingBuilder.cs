@@ -13,7 +13,7 @@ public sealed class SettingBuilder : IEntityTypeConfiguration<Setting>
 {
     #region Constructure and Destructure
 
-    private SettingBuilder()
+    public SettingBuilder()
     {
         Configuration = new ConfigurationBuilder()
             .AddJsonFile("appsettings.json", false, true)
@@ -22,9 +22,9 @@ public sealed class SettingBuilder : IEntityTypeConfiguration<Setting>
 
     #endregion
 
-    #region Properties
+    #region Public Properties
 
-    private IConfiguration Configuration { get; set; }
+    public IConfiguration Configuration { get; set; }
 
     #endregion
 
