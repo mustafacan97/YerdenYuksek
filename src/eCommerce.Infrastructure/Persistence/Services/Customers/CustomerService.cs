@@ -67,6 +67,7 @@ public class CustomerService : ICustomerService
             CustomerId = customer.Id,
             PasswordSalt = saltKey,
             Password = _encryptionService.CreatePasswordHash(password, saltKey, _customerSettings.HashedPasswordFormat),
+            LastIpAddress = _webHelper.GetCurrentIpAddress(),
         };
 
         var registeredRole = await GetCustomerRoleByNameAsync(RoleDefaults.RegisteredRoleName);
@@ -76,8 +77,7 @@ public class CustomerService : ICustomerService
             return result;
         }
 
-        customer.SetIpAddress(_webHelper.GetCurrentIpAddress());
-        customer.SetCustomerPassword(customerPassword);
+        customer.SetCustomerSecurity(customerPassword);
         customer.SetCustomerRole(registeredRole);
 
         await InsertCustomerAsync(customer);

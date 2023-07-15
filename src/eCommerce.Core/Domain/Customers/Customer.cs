@@ -92,15 +92,7 @@ public class Customer : SoftDeletedEntity
         };
     }
 
-    public void SetIpAddress(string ipAddress)
-    {
-        if (!string.IsNullOrEmpty(ipAddress))
-        {
-            CustomerSecurity.LastIpAddress = ipAddress;
-        }
-    }
-
-    public void SetCustomerPassword(CustomerSecurity customerSecuirty)
+    public void SetCustomerSecurity(CustomerSecurity customerSecuirty)
     {
         CustomerSecurity = customerSecuirty;
     }
