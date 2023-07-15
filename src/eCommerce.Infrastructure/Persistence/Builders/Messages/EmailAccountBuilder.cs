@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using eCommerce.Application.Services.Common;
 using eCommerce.Core.Domain.Messages;
+using Microsoft.Extensions.Configuration;
 
 namespace eCommerce.Infrastructure.Persistence.Builders.Messages;
 
@@ -46,15 +46,19 @@ public sealed class EmailAccountBuilder : IEntityTypeConfiguration<EmailAccount>
 
     private static IList<EmailAccount> SeedEmailAccountData()
     {
+        IConfiguration _configuration = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json", false, true)
+            .Build();
+
         var defaultEmail = new EmailAccount
         {
-            Id = CommonDefaults.DefaultEmailAccountId,
-            Email = "info@mustafacan.co",
-            Host = "mustafacan.co",
-            Port = 465,
-            Username = "info@mustafacan.co",
-            Password = "eCommerce.2023!",
-            EnableSsl = true,
+            Id = _configuration.GetValue<Guid>("DefaultValues:EmailAccountId"),
+            Email = _configuration.GetValue<string>("DefaultValues:EmailAccount:Email"),
+            Host = _configuration.GetValue<string>("DefaultValues:EmailAccount:Host"),
+            Port = _configuration.GetValue<int>("DefaultValues:EmailAccount:Port"),
+            Username = _configuration.GetValue<string>("DefaultValues:EmailAccount:Username"),
+            Password = _configuration.GetValue<string>("DefaultValues:EmailAccount:Password"),
+            EnableSsl = _configuration.GetValue<bool>("DefaultValues:EmailAccount:EnableSsl"),
             Active = true,
             Deleted = false
         };

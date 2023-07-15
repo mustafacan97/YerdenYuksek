@@ -1,16 +1,33 @@
-﻿using eCommerce.Application.Services.Common;
-using eCommerce.Core.Configuration;
+﻿using eCommerce.Core.Configuration;
 using eCommerce.Core.Domain.Configuration;
 using eCommerce.Core.Domain.Configuration.CustomSettings;
 using eCommerce.Core.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.Extensions.Configuration;
 using System.ComponentModel;
 
 namespace eCommerce.Framework.Persistence.Builders;
 
 public sealed class SettingBuilder : IEntityTypeConfiguration<Setting>
 {
+    #region Constructure and Destructure
+
+    private SettingBuilder()
+    {
+        Configuration = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json", false, true)
+            .Build();
+    }
+
+    #endregion
+
+    #region Properties
+
+    private IConfiguration Configuration { get; set; }
+
+    #endregion
+
     #region Public Methods
 
     public void Configure(EntityTypeBuilder<Setting> builder)
@@ -36,6 +53,28 @@ public sealed class SettingBuilder : IEntityTypeConfiguration<Setting>
     #endregion
 
     #region Methods
+
+    private IList<Setting> SeedEmailAccountSettings()
+    {
+        var emailAccountSettings = new EmailAccountSettings()
+        {
+            DefaultEmailAccountId = Configuration.GetValue<Guid>("DefaultValues:EmailAccountId"),
+        };
+
+        return GetSettings<EmailAccountSettings>(emailAccountSettings);
+    }
+
+    private IList<Setting> SeedLocalizationSettings()
+    {
+        var localizationSettings = new LocalizationSettings()
+        {
+            DefaultLanguageId = Configuration.GetValue<Guid>("DefaultValues:LanguageId"),
+            LoadAllLocaleRecordsOnStartup = true,
+            LoadAllLocalizedPropertiesOnStartup = true,
+        };
+
+        return GetSettings<LocalizationSettings>(localizationSettings);
+    }
 
     private static IList<Setting> SeedCustomerSettings()
     {
@@ -81,29 +120,7 @@ public sealed class SettingBuilder : IEntityTypeConfiguration<Setting>
         var messageSettings = new MessageSettings() { };
 
         return GetSettings<MessageSettings>(messageSettings);
-    }
-
-    private static IList<Setting> SeedEmailAccountSettings()
-    {
-        var emailAccountSettings = new EmailAccountSettings() 
-        {
-            DefaultEmailAccountId = CommonDefaults.DefaultEmailAccountId,
-        };
-
-        return GetSettings<EmailAccountSettings>(emailAccountSettings);
-    }
-
-    private static IList<Setting> SeedLocalizationSettings()
-    {
-        var localizationSettings = new LocalizationSettings()
-        {
-            DefaultLanguageId = CommonDefaults.DefaultLanguageId,
-            LoadAllLocaleRecordsOnStartup = true,
-            LoadAllLocalizedPropertiesOnStartup = true,
-        };
-
-        return GetSettings<LocalizationSettings>(localizationSettings);
-    }
+    }    
 
     private static IList<Setting> GetSettings<T>(object? baseSettingObject) where T : ISettings
     {
@@ -137,5 +154,5 @@ public sealed class SettingBuilder : IEntityTypeConfiguration<Setting>
         return settings;
     }
 
-    #endregion
+    #endregion    
 }

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using eCommerce.Core.Domain.Localization;
 using System.Globalization;
-using eCommerce.Application.Services.Common;
+using Microsoft.Extensions.Configuration;
 
 namespace YerdenYuksek.Web.Framework.Persistence.Builders.Localization;
 
@@ -55,15 +55,19 @@ public sealed class LanguageBuilder : IEntityTypeConfiguration<Language>
 
     private static IList<Language> SeedLanguageData()
     {
+        IConfiguration _configuration = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json", false, true)
+            .Build();
+
         var defaultCulture = new CultureInfo("en-US");
         var defaultLanguage = new Language
         {
-            Id = CommonDefaults.DefaultLanguageId,
+            Id = _configuration.GetValue<Guid>("DefaultValues:LanguageId"),
             Name = defaultCulture.TwoLetterISOLanguageName.ToUpperInvariant(),
             LanguageCulture = defaultCulture.Name,
             UniqueSeoCode = defaultCulture.TwoLetterISOLanguageName,
             FlagImageFileName = $"{defaultCulture.Name.ToLowerInvariant()[^2..]}.png",
-            DefaultCurrencyId = CommonDefaults.DefaultCurrencyId,
+            DefaultCurrencyId = _configuration.GetValue<Guid>("DefaultValues:CurrencyId"),
             IsDefaultLanguage = true,
             DisplayOrder = 1,
             CreatedOnUtc = DateTime.UtcNow,

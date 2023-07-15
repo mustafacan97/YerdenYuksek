@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using System.Xml;
-using eCommerce.Application.Services.Common;
 using eCommerce.Core.Domain.Localization;
+using Microsoft.Extensions.Configuration;
 
 namespace eCommerce.Infrastructure.Persistence.Builders.Localization;
 
@@ -27,7 +27,11 @@ public sealed class LocaleStringResourceBuilder : IEntityTypeConfiguration<Local
     #region Methods
 
     private static IList<LocaleStringResource> SeedLocaleStringResourceData()
-    {        
+    {
+        IConfiguration _configuration = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json", false, true)
+            .Build();
+
         var filePath = GetFullXmlPath();
         using var streamReader = new StreamReader(filePath);
         var lsNamesList = new Dictionary<string, LocaleStringResource>();
@@ -37,7 +41,7 @@ public sealed class LocaleStringResourceBuilder : IEntityTypeConfiguration<Local
         {
             resources.Add(new LocaleStringResource 
             { 
-                LanguageId = CommonDefaults.DefaultLanguageId,
+                LanguageId = _configuration.GetValue<Guid>("DefaultValues:LanguageId"),
                 ResourceName = name, 
                 ResourceValue = value 
             });

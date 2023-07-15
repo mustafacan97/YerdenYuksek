@@ -1,7 +1,7 @@
-﻿using eCommerce.Application.Services.Common;
-using eCommerce.Core.Domain.Directory;
+﻿using eCommerce.Core.Domain.Directory;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.Extensions.Configuration;
 
 namespace eCommerce.Infrastructure.Persistence.Builders.Directory;
 
@@ -52,11 +52,15 @@ public class CurrencyBuilder : IEntityTypeConfiguration<Currency>
 
     private static IList<Currency> SeedDefaultCurrencyData()
     {
+        IConfiguration _configuration = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json", false, true)
+            .Build();
+
         var currencies = new List<Currency>
         {
             new Currency
             {
-                Id = CommonDefaults.DefaultCurrencyId,
+                Id = _configuration.GetValue<Guid>("DefaultValues:CurrencyId"),
                 Name = "US Dollar",
                 CurrencyCode = "USD",
                 Rate = 1,
