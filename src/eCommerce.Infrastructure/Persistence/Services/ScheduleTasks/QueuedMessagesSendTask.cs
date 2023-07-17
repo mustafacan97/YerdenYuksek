@@ -2,7 +2,7 @@
 using eCommerce.Application.Services.ScheduleTasks;
 using eCommerce.Core.Domain.Messages;
 using eCommerce.Core.Interfaces;
-using YerdenYuksek.Core.Domain.Messages;
+using eCommerce.Infrastructure.Persistence.Services.Secuirty;
 
 namespace eCommerce.Infrastructure.Persistence.Services.ScheduleTasks;
 
@@ -58,8 +58,11 @@ public class QueuedMessagesSendTask : IScheduleTask
 
             try
             {
+                var email = await _unitOfWork.GetRepository<EmailAccount>().GetByIdAsync(queuedEmail.EmailAccountId);
+                email.Password = EncryptionService.DecryptText(email.Password, email.PasswordSalt);
+
                 await _emailSender.SendEmailAsync(
-                    await _unitOfWork.GetRepository<EmailAccount>().GetByIdAsync(queuedEmail.EmailAccountId),
+                    email,
                     queuedEmail.Subject,
                     queuedEmail.Body,
                     queuedEmail.From,

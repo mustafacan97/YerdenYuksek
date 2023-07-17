@@ -39,7 +39,7 @@ public class EncryptionService : IEncryptionService
         return HashHelper.CreateHash(Encoding.UTF8.GetBytes(string.Concat(password, saltkey)), passwordFormat);
     }
 
-    public string EncryptText(string plainText, string? encryptionPrivateKey = "")
+    public static string EncryptText(string plainText, string encryptionPrivateKey)
     {
         if (string.IsNullOrEmpty(plainText))
         {
@@ -48,7 +48,7 @@ public class EncryptionService : IEncryptionService
 
         if (string.IsNullOrEmpty(encryptionPrivateKey))
         {
-            encryptionPrivateKey = _securitySettings.EncryptionKey;
+            return plainText;
         }
 
         using var provider = GetEncryptionAlgorithm(encryptionPrivateKey);
@@ -57,7 +57,7 @@ public class EncryptionService : IEncryptionService
         return Convert.ToBase64String(encryptedBinary);
     }
 
-    public string DecryptText(string cipherText, string encryptionPrivateKey = "")
+    public static string DecryptText(string cipherText, string encryptionPrivateKey)
     {
         if (string.IsNullOrEmpty(cipherText))
         {
@@ -66,13 +66,27 @@ public class EncryptionService : IEncryptionService
 
         if (string.IsNullOrEmpty(encryptionPrivateKey))
         {
-            encryptionPrivateKey = _securitySettings.EncryptionKey;
+            return cipherText;
         }
 
         using var provider = GetEncryptionAlgorithm(encryptionPrivateKey);
         var buffer = Convert.FromBase64String(cipherText);
 
         return DecryptTextFromMemory(buffer, provider);
+    }
+
+    public string EncryptTextWithDefaultKey(string plainText)
+    {
+        return string.IsNullOrEmpty(plainText) ? 
+            plainText : 
+            EncryptText(plainText, _securitySettings.EncryptionKey);
+    }
+
+    public string DecryptTextWithDefaultKey(string cipherText)
+    {
+        return string.IsNullOrEmpty(cipherText) ?
+            cipherText :
+            DecryptText(cipherText, _securitySettings.EncryptionKey);
     }
 
     #endregion
@@ -101,17 +115,15 @@ public class EncryptionService : IEncryptionService
         return sr.ReadToEnd();
     }
 
-    private SymmetricAlgorithm GetEncryptionAlgorithm(string encryptionKey)
+    private static SymmetricAlgorithm GetEncryptionAlgorithm(string encryptionKey)
     {
         if (string.IsNullOrEmpty(encryptionKey))
         {
             throw new ArgumentNullException(nameof(encryptionKey));
         }
 
-        SymmetricAlgorithm provider = _securitySettings.UseAesEncryptionAlgorithm ? Aes.Create() : TripleDES.Create();
-
+        SymmetricAlgorithm provider = Aes.Create();
         var vectorBlockSize = provider.BlockSize / 8;
-
         provider.Key = Encoding.ASCII.GetBytes(encryptionKey[0..16]);
         provider.IV = Encoding.ASCII.GetBytes(encryptionKey[^vectorBlockSize..]);
 

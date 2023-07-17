@@ -99,7 +99,6 @@ public sealed class SettingBuilder : IEntityTypeConfiguration<Setting>
         var securitySettings = new SecuritySettings() 
         {
             EncryptionKey = CommonHelper.GenerateRandomDigitCode(16),
-            UseAesEncryptionAlgorithm = true,
         };
         
         return GetSettings<SecuritySettings>(securitySettings);

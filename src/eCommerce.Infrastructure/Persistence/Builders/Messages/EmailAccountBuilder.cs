@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using eCommerce.Core.Domain.Messages;
 using Microsoft.Extensions.Configuration;
+using eCommerce.Infrastructure.Persistence.Services.Secuirty;
 
 namespace eCommerce.Infrastructure.Persistence.Builders.Messages;
 
@@ -27,6 +28,9 @@ public sealed class EmailAccountBuilder : IEntityTypeConfiguration<EmailAccount>
         builder.Property(e => e.Password)
             .HasMaxLength(128);
 
+        builder.Property(e => e.PasswordSalt)
+            .HasMaxLength(16);
+
         builder.HasMany(q => q.QueuedEmails)
             .WithOne()
             .HasForeignKey(q => q.EmailAccountId)
@@ -50,6 +54,10 @@ public sealed class EmailAccountBuilder : IEntityTypeConfiguration<EmailAccount>
             .AddJsonFile("appsettings.json", false, true)
             .Build();
 
+        var defaultEmailPassword = _configuration.GetValue<string>("DefaultValues:EmailAccount:Password");
+        var saltKey = EncryptionService.CreateSaltKey(12);
+        var password = EncryptionService.EncryptText(defaultEmailPassword, saltKey);
+
         var defaultEmail = new EmailAccount
         {
             Id = _configuration.GetValue<Guid>("DefaultValues:EmailAccountId"),
@@ -57,7 +65,8 @@ public sealed class EmailAccountBuilder : IEntityTypeConfiguration<EmailAccount>
             Host = _configuration.GetValue<string>("DefaultValues:EmailAccount:Host"),
             Port = _configuration.GetValue<int>("DefaultValues:EmailAccount:Port"),
             Username = _configuration.GetValue<string>("DefaultValues:EmailAccount:Username"),
-            Password = _configuration.GetValue<string>("DefaultValues:EmailAccount:Password"),
+            Password = password,
+            PasswordSalt = saltKey,
             EnableSsl = _configuration.GetValue<bool>("DefaultValues:EmailAccount:EnableSsl"),
             Active = true,
             Deleted = false

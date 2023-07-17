@@ -26,6 +26,8 @@ public class EmailAccount : SoftDeletedEntity
 
     public string Password { get; set; }
 
+    public string PasswordSalt { get; set; }
+
     public bool EnableSsl { get; set; }
 
     public ICollection<EmailTemplate> EmailTemplates { get; set; }

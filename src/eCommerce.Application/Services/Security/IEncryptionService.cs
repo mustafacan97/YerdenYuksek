@@ -2,7 +2,7 @@
 
 public interface IEncryptionService
 {
-    string EncryptText(string plainText, string encryptionPrivateKey = "");
+    string EncryptTextWithDefaultKey(string plainText);
 
-    string DecryptText(string cipherText, string encryptionPrivateKey = "");
+    string DecryptTextWithDefaultKey(string cipherText);
 }

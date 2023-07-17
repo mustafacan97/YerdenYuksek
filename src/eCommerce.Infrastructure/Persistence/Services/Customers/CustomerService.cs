@@ -4,11 +4,11 @@ using eCommerce.Core.Interfaces;
 using eCommerce.Core.Primitives;
 using Microsoft.EntityFrameworkCore;
 using YerdenYuksek.Application.Models.Customers;
-using eCommerce.Core.Caching;
 using eCommerce.Core.Domain.Customers;
 using eCommerce.Application.Services.Customers;
 using eCommerce.Application.Services.Security;
 using eCommerce.Core.Domain.Security;
+using eCommerce.Infrastructure.Persistence.Services.Secuirty;
 
 namespace eCommerce.Infrastructure.Persistence.Services.Customers;
 
@@ -60,13 +60,13 @@ public class CustomerService : ICustomerService
             return result;
         }
 
-        var saltKey = _encryptionService.CreateSaltKey(YerdenYuksekCustomerServicesDefaults.PasswordSaltKeySize);
+        var saltKey = EncryptionService.CreateSaltKey(YerdenYuksekCustomerServicesDefaults.PasswordSaltKeySize);
         var customer = Customer.Create(email);
         var customerPassword = new CustomerSecurity
         {
             CustomerId = customer.Id,
             PasswordSalt = saltKey,
-            Password = _encryptionService.CreatePasswordHash(password, saltKey, _customerSettings.HashedPasswordFormat),
+            Password = EncryptionService.CreatePasswordHash(password, saltKey, _customerSettings.HashedPasswordFormat),
             LastIpAddress = _webHelper.GetCurrentIpAddress(),
         };
 
@@ -216,9 +216,9 @@ public class CustomerService : ICustomerService
             return false;
         }
 
-        var savedPassword = _encryptionService.CreatePasswordHash(enteredPassword,
-                                                                  customerSecurity.PasswordSalt,
-                                                                  _customerSettings.HashedPasswordFormat);
+        var savedPassword = EncryptionService.CreatePasswordHash(enteredPassword,
+                                                                 customerSecurity.PasswordSalt,
+                                                                 _customerSettings.HashedPasswordFormat);
 
         return customerSecurity.Password.Equals(savedPassword);
     }
