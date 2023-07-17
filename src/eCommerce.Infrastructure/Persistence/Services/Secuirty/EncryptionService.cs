@@ -25,7 +25,7 @@ public class EncryptionService : IEncryptionService
 
     #region Public Methods
 
-    public string CreateSaltKey(int size)
+    public static string CreateSaltKey(int size)
     {
         using var provider = RandomNumberGenerator.Create();
         var buff = new byte[size];
@@ -34,18 +34,22 @@ public class EncryptionService : IEncryptionService
         return Convert.ToBase64String(buff);
     }
 
-    public string CreatePasswordHash(string password, string saltkey, string passwordFormat)
+    public static string CreatePasswordHash(string password, string saltkey, string passwordFormat)
     {
         return HashHelper.CreateHash(Encoding.UTF8.GetBytes(string.Concat(password, saltkey)), passwordFormat);
     }
 
-    public string EncryptText(string plainText, string encryptionPrivateKey = "")
+    public string EncryptText(string plainText, string? encryptionPrivateKey = "")
     {
         if (string.IsNullOrEmpty(plainText))
+        {
             return plainText;
+        }
 
         if (string.IsNullOrEmpty(encryptionPrivateKey))
+        {
             encryptionPrivateKey = _securitySettings.EncryptionKey;
+        }
 
         using var provider = GetEncryptionAlgorithm(encryptionPrivateKey);
         var encryptedBinary = EncryptTextToMemory(plainText, provider);
@@ -53,7 +57,7 @@ public class EncryptionService : IEncryptionService
         return Convert.ToBase64String(encryptedBinary);
     }
 
-    public virtual string DecryptText(string cipherText, string encryptionPrivateKey = "")
+    public string DecryptText(string cipherText, string encryptionPrivateKey = "")
     {
         if (string.IsNullOrEmpty(cipherText))
         {
