@@ -1,5 +1,4 @@
-﻿using eCommerce.Core.Interfaces;
-using eCommerce.Core.Primitives;
+﻿using eCommerce.Core.Primitives;
 using Microsoft.EntityFrameworkCore;
 
 namespace YerdenYuksek.Web.Framework.Persistence.Extensions;

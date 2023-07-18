@@ -1,6 +1,4 @@
-﻿using eCommerce.Core.Interfaces;
-
-namespace eCommerce.Core.Primitives;
+﻿namespace eCommerce.Core.Primitives;
 
 public sealed class PagedInfo<T> : List<T>, IPagedInfo<T>
 {

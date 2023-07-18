@@ -1,6 +1,4 @@
-﻿using eCommerce.Core.Interfaces;
-
-namespace eCommerce.Core.Primitives;
+﻿namespace eCommerce.Core.Primitives;
 
 public class Result<T> : IResult<T>
 {

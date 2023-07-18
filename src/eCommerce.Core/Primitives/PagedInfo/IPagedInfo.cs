@@ -1,4 +1,4 @@
-﻿namespace eCommerce.Core.Interfaces;
+﻿namespace eCommerce.Core.Primitives;
 
 public interface IPagedInfo<T> : IList<T>
 {

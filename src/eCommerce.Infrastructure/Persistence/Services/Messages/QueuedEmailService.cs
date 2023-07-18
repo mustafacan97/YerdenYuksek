@@ -1,6 +1,7 @@
 ﻿using eCommerce.Application.Services.Messages;
 using eCommerce.Core.Entities.Messages;
 using eCommerce.Core.Interfaces;
+using eCommerce.Core.Primitives;
 using YerdenYuksek.Web.Framework.Persistence.Extensions;
 
 namespace eCommerce.Infrastructure.Persistence.Services.Messages;

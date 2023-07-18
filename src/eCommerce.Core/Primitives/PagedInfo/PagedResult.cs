@@ -1,6 +1,4 @@
-﻿using eCommerce.Core.Primitives;
-
-namespace eCommerce.Core.Primitives;
+﻿namespace eCommerce.Core.Primitives;
 
 public class PagedResult<T> : Result<T>
 {

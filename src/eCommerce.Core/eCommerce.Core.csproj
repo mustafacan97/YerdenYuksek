@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="7.0.0" />
@@ -22,6 +23,9 @@
 
   <ItemGroup>
     <Folder Include="DomainEvents\" />
+    <Folder Include="Exceptions\" />
+    <Folder Include="Shared\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>
