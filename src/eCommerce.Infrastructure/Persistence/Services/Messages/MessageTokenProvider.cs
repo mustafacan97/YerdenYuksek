@@ -1,9 +1,8 @@
 ﻿using eCommerce.Application.Services.Customers;
 using eCommerce.Application.Services.Messages;
-using eCommerce.Core.Domain.Messages;
 using eCommerce.Core.Interfaces;
-using eCommerce.Core.Domain.Customers;
-using YerdenYuksek.Core.Domain.Messages;
+using eCommerce.Core.Entities.Customers;
+using eCommerce.Core.Entities.Messages;
 
 namespace eCommerce.Infrastructure.Persistence.Services.Messages;
 

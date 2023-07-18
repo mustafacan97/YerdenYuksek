@@ -1,6 +1,6 @@
-﻿using eCommerce.Core.Domain.Catalog;
-using eCommerce.Core.Domain.Customers;
-using eCommerce.Core.Domain.Media;
+﻿using eCommerce.Core.Entities.Catalog;
+using eCommerce.Core.Entities.Customers;
+using eCommerce.Core.Entities.Media;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

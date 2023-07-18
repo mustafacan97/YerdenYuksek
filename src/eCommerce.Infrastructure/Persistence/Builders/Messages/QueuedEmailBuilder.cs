@@ -1,4 +1,4 @@
-﻿using eCommerce.Core.Domain.Messages;
+﻿using eCommerce.Core.Entities.Messages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

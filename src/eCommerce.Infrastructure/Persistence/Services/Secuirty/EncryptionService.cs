@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 using eCommerce.Application.Services.Security;
-using eCommerce.Core.Domain.Configuration.CustomSettings;
+using eCommerce.Core.Entities.Configuration.CustomSettings;
 using eCommerce.Core.Helpers;
 
 namespace eCommerce.Infrastructure.Persistence.Services.Secuirty;

@@ -1,4 +1,4 @@
-﻿using eCommerce.Core.Domain.Localization;
+﻿using eCommerce.Core.Entities.Localization;
 
 namespace eCommerce.Application.Services.Localization;
 

@@ -1,13 +1,12 @@
 ﻿using System.Linq.Dynamic.Core;
 using eCommerce.Application.Services.Localization;
 using eCommerce.Application.Services.Messages;
-using eCommerce.Core.Domain.Configuration.CustomSettings;
-using eCommerce.Core.Domain.Messages;
 using eCommerce.Core.Helpers;
 using eCommerce.Core.Interfaces;
-using eCommerce.Core.Domain.Customers;
-using eCommerce.Core.Domain.Localization;
-using YerdenYuksek.Core.Domain.Messages;
+using eCommerce.Core.Entities.Configuration.CustomSettings;
+using eCommerce.Core.Entities.Customers;
+using eCommerce.Core.Entities.Localization;
+using eCommerce.Core.Entities.Messages;
 
 namespace eCommerce.Infrastructure.Persistence.Services.Messages;
 

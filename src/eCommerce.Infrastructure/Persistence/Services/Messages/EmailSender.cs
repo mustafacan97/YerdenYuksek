@@ -1,6 +1,6 @@
 ﻿using eCommerce.Application.Services.Messages;
-using eCommerce.Core.Domain.Configuration.CustomSettings;
-using eCommerce.Core.Domain.Messages;
+using eCommerce.Core.Entities.Configuration.CustomSettings;
+using eCommerce.Core.Entities.Messages;
 using eCommerce.Core.Interfaces;
 using MailKit.Net.Smtp;
 using MailKit.Security;
@@ -9,7 +9,6 @@ using MimeKit.Text;
 using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
-using YerdenYuksek.Core.Domain.Messages;
 
 namespace eCommerce.Infrastructure.Persistence.Services.Messages;
 

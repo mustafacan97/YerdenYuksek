@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Domain\Configuration\NewFolder\**" />
-    <EmbeddedResource Remove="Domain\Configuration\NewFolder\**" />
-    <None Remove="Domain\Configuration\NewFolder\**" />
+    <Compile Remove="Entities\Configuration\NewFolder\**" />
+    <EmbeddedResource Remove="Entities\Configuration\NewFolder\**" />
+    <None Remove="Entities\Configuration\NewFolder\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,6 +18,10 @@
     <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="DomainEvents\" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-﻿using eCommerce.Core.Domain.Security;
+﻿using eCommerce.Core.Entities.Security;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

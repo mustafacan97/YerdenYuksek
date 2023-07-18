@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using System.Reflection;
 using eCommerce.Core.Caching;
-using eCommerce.Core.Domain.Localization;
 using eCommerce.Core.Primitives;
 using YerdenYuksek.Web.Framework.Common;
-using eCommerce.Core.Domain.Configuration.CustomSettings;
 using eCommerce.Application.Services.Localization;
+using eCommerce.Core.Entities.Configuration.CustomSettings;
+using eCommerce.Core.Entities.Localization;
 
 namespace eCommerce.Infrastructure.Persistence.Services.Localization;
 

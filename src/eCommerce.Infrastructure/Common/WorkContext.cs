@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-using eCommerce.Core.Domain.Customers;
-using eCommerce.Core.Domain.Localization;
+using eCommerce.Core.Entities.Customers;
+using eCommerce.Core.Entities.Localization;
 
 namespace YerdenYuksek.Web.Framework.Common;
 

@@ -1,5 +1,5 @@
-﻿using eCommerce.Core.Domain.Customers;
-using eCommerce.Core.Domain.Localization;
+﻿using eCommerce.Core.Entities.Customers;
+using eCommerce.Core.Entities.Localization;
 
 namespace eCommerce.Core.Interfaces;
 

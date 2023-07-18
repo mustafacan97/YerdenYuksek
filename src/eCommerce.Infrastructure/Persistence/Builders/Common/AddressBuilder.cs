@@ -1,4 +1,4 @@
-﻿using eCommerce.Core.Domain.Common;
+﻿using eCommerce.Core.Entities.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

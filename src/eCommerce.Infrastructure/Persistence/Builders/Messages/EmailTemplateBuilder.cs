@@ -1,8 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using YerdenYuksek.Core.Domain.Messages;
-using eCommerce.Core.Domain.Messages;
 using Microsoft.Extensions.Configuration;
+using eCommerce.Core.Entities.Messages;
 
 namespace eCommerce.Infrastructure.Persistence.Builders.Localization;
 

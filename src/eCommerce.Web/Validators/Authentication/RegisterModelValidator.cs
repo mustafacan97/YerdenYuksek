@@ -1,4 +1,4 @@
-﻿using eCommerce.Core.Domain.Configuration.CustomSettings;
+﻿using eCommerce.Core.Entities.Configuration.CustomSettings;
 using FluentValidation;
 using YerdenYuksek.Application.Models.Customers;
 

@@ -1,4 +1,4 @@
-﻿using eCommerce.Core.Domain.Directory;
+﻿using eCommerce.Core.Entities.Directory;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.Extensions.Configuration;

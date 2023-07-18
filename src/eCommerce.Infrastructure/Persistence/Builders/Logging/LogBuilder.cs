@@ -1,4 +1,4 @@
-﻿using eCommerce.Core.Domain.Logging;
+﻿using eCommerce.Core.Entities.Logging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

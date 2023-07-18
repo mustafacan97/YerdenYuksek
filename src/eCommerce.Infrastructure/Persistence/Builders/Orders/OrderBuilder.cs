@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using eCommerce.Core.Domain.Orders;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using eCommerce.Core.Entities.Orders;
 
 namespace eCommerce.Infrastructure.Persistence.Builders.Orders;
 

@@ -1,4 +1,4 @@
-﻿using eCommerce.Core.Domain.ScheduleTasks;
+﻿using eCommerce.Core.Entities.ScheduleTasks;
 
 namespace eCommerce.Application.Services.ScheduleTasks;
 

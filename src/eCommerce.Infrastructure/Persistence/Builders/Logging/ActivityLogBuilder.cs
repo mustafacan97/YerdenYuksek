@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using eCommerce.Core.Entities.Logging;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using YerdenYuksek.Core.Domain.Logging;
 
 namespace eCommerce.Infrastructure.Framework.Persistence.Builders.Logging;
 

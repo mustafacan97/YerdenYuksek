@@ -1,5 +1,5 @@
-﻿using eCommerce.Core.Domain.Messages;
-using eCommerce.Core.Domain.Customers;
+﻿using eCommerce.Core.Entities.Customers;
+using eCommerce.Core.Entities.Messages;
 
 namespace eCommerce.Application.Services.Messages;
 

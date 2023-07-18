@@ -1,5 +1,5 @@
 ﻿using eCommerce.Application.Services.Messages;
-using eCommerce.Core.Domain.Messages;
+using eCommerce.Core.Entities.Messages;
 using eCommerce.Core.Interfaces;
 using YerdenYuksek.Web.Framework.Persistence.Extensions;
 

@@ -1,4 +1,4 @@
-﻿using eCommerce.Core.Domain.Tax;
+﻿using eCommerce.Core.Entities.Tax;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

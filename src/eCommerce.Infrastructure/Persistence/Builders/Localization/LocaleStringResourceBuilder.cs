@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using System.Xml;
-using eCommerce.Core.Domain.Localization;
 using Microsoft.Extensions.Configuration;
+using eCommerce.Core.Entities.Localization;
 
 namespace eCommerce.Infrastructure.Persistence.Builders.Localization;
 

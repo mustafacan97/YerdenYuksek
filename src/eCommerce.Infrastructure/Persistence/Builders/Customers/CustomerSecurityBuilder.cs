@@ -1,4 +1,4 @@
-﻿using eCommerce.Core.Domain.Customers;
+﻿using eCommerce.Core.Entities.Customers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

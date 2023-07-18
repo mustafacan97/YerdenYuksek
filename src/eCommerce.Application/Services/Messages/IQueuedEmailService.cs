@@ -1,4 +1,4 @@
-﻿using eCommerce.Core.Domain.Messages;
+﻿using eCommerce.Core.Entities.Messages;
 using eCommerce.Core.Interfaces;
 
 namespace eCommerce.Application.Services.Messages;

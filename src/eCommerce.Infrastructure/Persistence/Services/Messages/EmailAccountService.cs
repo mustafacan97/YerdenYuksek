@@ -1,5 +1,5 @@
 ﻿using eCommerce.Application.Services.Messages;
-using eCommerce.Core.Domain.Messages;
+using eCommerce.Core.Entities.Messages;
 using eCommerce.Core.Interfaces;
 
 namespace eCommerce.Infrastructure.Persistence.Services.Messages;

@@ -1,19 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using eCommerce.Core.Domain.Configuration;
-using eCommerce.Core.Domain.Localization;
-using YerdenYuksek.Core.Domain.Logging;
-using eCommerce.Core.Domain.Messages;
-using eCommerce.Core.Domain.Security;
-using eCommerce.Core.Domain.Customers;
-using eCommerce.Core.Domain.Logging;
-using eCommerce.Core.Domain.Common;
-using eCommerce.Core.Domain.Directory;
-using eCommerce.Core.Domain.Media;
-using eCommerce.Core.Domain.Orders;
-using eCommerce.Core.Domain.Shipping;
-using eCommerce.Core.Domain.Catalog;
-using eCommerce.Core.Domain.Tax;
-using eCommerce.Core.Domain.ScheduleTasks;
+using eCommerce.Core.Entities.Security;
+using eCommerce.Core.Entities.Catalog;
+using eCommerce.Core.Entities.Common;
+using eCommerce.Core.Entities.Directory;
+using eCommerce.Core.Entities.Configuration;
+using eCommerce.Core.Entities.Orders;
+using eCommerce.Core.Entities.Shipping;
+using eCommerce.Core.Entities.Customers;
+using eCommerce.Core.Entities.Localization;
+using eCommerce.Core.Entities.Logging;
+using eCommerce.Core.Entities.ScheduleTasks;
+using eCommerce.Core.Entities.Messages;
+using eCommerce.Core.Entities.Media;
+using eCommerce.Core.Entities.Tax;
 
 namespace eCommerce.Infrastructure.Persistence.Primitives;
 

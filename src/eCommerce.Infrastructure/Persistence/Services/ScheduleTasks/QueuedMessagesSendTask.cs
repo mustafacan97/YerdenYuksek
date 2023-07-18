@@ -1,6 +1,6 @@
 ﻿using eCommerce.Application.Services.Messages;
 using eCommerce.Application.Services.ScheduleTasks;
-using eCommerce.Core.Domain.Messages;
+using eCommerce.Core.Entities.Messages;
 using eCommerce.Core.Interfaces;
 using eCommerce.Infrastructure.Persistence.Services.Secuirty;
 

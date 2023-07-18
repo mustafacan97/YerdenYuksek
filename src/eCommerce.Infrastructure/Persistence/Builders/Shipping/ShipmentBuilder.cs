@@ -1,4 +1,4 @@
-﻿using eCommerce.Core.Domain.Shipping;
+﻿using eCommerce.Core.Entities.Shipping;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

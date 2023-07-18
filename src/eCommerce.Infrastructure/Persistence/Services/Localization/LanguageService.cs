@@ -1,10 +1,10 @@
 ﻿using System.Globalization;
 using eCommerce.Application.Services.Configuration;
-using eCommerce.Core.Domain.Configuration.CustomSettings;
 using eCommerce.Core.Interfaces;
 using eCommerce.Core.Caching;
-using eCommerce.Core.Domain.Localization;
 using eCommerce.Application.Services.Localization;
+using eCommerce.Core.Entities.Configuration.CustomSettings;
+using eCommerce.Core.Entities.Localization;
 
 namespace eCommerce.Infrastructure.Persistence.Services.Localization;
 

@@ -1,8 +1,8 @@
 ﻿using eCommerce.Application.Models.Customers;
-using eCommerce.Core.Domain.Security;
 using eCommerce.Core.Primitives;
 using YerdenYuksek.Application.Models.Customers;
-using eCommerce.Core.Domain.Customers;
+using eCommerce.Core.Entities.Security;
+using eCommerce.Core.Entities.Customers;
 
 namespace eCommerce.Application.Services.Customers;
 

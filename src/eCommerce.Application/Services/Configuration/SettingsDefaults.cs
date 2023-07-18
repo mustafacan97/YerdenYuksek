@@ -1,5 +1,5 @@
 ﻿using eCommerce.Core.Caching;
-using eCommerce.Core.Domain.Configuration;
+using eCommerce.Core.Entities.Configuration;
 
 namespace eCommerce.Application.Services.Configuration;
 

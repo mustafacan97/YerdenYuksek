@@ -1,5 +1,5 @@
 ﻿using eCommerce.Application.Services.ScheduleTasks;
-using eCommerce.Core.Domain.ScheduleTasks;
+using eCommerce.Core.Entities.ScheduleTasks;
 using eCommerce.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 namespace eCommerce.Infrastructure.Persistence.Services.ScheduleTasks;

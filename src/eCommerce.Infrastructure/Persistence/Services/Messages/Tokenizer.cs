@@ -2,7 +2,7 @@
 using System.Net;
 using System.Text.RegularExpressions;
 using eCommerce.Application.Services.Messages;
-using eCommerce.Core.Domain.Configuration.CustomSettings;
+using eCommerce.Core.Entities.Configuration.CustomSettings;
 
 namespace eCommerce.Infrastructure.Persistence.Services.Messages;
 

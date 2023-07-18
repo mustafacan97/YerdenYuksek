@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using eCommerce.Core.Caching;
 using eCommerce.Application.Services.Messages;
-using eCommerce.Core.Domain.Messages;
+using eCommerce.Core.Entities.Messages;
 
 namespace eCommerce.Infrastructure.Persistence.Services.Messages;
 
