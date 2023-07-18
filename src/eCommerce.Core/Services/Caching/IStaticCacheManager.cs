@@ -1,4 +1,6 @@
-﻿namespace eCommerce.Core.Caching;
+﻿using eCommerce.Core.Shared;
+
+namespace eCommerce.Core.Services.Caching;
 
 public interface IStaticCacheManager : IDisposable
 {
@@ -17,6 +19,10 @@ public interface IStaticCacheManager : IDisposable
     Task RemoveByPrefixAsync(string prefix, params object[] prefixParameters);
 
     Task ClearAsync();
+
+    T Get<T>(CacheKey key, Func<T> acquire);
+
+    void RemoveByPrefix(string prefix, params object[] prefixParameters);
 
     #region Cache key
 

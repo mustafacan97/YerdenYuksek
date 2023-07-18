@@ -1,8 +1,8 @@
 ﻿using eCommerce.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Transactions;
-using eCommerce.Core.Caching;
 using eCommerce.Core.Primitives;
+using eCommerce.Core.Services.Caching;
 
 namespace YerdenYuksek.Web.Framework.Persistence;
 

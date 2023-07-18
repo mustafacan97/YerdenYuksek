@@ -1,4 +1,4 @@
-﻿namespace eCommerce.Core.Caching;
+﻿namespace eCommerce.Core.Services.Caching;
 
 public interface ILocker
 {

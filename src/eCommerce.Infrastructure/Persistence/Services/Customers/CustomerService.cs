@@ -1,5 +1,4 @@
-﻿using eCommerce.Core.Caching;
-using eCommerce.Core.Interfaces;
+﻿using eCommerce.Core.Interfaces;
 using eCommerce.Core.Primitives;
 using Microsoft.EntityFrameworkCore;
 using YerdenYuksek.Application.Models.Customers;
@@ -9,6 +8,8 @@ using eCommerce.Infrastructure.Persistence.Services.Secuirty;
 using eCommerce.Core.Entities.Security;
 using eCommerce.Core.Entities.Configuration.CustomSettings;
 using eCommerce.Core.Entities.Customers;
+using eCommerce.Core.Shared;
+using eCommerce.Core.Services.Caching;
 
 namespace eCommerce.Infrastructure.Persistence.Services.Customers;
 
@@ -157,7 +158,7 @@ public class CustomerService : ICustomerService
 
     public async Task<Customer?> GetCustomerByEmailAsync(string email, bool includeDeleted = false)
     {
-        var cacheKey = _staticCacheManager.PrepareKeyForDefaultCache(CustomerEntityCacheDefaults.ByEmailCacheKey, email);
+        var cacheKey = _staticCacheManager.PrepareKeyForDefaultCache(EntityCacheDefaults<Customer>.ByEmailCacheKey, email);
 
         async Task<Customer?> getEntityAsync()
         {

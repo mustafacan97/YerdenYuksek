@@ -3,8 +3,9 @@ using System.Text;
 using eCommerce.Core.Helpers;
 using eCommerce.Core.Configuration;
 using eCommerce.Core.Primitives;
+using eCommerce.Core.Shared;
 
-namespace eCommerce.Core.Caching;
+namespace eCommerce.Infrastructure.Services.Caching;
 
 public abstract class CacheKeyService
 {

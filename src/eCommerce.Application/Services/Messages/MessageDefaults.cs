@@ -1,5 +1,5 @@
-﻿using eCommerce.Core.Caching;
-using eCommerce.Core.Entities.Messages;
+﻿using eCommerce.Core.Entities.Messages;
+using eCommerce.Core.Shared;
 
 namespace eCommerce.Application.Services.Messages;
 

@@ -3,12 +3,12 @@ using eCommerce.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using System.Reflection;
-using eCommerce.Core.Caching;
 using eCommerce.Core.Primitives;
 using YerdenYuksek.Web.Framework.Common;
 using eCommerce.Application.Services.Localization;
 using eCommerce.Core.Entities.Configuration.CustomSettings;
 using eCommerce.Core.Entities.Localization;
+using eCommerce.Core.Services.Caching;
 
 namespace eCommerce.Infrastructure.Persistence.Services.Localization;
 

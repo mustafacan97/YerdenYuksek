@@ -5,8 +5,9 @@ using eCommerce.Application.Services.Configuration;
 using eCommerce.Core.Configuration;
 using eCommerce.Core.Helpers;
 using eCommerce.Core.Interfaces;
-using eCommerce.Core.Caching;
 using eCommerce.Core.Entities.Configuration;
+using eCommerce.Core.Shared;
+using eCommerce.Core.Services.Caching;
 
 namespace eCommerce.Infrastructure.Persistence.Services.Configuration;
 

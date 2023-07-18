@@ -1,5 +1,5 @@
-﻿using eCommerce.Core.Caching;
-using eCommerce.Core.Entities.Security;
+﻿using eCommerce.Core.Entities.Security;
+using eCommerce.Core.Shared;
 
 namespace eCommerce.Application.Services.Customers;
 

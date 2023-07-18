@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Primitives;
 using eCommerce.Core.Configuration;
+using eCommerce.Core.Shared;
+using eCommerce.Core.Services.Caching;
 
-namespace eCommerce.Core.Caching;
+namespace eCommerce.Infrastructure.Services.Caching;
 
 public class MemoryCacheManager : CacheKeyService, IStaticCacheManager
 {
@@ -147,6 +149,16 @@ public class MemoryCacheManager : CacheKeyService, IStaticCacheManager
     {
         Dispose(true);
         GC.SuppressFinalize(this);
+    }
+
+    public T Get<T>(CacheKey key, Func<T> acquire)
+    {
+        return GetAsync(key, acquire).GetAwaiter().GetResult();
+    }
+
+    public void RemoveByPrefix(string prefix, params object[] prefixParameters)
+    {
+        RemoveByPrefixAsync(prefix, prefixParameters).Wait();
     }
 
     #endregion

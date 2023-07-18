@@ -8,7 +8,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Net;
 using System.Reflection;
-using eCommerce.Core.Caching;
 using YerdenYuksek.Web.Framework.Common;
 using YerdenYuksek.Web.Framework.Infrastructure;
 using YerdenYuksek.Web.Framework.Persistence;
@@ -31,6 +30,8 @@ using eCommerce.Infrastructure.Persistence.Services.Localization;
 using eCommerce.Infrastructure.Persistence.Services.Customers;
 using eCommerce.Infrastructure.Persistence.Services.Configuration;
 using eCommerce.Infrastructure.Persistence.Services.ScheduleTasks;
+using eCommerce.Core.Services.Caching;
+using eCommerce.Infrastructure.Services.Caching;
 
 namespace eCommerce.Framework.Infrastructure.Extensions;
 

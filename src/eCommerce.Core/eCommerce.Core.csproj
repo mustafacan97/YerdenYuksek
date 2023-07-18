@@ -24,8 +24,7 @@
   <ItemGroup>
     <Folder Include="DomainEvents\" />
     <Folder Include="Exceptions\" />
-    <Folder Include="Shared\" />
-    <Folder Include="Services\" />
+    <Folder Include="ValueObjects\" />
   </ItemGroup>
 
 </Project>

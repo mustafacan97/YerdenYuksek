@@ -1,6 +1,7 @@
 ﻿using eCommerce.Core.Infrastructure;
+using eCommerce.Core.Services.Caching;
 
-namespace eCommerce.Core.Caching;
+namespace eCommerce.Infrastructure.Services.Caching;
 
 public class CacheKeyManager : ICacheKeyManager
 {

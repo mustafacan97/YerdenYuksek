@@ -1,9 +1,10 @@
 ﻿using eCommerce.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using eCommerce.Core.Caching;
 using eCommerce.Core.Primitives;
 using YerdenYuksek.Web.Framework.Persistence.Extensions;
+using eCommerce.Core.Shared;
+using eCommerce.Core.Services.Caching;
 
 namespace YerdenYuksek.Web.Framework.Persistence;
 

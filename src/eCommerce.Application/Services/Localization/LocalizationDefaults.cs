@@ -1,5 +1,5 @@
-﻿using eCommerce.Core.Caching;
-using eCommerce.Core.Entities.Localization;
+﻿using eCommerce.Core.Entities.Localization;
+using eCommerce.Core.Shared;
 
 namespace eCommerce.Application.Services.Localization;
 

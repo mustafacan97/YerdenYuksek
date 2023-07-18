@@ -1,6 +1,7 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using eCommerce.Core.Services.Caching;
+using Microsoft.Extensions.Caching.Memory;
 
-namespace eCommerce.Core.Caching;
+namespace eCommerce.Infrastructure.Services.Caching;
 
 public class MemoryCacheLocker : ILocker
 {

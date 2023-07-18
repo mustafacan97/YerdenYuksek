@@ -1,7 +1,7 @@
 ﻿using eCommerce.Core.Infrastructure;
 using eCommerce.Core.Configuration;
 
-namespace eCommerce.Core.Caching;
+namespace eCommerce.Core.Shared;
 
 public class CacheKey
 {

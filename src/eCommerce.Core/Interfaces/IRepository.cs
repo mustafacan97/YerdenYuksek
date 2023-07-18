@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
-using eCommerce.Core.Caching;
 using eCommerce.Core.Primitives;
+using eCommerce.Core.Services.Caching;
+using eCommerce.Core.Shared;
 
 namespace eCommerce.Core.Interfaces;
 
