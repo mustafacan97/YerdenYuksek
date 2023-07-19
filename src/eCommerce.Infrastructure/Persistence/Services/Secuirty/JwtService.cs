@@ -1,5 +1,5 @@
 ﻿using eCommerce.Application.Services.Customers;
-using eCommerce.Application.Services.Security;
+using eCommerce.Core.Services.Security;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;

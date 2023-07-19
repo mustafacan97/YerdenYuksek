@@ -1,4 +1,4 @@
-﻿namespace eCommerce.Application.Services.Security;
+﻿namespace eCommerce.Core.Services.Security;
 
 public interface IJwtService
 {

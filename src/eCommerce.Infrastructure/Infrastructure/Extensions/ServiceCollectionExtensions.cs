@@ -20,7 +20,6 @@ using eCommerce.Application.Services.Messages;
 using eCommerce.Infrastructure.Persistence.Services.Messages;
 using eCommerce.Application.Services.Customers;
 using eCommerce.Application.Services.Localization;
-using eCommerce.Application.Services.Security;
 using eCommerce.Infrastructure.Persistence.Services.Secuirty;
 using eCommerce.Infrastructure.Persistence.Services.Localization;
 using eCommerce.Infrastructure.Persistence.Services.Customers;
@@ -28,6 +27,7 @@ using eCommerce.Infrastructure.Persistence.Services.Configuration;
 using eCommerce.Infrastructure.Persistence.Services.ScheduleTasks;
 using eCommerce.Core.Services.Caching;
 using eCommerce.Infrastructure.Services.Caching;
+using eCommerce.Core.Services.Security;
 
 namespace eCommerce.Framework.Infrastructure.Extensions;
 

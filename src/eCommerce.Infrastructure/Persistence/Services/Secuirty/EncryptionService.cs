@@ -1,8 +1,8 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
-using eCommerce.Application.Services.Security;
 using eCommerce.Core.Entities.Configuration.CustomSettings;
 using eCommerce.Core.Helpers;
+using eCommerce.Core.Services.Security;
 
 namespace eCommerce.Infrastructure.Persistence.Services.Secuirty;
 
@@ -32,12 +32,7 @@ public class EncryptionService : IEncryptionService
         provider.GetBytes(buff);
 
         return Convert.ToBase64String(buff);
-    }
-
-    public static string CreatePasswordHash(string password, string saltkey, string passwordFormat)
-    {
-        return HashHelper.CreateHash(Encoding.UTF8.GetBytes(string.Concat(password, saltkey)), passwordFormat);
-    }
+    }    
 
     public static string EncryptText(string plainText, string encryptionPrivateKey)
     {
@@ -73,6 +68,35 @@ public class EncryptionService : IEncryptionService
         var buffer = Convert.FromBase64String(cipherText);
 
         return DecryptTextFromMemory(buffer, provider);
+    }
+
+    public static string CreateHash(byte[] data, string hashAlgorithm, int trimByteCount = 0)
+    {
+        if (string.IsNullOrEmpty(hashAlgorithm))
+        {
+            throw new ArgumentNullException(nameof(hashAlgorithm));
+        }
+
+        var algorithm = CryptoConfig.CreateFromName(hashAlgorithm) as HashAlgorithm;
+        if (algorithm is null)
+        {
+            throw new ArgumentException("Unrecognized hash name");
+        }
+
+        if (trimByteCount > 0 && data.Length > trimByteCount)
+        {
+            var newData = new byte[trimByteCount];
+            Array.Copy(data, newData, trimByteCount);
+
+            return BitConverter.ToString(algorithm.ComputeHash(newData)).Replace("-", string.Empty);
+        }
+
+        return BitConverter.ToString(algorithm.ComputeHash(data)).Replace("-", string.Empty);
+    }
+
+    public static string CreatePasswordHash(string password, string saltkey, string passwordFormat)
+    {
+        return CreateHash(Encoding.UTF8.GetBytes(string.Concat(password, saltkey)), passwordFormat);
     }
 
     public string EncryptTextWithDefaultKey(string plainText)

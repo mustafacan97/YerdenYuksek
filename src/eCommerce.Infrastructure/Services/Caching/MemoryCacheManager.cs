@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Primitives;
-using eCommerce.Core.Configuration;
 using eCommerce.Core.Shared;
 using eCommerce.Core.Services.Caching;
 
@@ -25,7 +24,6 @@ public class MemoryCacheManager : CacheKeyService, IStaticCacheManager
     public MemoryCacheManager(
         IMemoryCache memoryCache,
         ICacheKeyManager cacheKeyManager)
-        : base()
     {
         _memoryCache = memoryCache;
         _keyManager = cacheKeyManager;
