@@ -1,10 +1,10 @@
 ﻿using eCommerce.Application.Services.Customers;
-using eCommerce.Application.Services.Messages;
 using eCommerce.Core.Interfaces;
 using eCommerce.Core.Entities.Customers;
 using eCommerce.Core.Entities.Messages;
+using eCommerce.Core.Services.Messages;
 
-namespace eCommerce.Infrastructure.Persistence.Services.Messages;
+namespace eCommerce.Infrastructure.Services.Messages;
 
 public class MessageTokenProvider : IMessageTokenProvider
 {

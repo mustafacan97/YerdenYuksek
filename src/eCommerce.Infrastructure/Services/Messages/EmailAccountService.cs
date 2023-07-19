@@ -1,8 +1,8 @@
-﻿using eCommerce.Application.Services.Messages;
-using eCommerce.Core.Entities.Messages;
+﻿using eCommerce.Core.Entities.Messages;
 using eCommerce.Core.Interfaces;
+using eCommerce.Core.Services.Messages;
 
-namespace eCommerce.Infrastructure.Persistence.Services.Messages;
+namespace eCommerce.Infrastructure.Services.Messages;
 
 public class EmailAccountService : IEmailAccountService
 {

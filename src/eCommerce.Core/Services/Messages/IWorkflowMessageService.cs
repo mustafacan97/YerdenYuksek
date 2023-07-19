@@ -1,6 +1,6 @@
 ﻿using eCommerce.Core.Entities.Customers;
 
-namespace eCommerce.Application.Services.Messages;
+namespace eCommerce.Core.Services.Messages;
 
 public interface IWorkflowMessageService
 {

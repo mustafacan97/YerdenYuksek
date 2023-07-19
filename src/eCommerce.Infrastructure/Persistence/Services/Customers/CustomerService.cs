@@ -3,13 +3,13 @@ using eCommerce.Core.Primitives;
 using Microsoft.EntityFrameworkCore;
 using YerdenYuksek.Application.Models.Customers;
 using eCommerce.Application.Services.Customers;
-using eCommerce.Infrastructure.Persistence.Services.Secuirty;
 using eCommerce.Core.Entities.Security;
 using eCommerce.Core.Entities.Configuration.CustomSettings;
 using eCommerce.Core.Entities.Customers;
 using eCommerce.Core.Shared;
 using eCommerce.Core.Services.Caching;
 using eCommerce.Core.Services.Security;
+using eCommerce.Infrastructure.Services.Secuirty;
 
 namespace eCommerce.Infrastructure.Persistence.Services.Customers;
 

@@ -1,8 +1,8 @@
-﻿using eCommerce.Application.Services.Messages;
-using eCommerce.Core.Entities.Messages;
+﻿using eCommerce.Core.Entities.Messages;
 using eCommerce.Core.Interfaces;
+using eCommerce.Core.Services.Messages;
 using eCommerce.Core.Services.ScheduleTasks;
-using eCommerce.Infrastructure.Persistence.Services.Secuirty;
+using eCommerce.Infrastructure.Services.Secuirty;
 
 namespace eCommerce.Infrastructure.BackgroundJobs;
 

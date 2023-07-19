@@ -1,10 +1,10 @@
 ﻿using System.Linq.Dynamic.Core;
 using System.Net;
 using System.Text.RegularExpressions;
-using eCommerce.Application.Services.Messages;
 using eCommerce.Core.Entities.Configuration.CustomSettings;
+using eCommerce.Core.Services.Messages;
 
-namespace eCommerce.Infrastructure.Persistence.Services.Messages;
+namespace eCommerce.Infrastructure.Services.Messages;
 
 public partial class Tokenizer : ITokenizer
 {

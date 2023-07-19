@@ -1,7 +1,7 @@
 ﻿using eCommerce.Core.Entities.Messages;
 using eCommerce.Core.Primitives;
 
-namespace eCommerce.Application.Services.Messages;
+namespace eCommerce.Core.Services.Messages;
 
 public interface IQueuedEmailService
 {

@@ -1,4 +1,4 @@
-﻿namespace eCommerce.Application.Services.Messages;
+﻿namespace eCommerce.Core.Services.Messages;
 
 public sealed class Token
 {

@@ -6,7 +6,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace eCommerce.Infrastructure.Persistence.Services.Secuirty;
+namespace eCommerce.Infrastructure.Services.Secuirty;
 
 internal class JwtService : IJwtService
 {

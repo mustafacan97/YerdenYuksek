@@ -3,7 +3,7 @@ using System.Text;
 using eCommerce.Core.Entities.Configuration.CustomSettings;
 using eCommerce.Core.Services.Security;
 
-namespace eCommerce.Infrastructure.Persistence.Services.Secuirty;
+namespace eCommerce.Infrastructure.Services.Secuirty;
 
 public class EncryptionService : IEncryptionService
 {
@@ -31,7 +31,7 @@ public class EncryptionService : IEncryptionService
         provider.GetBytes(buff);
 
         return Convert.ToBase64String(buff);
-    }    
+    }
 
     public static string EncryptText(string plainText, string encryptionPrivateKey)
     {
@@ -100,8 +100,8 @@ public class EncryptionService : IEncryptionService
 
     public string EncryptTextWithDefaultKey(string plainText)
     {
-        return string.IsNullOrEmpty(plainText) ? 
-            plainText : 
+        return string.IsNullOrEmpty(plainText) ?
+            plainText :
             EncryptText(plainText, _securitySettings.EncryptionKey);
     }
 

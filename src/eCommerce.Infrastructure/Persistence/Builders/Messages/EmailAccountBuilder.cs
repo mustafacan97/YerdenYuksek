@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using eCommerce.Infrastructure.Persistence.Services.Secuirty;
 using eCommerce.Core.Entities.Messages;
+using eCommerce.Infrastructure.Services.Secuirty;
 
 namespace eCommerce.Infrastructure.Persistence.Builders.Messages;
 

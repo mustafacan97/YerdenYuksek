@@ -4,7 +4,7 @@ using eCommerce.Core.Configuration;
 using eCommerce.Core.Primitives;
 using eCommerce.Core.Shared;
 using eCommerce.Core.Services.Security;
-using eCommerce.Infrastructure.Persistence.Services.Secuirty;
+using eCommerce.Infrastructure.Services.Secuirty;
 
 namespace eCommerce.Infrastructure.Services.Caching;
 

@@ -1,6 +1,6 @@
 ﻿using eCommerce.Core.Entities.Messages;
 
-namespace eCommerce.Application.Services.Messages;
+namespace eCommerce.Core.Services.Messages;
 
 public interface IEmailAccountService
 {

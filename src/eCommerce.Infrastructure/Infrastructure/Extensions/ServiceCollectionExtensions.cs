@@ -14,11 +14,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using eCommerce.Application.Services.Configuration;
-using eCommerce.Application.Services.Messages;
-using eCommerce.Infrastructure.Persistence.Services.Messages;
 using eCommerce.Application.Services.Customers;
 using eCommerce.Application.Services.Localization;
-using eCommerce.Infrastructure.Persistence.Services.Secuirty;
 using eCommerce.Infrastructure.Persistence.Services.Localization;
 using eCommerce.Infrastructure.Persistence.Services.Customers;
 using eCommerce.Infrastructure.Persistence.Services.Configuration;
@@ -28,6 +25,9 @@ using eCommerce.Core.Services.Security;
 using eCommerce.Core.Shared;
 using eCommerce.Infrastructure.Services.ScheduleTasks;
 using eCommerce.Core.Services.ScheduleTasks;
+using eCommerce.Infrastructure.Services.Messages;
+using eCommerce.Core.Services.Messages;
+using eCommerce.Infrastructure.Services.Secuirty;
 
 namespace eCommerce.Framework.Infrastructure.Extensions;
 

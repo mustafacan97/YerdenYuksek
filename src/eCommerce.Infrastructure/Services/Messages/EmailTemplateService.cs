@@ -1,10 +1,10 @@
 ﻿using eCommerce.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using eCommerce.Application.Services.Messages;
 using eCommerce.Core.Entities.Messages;
 using eCommerce.Core.Services.Caching;
+using eCommerce.Core.Services.Messages;
 
-namespace eCommerce.Infrastructure.Persistence.Services.Messages;
+namespace eCommerce.Infrastructure.Services.Messages;
 
 public class EmailTemplateService : IEmailTemplateService
 {
