@@ -1,5 +1,4 @@
-﻿using eCommerce.Core.Helpers;
-using eCommerce.Core.Interfaces;
+﻿using eCommerce.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;

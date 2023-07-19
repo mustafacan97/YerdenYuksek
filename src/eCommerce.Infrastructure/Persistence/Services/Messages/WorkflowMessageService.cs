@@ -1,12 +1,12 @@
 ﻿using System.Linq.Dynamic.Core;
 using eCommerce.Application.Services.Localization;
 using eCommerce.Application.Services.Messages;
-using eCommerce.Core.Helpers;
 using eCommerce.Core.Interfaces;
 using eCommerce.Core.Entities.Configuration.CustomSettings;
 using eCommerce.Core.Entities.Customers;
 using eCommerce.Core.Entities.Localization;
 using eCommerce.Core.Entities.Messages;
+using eCommerce.Core.Shared;
 
 namespace eCommerce.Infrastructure.Persistence.Services.Messages;
 
