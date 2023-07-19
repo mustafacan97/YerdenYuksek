@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
 using System.Reflection;
-using eCommerce.Core.Configuration;
 using eCommerce.Core.Primitives;
 using eCommerce.Application.Services.Configuration;
 using eCommerce.Application.Services.Localization;

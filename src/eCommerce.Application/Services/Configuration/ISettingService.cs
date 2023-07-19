@@ -1,5 +1,5 @@
-﻿using eCommerce.Core.Configuration;
-using eCommerce.Core.Entities.Configuration;
+﻿using eCommerce.Core.Entities.Configuration;
+using eCommerce.Core.Interfaces;
 using System.Linq.Expressions;
 
 namespace eCommerce.Application.Services.Configuration;

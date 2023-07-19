@@ -23,10 +23,9 @@ public class MemoryCacheManager : CacheKeyService, IStaticCacheManager
     #region Constructure and Destructure
 
     public MemoryCacheManager(
-        AppSettings appSettings,
         IMemoryCache memoryCache,
         ICacheKeyManager cacheKeyManager)
-        : base(appSettings)
+        : base()
     {
         _memoryCache = memoryCache;
         _keyManager = cacheKeyManager;

@@ -9,17 +9,29 @@ namespace eCommerce.Infrastructure.Services.Caching;
 
 public abstract class CacheKeyService
 {
-    #region Fields
+    #region Public Methods
 
-    protected readonly AppSettings _appSettings;
-
-    #endregion
-
-    #region Constructure and Destructure
-
-    protected CacheKeyService(AppSettings appSettings)
+    public CacheKey PrepareKey(CacheKey cacheKey, params object[] cacheKeyParameters)
     {
-        _appSettings = appSettings;
+        return cacheKey.Create(CreateCacheKeyParameters, cacheKeyParameters);
+    }
+
+    public CacheKey PrepareKeyForDefaultCache(CacheKey cacheKey, params object[] cacheKeyParameters)
+    {
+        var key = cacheKey.Create(CreateCacheKeyParameters, cacheKeyParameters);
+
+        key.CacheTime = CachingDefaults.DefaultCacheTime;
+
+        return key;
+    }
+
+    public CacheKey PrepareKeyForShortTermCache(CacheKey cacheKey, params object[] cacheKeyParameters)
+    {
+        var key = cacheKey.Create(CreateCacheKeyParameters, cacheKeyParameters);
+
+        key.CacheTime = CachingDefaults.ShortTermCacheTime;
+
+        return key;
     }
 
     #endregion
@@ -55,33 +67,6 @@ public abstract class CacheKeyService
             decimal param => param.ToString(CultureInfo.InvariantCulture),
             _ => parameter
         };
-    }
-
-    #endregion
-
-    #region Public Methods
-
-    public CacheKey PrepareKey(CacheKey cacheKey, params object[] cacheKeyParameters)
-    {
-        return cacheKey.Create(CreateCacheKeyParameters, cacheKeyParameters);
-    }
-
-    public CacheKey PrepareKeyForDefaultCache(CacheKey cacheKey, params object[] cacheKeyParameters)
-    {
-        var key = cacheKey.Create(CreateCacheKeyParameters, cacheKeyParameters);
-
-        key.CacheTime = _appSettings.Get<CacheConfig>().DefaultCacheTime;
-
-        return key;
-    }
-
-    public CacheKey PrepareKeyForShortTermCache(CacheKey cacheKey, params object[] cacheKeyParameters)
-    {
-        var key = cacheKey.Create(CreateCacheKeyParameters, cacheKeyParameters);
-
-        key.CacheTime = _appSettings.Get<CacheConfig>().ShortTermCacheTime;
-
-        return key;
     }
 
     #endregion

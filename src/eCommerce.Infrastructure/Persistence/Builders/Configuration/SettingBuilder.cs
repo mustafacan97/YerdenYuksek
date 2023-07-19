@@ -1,7 +1,7 @@
-﻿using eCommerce.Core.Configuration;
-using eCommerce.Core.Entities.Configuration;
+﻿using eCommerce.Core.Entities.Configuration;
 using eCommerce.Core.Entities.Configuration.CustomSettings;
 using eCommerce.Core.Helpers;
+using eCommerce.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.Extensions.Configuration;

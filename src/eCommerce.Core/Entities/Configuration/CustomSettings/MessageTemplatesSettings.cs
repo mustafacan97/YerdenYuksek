@@ -1,4 +1,4 @@
-﻿using eCommerce.Core.Configuration;
+﻿using eCommerce.Core.Interfaces;
 
 namespace eCommerce.Core.Entities.Configuration.CustomSettings;
 

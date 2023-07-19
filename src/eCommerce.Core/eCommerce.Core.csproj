@@ -24,6 +24,9 @@
   <ItemGroup>
     <Folder Include="DomainEvents\" />
     <Folder Include="Exceptions\" />
+    <Folder Include="DomainEvents\" />
+    <Folder Include="Exceptions\" />
+    <Folder Include="ValueObjects\" />
     <Folder Include="ValueObjects\" />
   </ItemGroup>
 

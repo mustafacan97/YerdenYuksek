@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
-using eCommerce.Core.Configuration;
 using eCommerce.Core.Entities.Localization;
+using eCommerce.Core.Interfaces;
 using eCommerce.Core.Primitives;
 
 namespace eCommerce.Application.Services.Localization;

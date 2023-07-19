@@ -5,20 +5,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using System.Net;
 using System.Reflection;
 using YerdenYuksek.Web.Framework.Common;
 using YerdenYuksek.Web.Framework.Infrastructure;
 using YerdenYuksek.Web.Framework.Persistence;
 using eCommerce.Core.Interfaces;
-using eCommerce.Core.Helpers;
 using eCommerce.Core.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using eCommerce.Application.Services.ScheduleTasks;
-using eCommerce.Core.Configuration;
 using eCommerce.Application.Services.Configuration;
 using eCommerce.Application.Services.Messages;
 using eCommerce.Infrastructure.Persistence.Services.Messages;
@@ -41,12 +37,10 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection RegisterServiceCollections(
         this IServiceCollection services,
-        IConfiguration configuration,
-        IHostEnvironment environment)
+        IConfiguration configuration)
     {
         services
             .ConfigureApiBehaviorOptions()
-            .ConfigureApplicationSettings(environment)
             .AddJwtBearer(configuration)
             .AddServices()
             .RegisterAllSettings()
@@ -66,30 +60,6 @@ public static class ServiceCollectionExtensions
         {
             options.SuppressModelStateInvalidFilter = true;
         });
-
-        return services;
-    }
-
-    /// <summary>
-    /// Get all config files in solution and save them to appsettings.json file
-    /// </summary>
-    private static IServiceCollection ConfigureApplicationSettings(this IServiceCollection services, IHostEnvironment environment)
-    {
-        ServicePointManager.SecurityProtocol = SecurityProtocolType.SystemDefault;
-
-        CommonHelper.DefaultFileProvider = new CustomFileProvider(environment);
-
-        var typeFinder = new TypeFinder(CommonHelper.DefaultFileProvider);
-        Singleton<ITypeFinder>.Instance = typeFinder;
-        services.AddSingleton<ITypeFinder>(typeFinder);
-
-        var configurations = typeFinder
-                .FindClassesOfType<IConfig>()
-                .Select(configType => (IConfig)Activator.CreateInstance(configType))
-                .ToList();
-
-        var appSettings = AppSettingsHelper.SaveAppSettings(configurations, CommonHelper.DefaultFileProvider, true);
-        services.AddSingleton(appSettings);
 
         return services;
     }
@@ -165,9 +135,6 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IMessageTokenProvider, MessageTokenProvider>();
         services.AddScoped<IJwtService, JwtService>();
 
-        //register all settings
-        services.RegisterAllSettings();
-
         //schedule tasks
         services.AddSingleton<ITaskScheduler, eCommerce.Infrastructure.Persistence.Services.ScheduleTasks.TaskScheduler>();
         services.AddTransient<IScheduleTaskRunner, ScheduleTaskRunner>();
@@ -177,8 +144,9 @@ public static class ServiceCollectionExtensions
 
     private static IServiceCollection RegisterAllSettings(this IServiceCollection services)
     {
-        var typeFinder = Singleton<ITypeFinder>.Instance;
-        var settings = typeFinder.FindClassesOfType(typeof(ISettings), false).ToList();
+        var settings = AppDomain.CurrentDomain.GetAssemblies()
+            .SelectMany(s => s.GetTypes())
+            .Where(p => typeof(ISettings).IsAssignableFrom(p) && !p.IsInterface);
 
         foreach (var setting in settings)
         {

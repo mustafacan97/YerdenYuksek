@@ -1,5 +1,4 @@
-﻿using eCommerce.Core.Infrastructure;
-using eCommerce.Core.Configuration;
+﻿using eCommerce.Core.Configuration;
 
 namespace eCommerce.Core.Shared;
 
@@ -40,7 +39,7 @@ public class CacheKey
 
     public List<string> Prefixes { get; protected set; } = new();
 
-    public int CacheTime { get; set; } = Singleton<AppSettings>.Instance.Get<CacheConfig>().DefaultCacheTime;
+    public int CacheTime { get; set; } = CachingDefaults.DefaultCacheTime;
 
     #endregion
 }
