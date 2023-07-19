@@ -1,8 +1,6 @@
 ﻿using eCommerce.Core.Interfaces;
 using eCommerce.Core.Primitives;
 using Microsoft.EntityFrameworkCore;
-using YerdenYuksek.Application.Models.Customers;
-using eCommerce.Application.Services.Customers;
 using eCommerce.Core.Entities.Security;
 using eCommerce.Core.Entities.Configuration.CustomSettings;
 using eCommerce.Core.Entities.Customers;
@@ -10,8 +8,9 @@ using eCommerce.Core.Shared;
 using eCommerce.Core.Services.Caching;
 using eCommerce.Core.Services.Security;
 using eCommerce.Infrastructure.Services.Secuirty;
+using eCommerce.Core.Services.Customers;
 
-namespace eCommerce.Infrastructure.Persistence.Services.Customers;
+namespace eCommerce.Infrastructure.Services.Customers;
 
 public class CustomerService : ICustomerService
 {
@@ -49,16 +48,11 @@ public class CustomerService : ICustomerService
 
     #region Public Methods
 
-    #region Commands
-
-    public async Task<RegisterResponseModel> RegisterCustomerAsync(string email, string password)
+    public async Task<Result<Customer>> RegisterCustomerAsync(string email, string password)
     {
-        var result = new RegisterResponseModel();
-
         if (await GetCustomerByEmailAsync(email) is not null)
         {
-            result.AddError(Error.Conflict(description: "Email is already registered!"));
-            return result;
+            return Result.Failure(Error.Conflict(description: "Email is already registered!"));
         }
 
         var saltKey = EncryptionService.CreateSaltKey(YerdenYuksekCustomerServicesDefaults.PasswordSaltKeySize);
@@ -74,8 +68,7 @@ public class CustomerService : ICustomerService
         var registeredRole = await GetCustomerRoleByNameAsync(RoleDefaults.RegisteredRoleName);
         if (registeredRole is null)
         {
-            result.AddError(Error.Failure(description: "Related customer role not found!"));
-            return result;
+            return Result.Failure(Error.Failure(description: "Related customer role not found!"));
         }
 
         customer.SetCustomerSecurity(customerPassword);
@@ -83,9 +76,7 @@ public class CustomerService : ICustomerService
 
         await InsertCustomerAsync(customer);
 
-        result.SetCustomer(customer);
-
-        return result;
+        return Result.Success(customer);
     }
 
     public async Task InsertCustomerAsync(Customer customer)
@@ -152,10 +143,6 @@ public class CustomerService : ICustomerService
         return Result.Success();
     }
 
-    #endregion
-
-    #region Queries
-
     public async Task<Customer?> GetCustomerByEmailAsync(string email, bool includeDeleted = false)
     {
         var cacheKey = _staticCacheManager.PrepareKeyForDefaultCache(EntityCacheDefaults<Customer>.ByEmailCacheKey, email);
@@ -198,8 +185,6 @@ public class CustomerService : ICustomerService
 
         return customerRole;
     }
-
-    #endregion
 
     #endregion
 

@@ -1,11 +1,11 @@
-﻿using eCommerce.Application.Services.Customers;
-using eCommerce.Core.Interfaces;
+﻿using eCommerce.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using eCommerce.Core.Entities.Customers;
 using eCommerce.Core.Entities.Localization;
+using eCommerce.Core.Services.Customers;
 
 namespace YerdenYuksek.Web.Framework.Common;
 

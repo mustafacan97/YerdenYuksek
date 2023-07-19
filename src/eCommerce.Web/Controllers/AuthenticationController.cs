@@ -1,7 +1,7 @@
 ﻿using eCommerce.Application.Models.Customers;
-using eCommerce.Application.Services.Customers;
 using eCommerce.Core.Interfaces;
 using eCommerce.Core.Primitives;
+using eCommerce.Core.Services.Customers;
 using eCommerce.Core.Services.Messages;
 using eCommerce.Core.Services.Security;
 using Microsoft.AspNetCore.Authorization;
@@ -62,10 +62,10 @@ public class AuthenticationController : Controller
 
         var registerResult = await _customerService.RegisterCustomerAsync(model.Email, model.Password);
 
-        if (registerResult.IsSuccess)
+        if (registerResult.IsSuccess && registerResult.Value is not null)
         {
             var currentLanguage = await _workContext.GetWorkingLanguageAsync();
-            await _workflowMessageService.SendCustomerWelcomeMessageAsync(registerResult.Customer, currentLanguage.Id);
+            await _workflowMessageService.SendCustomerWelcomeMessageAsync(registerResult.Value, currentLanguage.Id);
             return Ok();
         }
         else

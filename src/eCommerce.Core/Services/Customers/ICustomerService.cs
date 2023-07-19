@@ -1,10 +1,8 @@
-﻿using eCommerce.Application.Models.Customers;
-using eCommerce.Core.Primitives;
-using YerdenYuksek.Application.Models.Customers;
+﻿using eCommerce.Core.Primitives;
 using eCommerce.Core.Entities.Security;
 using eCommerce.Core.Entities.Customers;
 
-namespace eCommerce.Application.Services.Customers;
+namespace eCommerce.Core.Services.Customers;
 
 public partial interface ICustomerService
 {
@@ -12,7 +10,7 @@ public partial interface ICustomerService
 
     Task InsertCustomerAsync(Customer customer);
 
-    Task<RegisterResponseModel> RegisterCustomerAsync(string email, string password);
+    Task<Result<Customer>> RegisterCustomerAsync(string email, string password);
 
     Task<Result> ValidateCustomerAsync(string email, string password);
 

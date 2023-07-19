@@ -1,7 +1,7 @@
 ﻿using eCommerce.Core.Entities.Security;
 using eCommerce.Core.Shared;
 
-namespace eCommerce.Application.Services.Customers;
+namespace eCommerce.Core.Services.Customers;
 
 public static class YerdenYuksekCustomerServicesDefaults
 {

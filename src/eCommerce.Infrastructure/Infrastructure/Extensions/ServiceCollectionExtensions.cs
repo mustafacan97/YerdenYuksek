@@ -13,10 +13,8 @@ using eCommerce.Core.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using eCommerce.Application.Services.Customers;
 using eCommerce.Application.Services.Localization;
 using eCommerce.Infrastructure.Persistence.Services.Localization;
-using eCommerce.Infrastructure.Persistence.Services.Customers;
 using eCommerce.Core.Services.Caching;
 using eCommerce.Infrastructure.Services.Caching;
 using eCommerce.Core.Services.Security;
@@ -28,6 +26,8 @@ using eCommerce.Core.Services.Messages;
 using eCommerce.Infrastructure.Services.Secuirty;
 using eCommerce.Infrastructure.Services.Configuration;
 using eCommerce.Core.Services.Configuration;
+using eCommerce.Infrastructure.Services.Customers;
+using eCommerce.Core.Services.Customers;
 
 namespace eCommerce.Framework.Infrastructure.Extensions;
 

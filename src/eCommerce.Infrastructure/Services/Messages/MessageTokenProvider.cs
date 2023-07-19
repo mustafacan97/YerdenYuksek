@@ -1,8 +1,8 @@
-﻿using eCommerce.Application.Services.Customers;
-using eCommerce.Core.Interfaces;
+﻿using eCommerce.Core.Interfaces;
 using eCommerce.Core.Entities.Customers;
 using eCommerce.Core.Entities.Messages;
 using eCommerce.Core.Services.Messages;
+using eCommerce.Core.Services.Customers;
 
 namespace eCommerce.Infrastructure.Services.Messages;
 

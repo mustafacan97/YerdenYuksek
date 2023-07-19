@@ -1,4 +1,4 @@
-﻿using eCommerce.Application.Services.Customers;
+﻿using eCommerce.Core.Services.Customers;
 using eCommerce.Core.Services.Security;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
