@@ -10,7 +10,6 @@ using YerdenYuksek.Web.Framework.Common;
 using YerdenYuksek.Web.Framework.Infrastructure;
 using YerdenYuksek.Web.Framework.Persistence;
 using eCommerce.Core.Interfaces;
-using eCommerce.Core.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -28,6 +27,7 @@ using eCommerce.Infrastructure.Persistence.Services.ScheduleTasks;
 using eCommerce.Core.Services.Caching;
 using eCommerce.Infrastructure.Services.Caching;
 using eCommerce.Core.Services.Security;
+using eCommerce.Core.Shared;
 
 namespace eCommerce.Framework.Infrastructure.Extensions;
 
@@ -97,9 +97,6 @@ public static class ServiceCollectionExtensions
         services.AddUnitOfWork<ApplicationDbContext>();
         services.AddSingleton<ILocker, MemoryCacheLocker>();
         services.AddSingleton<IStaticCacheManager, MemoryCacheManager>();
-
-        //file provider
-        services.AddScoped<ICustomFileProvider, CustomFileProvider>();
 
         //add accessor to HttpContext
         services.AddHttpContextAccessor();

@@ -1,4 +1,4 @@
-﻿using eCommerce.Core.Infrastructure;
+﻿using eCommerce.Core.Interfaces;
 using eCommerce.Core.Services.Caching;
 
 namespace eCommerce.Infrastructure.Services.Caching;

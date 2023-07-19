@@ -1,4 +1,4 @@
-﻿namespace eCommerce.Core.Infrastructure;
+﻿namespace eCommerce.Core.Primitives.Singleton;
 
 public class Singleton<T> : BaseSingleton
 {

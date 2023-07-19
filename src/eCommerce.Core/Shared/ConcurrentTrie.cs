@@ -1,6 +1,7 @@
-﻿using System.Runtime.CompilerServices;
+﻿using eCommerce.Core.Interfaces;
+using System.Runtime.CompilerServices;
 
-namespace eCommerce.Core.Infrastructure;
+namespace eCommerce.Core.Shared;
 
 public partial class ConcurrentTrie<TValue> : IConcurrentCollection<TValue>
 {
@@ -35,7 +36,7 @@ public partial class ConcurrentTrie<TValue> : IConcurrentCollection<TValue>
         var i = 0;
         var minLength = Math.Min(s1.Length, s2.Length);
 
-        while (i < minLength && s2[i] == s1[i]) 
+        while (i < minLength && s2[i] == s1[i])
             i++;
 
         return i;
@@ -73,7 +74,7 @@ public partial class ConcurrentTrie<TValue> : IConcurrentCollection<TValue>
             var span = node.Label.AsSpan();
             var i = GetCommonPrefixLength(suffix, span);
 
-            if (i != span.Length) 
+            if (i != span.Length)
                 return false;
 
             if (i == suffix.Length)
@@ -107,10 +108,10 @@ public partial class ConcurrentTrie<TValue> : IConcurrentCollection<TValue>
                         var label = nextNode.Label.AsSpan();
                         var i = GetCommonPrefixLength(label, suffix);
                         // suffix starts with label
-                        if (i == label.Length) 
+                        if (i == label.Length)
                         {
                             // keys are equal - this is the node we're looking for
-                            if (i == suffix.Length) 
+                            if (i == suffix.Length)
                             {
                                 if (overwrite)
                                     nextNode.SetValue(value);
@@ -173,10 +174,10 @@ public partial class ConcurrentTrie<TValue> : IConcurrentCollection<TValue>
                 var i = GetCommonPrefixLength(label, suffix);
 
                 // suffix starts with label?
-                if (i == label.Length)   
+                if (i == label.Length)
                 {
                     // if the keys are equal, the key has already been inserted
-                    if (i == suffix.Length)    
+                    if (i == suffix.Length)
                     {
                         if (overwrite)
                             nextNode.SetValue(value);
@@ -196,7 +197,7 @@ public partial class ConcurrentTrie<TValue> : IConcurrentCollection<TValue>
                 TrieNode outNode;
 
                 // label starts with suffix, so we can return splitNode
-                if (i == suffix.Length) 
+                if (i == suffix.Length)
                     outNode = splitNode;
                 // the keys diverge, so we need to branch from splitNode
                 else
@@ -442,8 +443,8 @@ public partial class ConcurrentTrie<TValue> : IConcurrentCollection<TValue>
             }
 
             foreach (var child in children)
-            foreach (var kv in traverse(child, s + child.Label))
-                yield return kv;
+                foreach (var kv in traverse(child, s + child.Label))
+                    yield return kv;
         }
 
         return traverse(node, prefix);
@@ -500,7 +501,7 @@ public partial class ConcurrentTrie<TValue> : IConcurrentCollection<TValue>
                     }
 
                     // was removed by another thread
-                    return false; 
+                    return false;
                 }
 
                 if (k < label.Length)
@@ -522,7 +523,7 @@ public partial class ConcurrentTrie<TValue> : IConcurrentCollection<TValue>
     #endregion
 
     #region Properties
-    
+
     public IEnumerable<string> Keys => Search(string.Empty).Select(t => t.Key);
 
     #endregion
@@ -544,7 +545,7 @@ public partial class ConcurrentTrie<TValue> : IConcurrentCollection<TValue>
         // defaults to 8 times the number of processor cores
         public StripedReaderWriterLock(int nLocks = 0)
         {
-            if(nLocks == 0)
+            if (nLocks == 0)
                 nLocks = Environment.ProcessorCount * MULTIPLIER;
 
             _locks = new ReaderWriterLockSlim[nLocks];
@@ -621,7 +622,7 @@ public partial class ConcurrentTrie<TValue> : IConcurrentCollection<TValue>
             var wrapper = Interlocked.Exchange(ref _value, null);
             value = default;
 
-            if (wrapper == null) 
+            if (wrapper == null)
                 return false;
 
             value = wrapper.Value;
@@ -637,7 +638,7 @@ public partial class ConcurrentTrie<TValue> : IConcurrentCollection<TValue>
         public TValue GetOrAddValue(TValue value)
         {
             var wrapper = Interlocked.CompareExchange(ref _value, new ValueWrapper(value), null);
-            
+
             return wrapper != null ? wrapper.Value : value;
         }
 

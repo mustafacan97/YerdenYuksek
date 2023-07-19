@@ -1,4 +1,4 @@
-﻿namespace eCommerce.Core.Infrastructure;
+﻿namespace eCommerce.Core.Interfaces;
 
 public interface IConcurrentCollection<TValue>
 {
@@ -22,5 +22,5 @@ public interface IConcurrentCollection<TValue>
 
     bool Prune(string prefix, out IConcurrentCollection<TValue> subCollection);
 
-#endregion
+    #endregion
 }
