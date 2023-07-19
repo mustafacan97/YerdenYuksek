@@ -1,5 +1,4 @@
 ﻿using eCommerce.Core.Services.ScheduleTasks;
-using eCommerce.Infrastructure.Concretes;
 using eCommerce.Infrastructure.Persistence.Primitives;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -13,8 +12,6 @@ public static class ApplicationBuilderExtensions
 
     public static IApplicationBuilder RegisterApplicationBuilders(this IApplicationBuilder application)
     {
-        application.ConfigureRequestPipeline();
-
         application.ApplicationServices.RunMigrationsOnStartup();
 
         application.ApplicationServices.RunScheduleTasksOnStartup();
@@ -33,11 +30,6 @@ public static class ApplicationBuilderExtensions
         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
         dbContext.Database.Migrate();
-    }
-
-    public static void ConfigureRequestPipeline(this IApplicationBuilder application)
-    {
-        EngineContext.Current.ConfigureRequestPipeline(application);
     }
 
     private async static void RunScheduleTasksOnStartup(this IServiceProvider services)

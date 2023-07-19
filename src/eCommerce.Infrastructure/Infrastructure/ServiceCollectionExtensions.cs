@@ -90,9 +90,6 @@ public static class ServiceCollectionExtensions
 
     private static IServiceCollection AddServices(this IServiceCollection services)
     {
-        //register engine
-        services.AddSingleton<IEngine, Engine>();
-
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddUnitOfWork<ApplicationDbContext>();
         services.AddSingleton<ILocker, MemoryCacheLocker>();

@@ -2,7 +2,6 @@
 using eCommerce.Core.Entities.ScheduleTasks;
 using eCommerce.Core.Services.Caching;
 using eCommerce.Core.Services.ScheduleTasks;
-using eCommerce.Infrastructure.Concretes;
 
 namespace eCommerce.Infrastructure.Services.ScheduleTasks;
 
@@ -14,16 +13,20 @@ public class ScheduleTaskRunner : IScheduleTaskRunner
 
     private readonly IUnitOfWork _unitOfWork;
 
+    private readonly IServiceProvider _serviceProvider;
+
     #endregion
 
     #region Constructure and Destructure
 
     public ScheduleTaskRunner(
         ILocker locker,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        IServiceProvider serviceProvider)
     {
         _locker = locker;
         _unitOfWork = unitOfWork;
+        _serviceProvider = serviceProvider;
     }
 
     #endregion
@@ -77,20 +80,10 @@ public class ScheduleTaskRunner : IScheduleTaskRunner
             throw new Exception($"Schedule task ({scheduleTask.Type}) cannot by instantiated");
         }
 
-        object? instance = null;
+        var instance = _serviceProvider.GetService(type);
+        instance ??= CreateScheduleTaskClass(type);
 
-        try
-        {
-            instance = EngineContext.Current.Resolve(type);
-        }
-        catch
-        {
-            // ignored
-        }
-
-        instance ??= EngineContext.Current.ResolveUnregistered(type);
-
-        if (instance is not IScheduleTask task)
+        if (instance is null || instance is not IScheduleTask task)
         {
             return;
         }
@@ -129,6 +122,29 @@ public class ScheduleTaskRunner : IScheduleTaskRunner
         }
 
         return true;
+    }
+
+    private object? CreateScheduleTaskClass(Type type)
+    {
+        foreach (var constructor in type.GetConstructors())
+        {
+            try
+            {
+                var parameters = constructor.GetParameters().Select(parameter =>
+                {
+                    var service = _serviceProvider.GetService(parameter.ParameterType);
+                    return service is null ? throw new Exception("Unknown dependency") : service;
+                });
+                
+                return Activator.CreateInstance(type, parameters.ToArray());
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Cannot create schedule task class!", ex);
+            }
+        }
+
+        throw new Exception("No constructor was found that had all the dependencies satisfied!");
     }
 
     #endregion
