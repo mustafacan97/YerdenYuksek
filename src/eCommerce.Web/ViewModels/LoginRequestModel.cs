@@ -1,4 +1,4 @@
-﻿namespace eCommerce.Application.Models.Customers;
+﻿namespace eCommerce.Web.ViewModels;
 
 public record LoginRequestModel
 {

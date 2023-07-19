@@ -6,8 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
-using YerdenYuksek.Web.Framework.Common;
-using YerdenYuksek.Web.Framework.Infrastructure;
 using YerdenYuksek.Web.Framework.Persistence;
 using eCommerce.Core.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -28,8 +26,10 @@ using eCommerce.Infrastructure.Services.Customers;
 using eCommerce.Core.Services.Customers;
 using eCommerce.Infrastructure.Services.Localization;
 using eCommerce.Core.Services.Localization;
+using eCommerce.Infrastructure.Concretes;
+using eCommerce.Infrastructure.Infrastructure;
 
-namespace eCommerce.Framework.Infrastructure.Extensions;
+namespace eCommerce.Infrastructure.Infrastructure;
 
 public static class ServiceCollectionExtensions
 {
@@ -133,7 +133,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IJwtService, JwtService>();
 
         //schedule tasks
-        services.AddSingleton<ITaskScheduler, eCommerce.Infrastructure.Services.ScheduleTasks.TaskScheduler>();
+        services.AddSingleton<ITaskScheduler, Services.ScheduleTasks.TaskScheduler>();
         services.AddTransient<IScheduleTaskRunner, ScheduleTaskRunner>();
 
         return services;
@@ -152,7 +152,7 @@ public static class ServiceCollectionExtensions
                 return serviceProvider.GetRequiredService<ISettingService>().LoadSettingAsync(setting).Result;
             });
         }
-        
+
         return services;
     }
 

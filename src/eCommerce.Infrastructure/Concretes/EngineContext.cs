@@ -2,7 +2,7 @@
 using eCommerce.Core.Interfaces;
 using eCommerce.Core.Primitives.Singleton;
 
-namespace YerdenYuksek.Web.Framework.Infrastructure;
+namespace eCommerce.Infrastructure.Concretes;
 
 public class EngineContext
 {

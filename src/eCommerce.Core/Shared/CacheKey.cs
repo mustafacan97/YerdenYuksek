@@ -21,12 +21,16 @@ public class CacheKey
         var cacheKey = new CacheKey(Key, Prefixes.ToArray());
 
         if (!keyObjects.Any())
+        {
             return cacheKey;
+        }
 
         cacheKey.Key = string.Format(cacheKey.Key, keyObjects.Select(createCacheKeyParameters).ToArray());
 
         for (var i = 0; i < cacheKey.Prefixes.Count; i++)
+        {
             cacheKey.Prefixes[i] = string.Format(cacheKey.Prefixes[i], keyObjects.Select(createCacheKeyParameters).ToArray());
+        }
 
         return cacheKey;
     }

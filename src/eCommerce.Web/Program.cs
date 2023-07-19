@@ -1,4 +1,4 @@
-using eCommerce.Framework.Infrastructure.Extensions;
+using eCommerce.Infrastructure.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 

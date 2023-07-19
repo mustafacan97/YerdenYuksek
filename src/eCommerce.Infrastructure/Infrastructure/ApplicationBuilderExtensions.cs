@@ -1,11 +1,11 @@
 ﻿using eCommerce.Core.Services.ScheduleTasks;
+using eCommerce.Infrastructure.Concretes;
 using eCommerce.Infrastructure.Persistence.Primitives;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using YerdenYuksek.Web.Framework.Infrastructure;
 
-namespace eCommerce.Framework.Infrastructure.Extensions;
+namespace eCommerce.Infrastructure.Infrastructure;
 
 public static class ApplicationBuilderExtensions
 {
@@ -17,7 +17,7 @@ public static class ApplicationBuilderExtensions
 
         application.ApplicationServices.RunMigrationsOnStartup();
 
-        application.ApplicationServices.RunScheduleTasksOnStartup();        
+        application.ApplicationServices.RunScheduleTasksOnStartup();
 
         return application;
     }

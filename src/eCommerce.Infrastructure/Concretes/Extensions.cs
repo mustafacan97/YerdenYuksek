@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using eCommerce.Core.Primitives;
 
-namespace YerdenYuksek.Web.Framework.Common;
+namespace eCommerce.Infrastructure.Concretes;
 
 public static class Extensions
 {

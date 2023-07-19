@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using System.Net;
 
-namespace YerdenYuksek.Web.Framework.Common;
+namespace eCommerce.Infrastructure.Concretes;
 
 public class WebHelper : IWebHelper
 {

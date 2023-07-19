@@ -1,14 +1,13 @@
-﻿using eCommerce.Application.Models.Customers;
-using eCommerce.Core.Interfaces;
+﻿using eCommerce.Core.Interfaces;
 using eCommerce.Core.Primitives;
 using eCommerce.Core.Services.Customers;
 using eCommerce.Core.Services.Messages;
 using eCommerce.Core.Services.Security;
+using eCommerce.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using YerdenYuksek.Application.Models.Customers;
 
-namespace YerdenYuksek.Web.Controllers;
+namespace eCommerce.Web.Controllers;
 
 [ApiController]
 [Route("api/[controller]/[action]")]

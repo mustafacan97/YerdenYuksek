@@ -7,7 +7,7 @@ using eCommerce.Core.Entities.Customers;
 using eCommerce.Core.Entities.Localization;
 using eCommerce.Core.Services.Customers;
 
-namespace YerdenYuksek.Web.Framework.Common;
+namespace eCommerce.Infrastructure.Concretes;
 
 public class WorkContext : IWorkContext
 {
@@ -61,8 +61,8 @@ public class WorkContext : IWorkContext
         if (requestCultureFeature is null || requestCultureFeature.RequestCulture is null)
         {
             return (await (from l in _unitOfWork.GetRepository<Language>().Table
-                          where l.IsDefaultLanguage
-                          select l).FirstOrDefaultAsync())!;
+                           where l.IsDefaultLanguage
+                           select l).FirstOrDefaultAsync())!;
         }
 
         var requestLanguage = await _unitOfWork.GetRepository<Language>().GetFirstOrDefaultAsync<Language>(l =>
