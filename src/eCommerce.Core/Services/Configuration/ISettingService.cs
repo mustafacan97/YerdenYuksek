@@ -2,7 +2,7 @@
 using eCommerce.Core.Interfaces;
 using System.Linq.Expressions;
 
-namespace eCommerce.Application.Services.Configuration;
+namespace eCommerce.Core.Services.Configuration;
 
 public interface ISettingService
 {

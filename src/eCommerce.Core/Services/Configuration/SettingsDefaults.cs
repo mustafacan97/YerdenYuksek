@@ -1,7 +1,7 @@
 ﻿using eCommerce.Core.Entities.Configuration;
 using eCommerce.Core.Shared;
 
-namespace eCommerce.Application.Services.Configuration;
+namespace eCommerce.Core.Services.Configuration;
 
 public static class SettingsDefaults
 {

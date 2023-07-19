@@ -1,13 +1,13 @@
 ﻿using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Reflection;
-using eCommerce.Application.Services.Configuration;
 using eCommerce.Core.Interfaces;
 using eCommerce.Core.Entities.Configuration;
 using eCommerce.Core.Shared;
 using eCommerce.Core.Services.Caching;
+using eCommerce.Core.Services.Configuration;
 
-namespace eCommerce.Infrastructure.Persistence.Services.Configuration;
+namespace eCommerce.Infrastructure.Services.Configuration;
 
 public class SettingService : ISettingService
 {
