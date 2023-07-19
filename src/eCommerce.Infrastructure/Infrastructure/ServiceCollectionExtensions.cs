@@ -35,7 +35,7 @@ public static class ServiceCollectionExtensions
 {
     #region Public Methods
 
-    public static IServiceCollection RegisterServiceCollections(
+    public static IServiceCollection AddInfrastructureProject(
         this IServiceCollection services,
         IConfiguration configuration)
     {
