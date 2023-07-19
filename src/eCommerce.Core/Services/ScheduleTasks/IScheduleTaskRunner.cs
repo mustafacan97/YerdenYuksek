@@ -1,6 +1,6 @@
 ﻿using eCommerce.Core.Entities.ScheduleTasks;
 
-namespace eCommerce.Application.Services.ScheduleTasks;
+namespace eCommerce.Core.Services.ScheduleTasks;
 
 public interface IScheduleTaskRunner
 {

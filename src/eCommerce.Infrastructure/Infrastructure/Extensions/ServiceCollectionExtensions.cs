@@ -13,7 +13,6 @@ using eCommerce.Core.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using eCommerce.Application.Services.ScheduleTasks;
 using eCommerce.Application.Services.Configuration;
 using eCommerce.Application.Services.Messages;
 using eCommerce.Infrastructure.Persistence.Services.Messages;
@@ -23,11 +22,12 @@ using eCommerce.Infrastructure.Persistence.Services.Secuirty;
 using eCommerce.Infrastructure.Persistence.Services.Localization;
 using eCommerce.Infrastructure.Persistence.Services.Customers;
 using eCommerce.Infrastructure.Persistence.Services.Configuration;
-using eCommerce.Infrastructure.Persistence.Services.ScheduleTasks;
 using eCommerce.Core.Services.Caching;
 using eCommerce.Infrastructure.Services.Caching;
 using eCommerce.Core.Services.Security;
 using eCommerce.Core.Shared;
+using eCommerce.Infrastructure.Services.ScheduleTasks;
+using eCommerce.Core.Services.ScheduleTasks;
 
 namespace eCommerce.Framework.Infrastructure.Extensions;
 
@@ -133,7 +133,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IJwtService, JwtService>();
 
         //schedule tasks
-        services.AddSingleton<ITaskScheduler, eCommerce.Infrastructure.Persistence.Services.ScheduleTasks.TaskScheduler>();
+        services.AddSingleton<ITaskScheduler, eCommerce.Infrastructure.Services.ScheduleTasks.TaskScheduler>();
         services.AddTransient<IScheduleTaskRunner, ScheduleTaskRunner>();
 
         return services;

@@ -1,4 +1,4 @@
-﻿using eCommerce.Application.Services.ScheduleTasks;
+﻿using eCommerce.Core.Services.ScheduleTasks;
 using eCommerce.Infrastructure.Persistence.Primitives;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;

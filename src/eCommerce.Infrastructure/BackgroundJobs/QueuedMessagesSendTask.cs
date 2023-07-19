@@ -1,10 +1,10 @@
 ﻿using eCommerce.Application.Services.Messages;
-using eCommerce.Application.Services.ScheduleTasks;
 using eCommerce.Core.Entities.Messages;
 using eCommerce.Core.Interfaces;
+using eCommerce.Core.Services.ScheduleTasks;
 using eCommerce.Infrastructure.Persistence.Services.Secuirty;
 
-namespace eCommerce.Infrastructure.Persistence.Services.ScheduleTasks;
+namespace eCommerce.Infrastructure.BackgroundJobs;
 
 public class QueuedMessagesSendTask : IScheduleTask
 {

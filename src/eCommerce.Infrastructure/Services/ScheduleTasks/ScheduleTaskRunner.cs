@@ -1,10 +1,10 @@
-﻿using eCommerce.Application.Services.ScheduleTasks;
-using eCommerce.Core.Interfaces;
+﻿using eCommerce.Core.Interfaces;
 using YerdenYuksek.Web.Framework.Infrastructure;
 using eCommerce.Core.Entities.ScheduleTasks;
 using eCommerce.Core.Services.Caching;
+using eCommerce.Core.Services.ScheduleTasks;
 
-namespace eCommerce.Infrastructure.Persistence.Services.ScheduleTasks;
+namespace eCommerce.Infrastructure.Services.ScheduleTasks;
 
 public class ScheduleTaskRunner : IScheduleTaskRunner
 {
@@ -38,7 +38,7 @@ public class ScheduleTaskRunner : IScheduleTaskRunner
     {
         if (scheduleTask is null) return;
 
-        var enabled = forceRun || (scheduleTask.Active && !scheduleTask.Deleted);
+        var enabled = forceRun || scheduleTask.Active && !scheduleTask.Deleted;
 
         if (!enabled) return;
 

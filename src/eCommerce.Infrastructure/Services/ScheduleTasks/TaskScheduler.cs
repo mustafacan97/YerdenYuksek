@@ -1,8 +1,8 @@
-﻿using eCommerce.Application.Services.ScheduleTasks;
-using eCommerce.Core.Entities.ScheduleTasks;
+﻿using eCommerce.Core.Entities.ScheduleTasks;
 using eCommerce.Core.Interfaces;
+using eCommerce.Core.Services.ScheduleTasks;
 
-namespace eCommerce.Infrastructure.Persistence.Services.ScheduleTasks;
+namespace eCommerce.Infrastructure.Services.ScheduleTasks;
 
 public class TaskScheduler : ITaskScheduler
 {
@@ -19,7 +19,7 @@ public class TaskScheduler : ITaskScheduler
     #region Constructure and Destructure
 
     public TaskScheduler(
-        IUnitOfWork unitOfWork, 
+        IUnitOfWork unitOfWork,
         IScheduleTaskRunner scheduleTaskRunner)
     {
         _unitOfWork = unitOfWork;
