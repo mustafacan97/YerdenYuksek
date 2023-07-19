@@ -1,7 +1,7 @@
 ﻿using eCommerce.Core.Entities.Localization;
 using eCommerce.Core.Shared;
 
-namespace eCommerce.Application.Services.Localization;
+namespace eCommerce.Core.Services.Localization;
 
 public static class LocalizationDefaults
 {

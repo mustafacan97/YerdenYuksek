@@ -3,7 +3,7 @@ using eCommerce.Core.Entities.Localization;
 using eCommerce.Core.Interfaces;
 using eCommerce.Core.Primitives;
 
-namespace eCommerce.Application.Services.Localization;
+namespace eCommerce.Core.Services.Localization;
 
 public interface ILocalizationService
 {

@@ -1,6 +1,6 @@
 ﻿using eCommerce.Core.Entities.Localization;
 
-namespace eCommerce.Application.Services.Localization;
+namespace eCommerce.Core.Services.Localization;
 
 public interface ILanguageService
 {

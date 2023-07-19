@@ -1,13 +1,12 @@
 ﻿using System.Globalization;
 using eCommerce.Core.Interfaces;
-using eCommerce.Application.Services.Localization;
 using eCommerce.Core.Entities.Configuration.CustomSettings;
 using eCommerce.Core.Entities.Localization;
 using eCommerce.Core.Services.Caching;
-using eCommerce.Core.Shared;
 using eCommerce.Core.Services.Configuration;
+using eCommerce.Core.Services.Localization;
 
-namespace eCommerce.Infrastructure.Persistence.Services.Localization;
+namespace eCommerce.Infrastructure.Services.Localization;
 
 public class LanguageService : ILanguageService
 {
