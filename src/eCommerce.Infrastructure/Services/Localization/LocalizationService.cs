@@ -286,8 +286,7 @@ public class LocalizationService : ILocalizationService
 
     public async Task<LocaleStringResource> GetLocaleStringResourceByIdAsync(Guid localeStringResourceId)
     {
-        return await _unitOfWork.GetRepository<LocaleStringResource>()
-            .GetByIdAsync(localeStringResourceId, cache => default);
+        return await _unitOfWork.GetRepository<LocaleStringResource>().GetByIdAsync(localeStringResourceId);
     }
 
     public LocaleStringResource? GetLocaleStringResourceByName(string resourceName, Guid languageId, bool logIfNotFound = true)

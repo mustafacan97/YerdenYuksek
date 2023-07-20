@@ -63,7 +63,7 @@ public class EmailAccountService : IEmailAccountService
 
     public async Task<EmailAccount> GetEmailAccountByIdAsync(Guid emailAccountId)
     {
-        return await _unitOfWork.GetRepository<EmailAccount>().GetByIdAsync(emailAccountId, cache => default);
+        return await _unitOfWork.GetRepository<EmailAccount>().GetByIdAsync(emailAccountId);
     }
 
     public async Task<IList<EmailAccount>> GetAllEmailAccountsAsync()

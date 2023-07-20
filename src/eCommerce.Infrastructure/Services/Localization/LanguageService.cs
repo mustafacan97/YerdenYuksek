@@ -140,7 +140,7 @@ public class LanguageService : ILanguageService
 
     public async Task<Language> GetLanguageByIdAsync(Guid languageId)
     {
-        return await _unitOfWork.GetRepository<Language>().GetByIdAsync(languageId, cache => default);
+        return await _unitOfWork.GetRepository<Language>().GetByIdAsync(languageId);
     }
 
     public string? GetTwoLetterIsoLanguageName(Language language)

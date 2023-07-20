@@ -62,7 +62,7 @@ public class EmailTemplateService : IEmailTemplateService
 
     public async Task<EmailTemplate> GetMessageTemplateByIdAsync(Guid messageTemplateId)
     {
-        return await _unitOfWork.GetRepository<EmailTemplate>().GetByIdAsync(messageTemplateId, cache => default);
+        return await _unitOfWork.GetRepository<EmailTemplate>().GetByIdAsync(messageTemplateId);
     }
 
     public async Task<IList<EmailTemplate>> GetMessageTemplatesByNameAsync(string messageTemplateName)

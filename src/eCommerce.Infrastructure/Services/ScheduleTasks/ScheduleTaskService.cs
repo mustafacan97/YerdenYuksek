@@ -31,7 +31,7 @@ public class ScheduleTaskService : IScheduleTaskService
 
     public async Task<ScheduleTask> GetTaskByIdAsync(Guid taskId)
     {
-        return await _unitOfWork.GetRepository<ScheduleTask>().GetByIdAsync(taskId, _ => default);
+        return await _unitOfWork.GetRepository<ScheduleTask>().GetByIdAsync(taskId);
     }
 
     public async Task<ScheduleTask> GetTaskByTypeAsync(string type)

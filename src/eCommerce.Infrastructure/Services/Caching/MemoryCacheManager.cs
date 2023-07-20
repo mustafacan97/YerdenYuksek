@@ -33,13 +33,9 @@ public class MemoryCacheManager : CacheKeyService, IStaticCacheManager
 
     #region Public Methods
 
-    public Task RemoveAsync(CacheKey cacheKey, params object[] cacheKeyParameters)
+    public T Get<T>(CacheKey key, Func<T> acquire)
     {
-        var key = PrepareKey(cacheKey, cacheKeyParameters).Key;
-        _memoryCache.Remove(key);
-        _keyManager.RemoveKey(key);
-
-        return Task.CompletedTask;
+        return GetAsync(key, acquire).GetAwaiter().GetResult();
     }
 
     public async Task<T> GetAsync<T>(CacheKey key, Func<Task<T>> acquire)
@@ -68,7 +64,12 @@ public class MemoryCacheManager : CacheKeyService, IStaticCacheManager
         }
     }
 
-    public async Task<T> GetAsync<T>(CacheKey key, T defaultValue = default)
+    public T? Get<T>(CacheKey key, T? defaultValue = default)
+    {
+        return GetAsync(key, defaultValue).GetAwaiter().GetResult();
+    }
+
+    public async Task<T?> GetAsync<T>(CacheKey key, T? defaultValue = default)
     {
         var value = _memoryCache.Get<Lazy<Task<T>>>(key.Key)?.Value;
 
@@ -78,7 +79,7 @@ public class MemoryCacheManager : CacheKeyService, IStaticCacheManager
         }
         catch
         {
-            //if a cached function throws an exception, remove it from the cache
+            // If a cached function throws an exception, remove it from the cache
             await RemoveAsync(key);
 
             throw;
@@ -122,15 +123,7 @@ public class MemoryCacheManager : CacheKeyService, IStaticCacheManager
                 PrepareEntryOptions(key));
 
         return Task.CompletedTask;
-    }
-
-    public Task RemoveByPrefixAsync(string prefix, params object[] prefixParameters)
-    {
-        foreach (var key in _keyManager.RemoveByPrefix(PrepareKeyPrefix(prefix, prefixParameters)))
-            _memoryCache.Remove(key);
-
-        return Task.CompletedTask;
-    }
+    }    
 
     public Task ClearAsync()
     {
@@ -148,14 +141,33 @@ public class MemoryCacheManager : CacheKeyService, IStaticCacheManager
         GC.SuppressFinalize(this);
     }
 
-    public T Get<T>(CacheKey key, Func<T> acquire)
+    public void Remove(CacheKey cacheKey, params object[] cacheKeyParameters)
     {
-        return GetAsync(key, acquire).GetAwaiter().GetResult();
+        var key = PrepareKey(cacheKey, cacheKeyParameters).Key;
+        _memoryCache.Remove(key);
+        _keyManager.RemoveKey(key);
+    }
+
+    public Task RemoveAsync(CacheKey cacheKey, params object[] cacheKeyParameters)
+    {
+        var key = PrepareKey(cacheKey, cacheKeyParameters).Key;
+        _memoryCache.Remove(key);
+        _keyManager.RemoveKey(key);
+
+        return Task.CompletedTask;
     }
 
     public void RemoveByPrefix(string prefix, params object[] prefixParameters)
     {
         RemoveByPrefixAsync(prefix, prefixParameters).Wait();
+    }
+
+    public Task RemoveByPrefixAsync(string prefix, params object[] prefixParameters)
+    {
+        foreach (var key in _keyManager.RemoveByPrefix(PrepareKeyPrefix(prefix, prefixParameters)))
+            _memoryCache.Remove(key);
+
+        return Task.CompletedTask;
     }
 
     #endregion

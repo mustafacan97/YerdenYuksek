@@ -55,7 +55,7 @@ public class QueuedEmailService : IQueuedEmailService
 
     public async Task<QueuedEmail> GetQueuedEmailByIdAsync(Guid queuedEmailId)
     {
-        return await _unitOfWork.GetRepository<QueuedEmail>().GetByIdAsync(queuedEmailId, cache => default);
+        return await _unitOfWork.GetRepository<QueuedEmail>().GetByIdAsync(queuedEmailId);
     }
 
     public async Task<IList<QueuedEmail>> GetQueuedEmailsByIdsAsync(Guid[] queuedEmailIds)

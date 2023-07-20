@@ -112,48 +112,31 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
         return await query.Where(predicate).FirstOrDefaultAsync();
     }
 
-    public async Task<T> GetByIdAsync(
-        Guid id, 
-        Func<IStaticCacheManager, CacheKey>? getCacheKey = null,
-        bool includeDeleted = true)
+    public T? GetById(Guid id, bool onlyActive = true)
     {
-        async Task<T> getEntityAsync()
-        {
-            return await AddDeletedFilter(Table, includeDeleted).FirstOrDefaultAsync(q => q.Id == id);
-        }
-
-        if (getCacheKey is null)
-        {
-            return await getEntityAsync();
-        }
-
-        //caching
-        var cacheKey = getCacheKey(_staticCacheManager)
-            ?? _staticCacheManager.PrepareKeyForDefaultCache(EntityCacheDefaults<T>.ByIdCacheKey, id);
-
-        return await _staticCacheManager.GetAsync(cacheKey, getEntityAsync);
+        return GetByIdAsync(id, onlyActive).GetAwaiter().GetResult();
     }
 
-    public T GetById(
-        Guid id, 
-        Func<IStaticCacheManager, CacheKey>? getCacheKey = null,
-        bool includeDeleted = true)
+    public async Task<T?> GetByIdAsync(Guid id, bool onlyActive = true)
     {
-        T getEntity()
+        var cacheKey = _staticCacheManager.PrepareKey(EntityCacheDefaults<T>.ByIdCacheKey, id);
+
+        return await _staticCacheManager.GetAsync(cacheKey, async () =>
         {
-            return AddDeletedFilter(Table, includeDeleted).FirstOrDefault(q => q.Id == id);
-        }
+            var query = _dbSet.AsNoTracking().Where(q => q.Id == id);
 
-        if (getCacheKey is null)
-        {
-            return getEntity();
-        }
+            if (!onlyActive)
+            {
+                return await query.FirstOrDefaultAsync();
+            }
 
-        //caching
-        var cacheKey = getCacheKey(_staticCacheManager)
-                       ?? _staticCacheManager.PrepareKeyForDefaultCache(EntityCacheDefaults<T>.ByIdCacheKey, id);
+            if (typeof(T).GetInterface(nameof(ISoftDeletedEntity)) is null)
+            {
+                return await query.FirstOrDefaultAsync();
+            }
 
-        return _staticCacheManager.Get(cacheKey, getEntity);
+            return await query.OfType<ISoftDeletedEntity>().Where(entry => !entry.Deleted).OfType<T>().FirstOrDefaultAsync();
+        });
     }
 
     public async Task<IList<T>> GetByIdsAsync(

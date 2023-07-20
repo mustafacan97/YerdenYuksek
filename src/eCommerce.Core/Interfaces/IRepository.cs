@@ -30,15 +30,9 @@ public interface IRepository<T> where T : BaseEntity
         Expression<Func<T, bool>> predicate,
         bool includeDeleted = true);
 
-    Task<T> GetByIdAsync(
-        Guid id,
-        Func<IStaticCacheManager, CacheKey>? getCacheKey = null,
-        bool includeDeleted = true);
+    T? GetById(Guid id, bool onlyActive = true);
 
-    T GetById(
-        Guid id,
-        Func<IStaticCacheManager, CacheKey>? getCacheKey = null,
-        bool includeDeleted = true);
+    Task<T?> GetByIdAsync(Guid id, bool onlyActive = true);
 
     Task<IList<T>> GetByIdsAsync(
         IList<Guid> ids,

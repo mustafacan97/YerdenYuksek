@@ -4,25 +4,29 @@ namespace eCommerce.Core.Services.Caching;
 
 public interface IStaticCacheManager : IDisposable
 {
+    T Get<T>(CacheKey key, Func<T> acquire);
+
     Task<T> GetAsync<T>(CacheKey key, Func<Task<T>> acquire);
 
-    Task<T> GetAsync<T>(CacheKey key, Func<T> acquire);
+    T? Get<T>(CacheKey key, T? defaultValue = default);
 
-    Task<T> GetAsync<T>(CacheKey key, T defaultValue = default);
+    Task<T?> GetAsync<T>(CacheKey key, T? defaultValue = default);
 
-    Task<object> GetAsync(CacheKey key);
+    Task<T> GetAsync<T>(CacheKey key, Func<T> acquire);    
 
-    Task RemoveAsync(CacheKey cacheKey, params object[] cacheKeyParameters);
+    Task<object> GetAsync(CacheKey key);    
 
-    Task SetAsync<T>(CacheKey key, T data);
-
-    Task RemoveByPrefixAsync(string prefix, params object[] prefixParameters);
+    Task SetAsync<T>(CacheKey key, T data);    
 
     Task ClearAsync();
 
-    T Get<T>(CacheKey key, Func<T> acquire);
+    void Remove(CacheKey cacheKey, params object[] cacheKeyParameters);
+
+    Task RemoveAsync(CacheKey cacheKey, params object[] cacheKeyParameters);
 
     void RemoveByPrefix(string prefix, params object[] prefixParameters);
+
+    Task RemoveByPrefixAsync(string prefix, params object[] prefixParameters);
 
     #region Cache key
 

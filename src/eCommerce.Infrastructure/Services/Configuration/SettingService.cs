@@ -173,12 +173,12 @@ public class SettingService : ISettingService
 
     public Setting GetSettingById(Guid settingId)
     {
-        return _unitOfWork.GetRepository<Setting>().GetById(settingId, cache => default);
+        return _unitOfWork.GetRepository<Setting>().GetById(settingId);
     }
 
     public async Task<Setting> GetSettingByIdAsync(Guid settingId)
     {
-        return await _unitOfWork.GetRepository<Setting>().GetByIdAsync(settingId, cache => default);
+        return await _unitOfWork.GetRepository<Setting>().GetByIdAsync(settingId);
     }
 
     public async Task<T?> GetSettingByKeyAsync<T>(string key, T? defaultValue = default)
