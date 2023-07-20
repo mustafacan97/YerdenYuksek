@@ -1,6 +1,4 @@
 ﻿using eCommerce.Infrastructure.Persistence.Primitives;
-using FluentValidation;
-using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -44,8 +42,7 @@ public static class ServiceCollectionExtensions
             .AddJwtBearer(configuration)
             .AddServices()
             .RegisterAllSettings()
-            .AddEntityFramework(configuration)
-            .AddFluentValidation();
+            .AddEntityFramework(configuration);
 
         return services;
     }
@@ -149,16 +146,6 @@ public static class ServiceCollectionExtensions
                 return serviceProvider.GetRequiredService<ISettingService>().LoadSettingAsync(setting).Result;
             });
         }
-
-        return services;
-    }
-
-    private static IServiceCollection AddFluentValidation(this IServiceCollection services)
-    {
-        services
-            .AddFluentValidationAutoValidation()
-            .AddValidatorsFromAssembly(Assembly.GetEntryAssembly())
-            .AddFluentValidationClientsideAdapters();
 
         return services;
     }
