@@ -3,7 +3,7 @@ using eCommerce.Core.Shared;
 
 namespace eCommerce.Core.Services.Customers;
 
-public static class YerdenYuksekCustomerServicesDefaults
+public static class CustomerDefaults
 {
     #region Public Properties
 

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using eCommerce.Core.Entities.Messages;
-using eCommerce.Infrastructure.Services.Secuirty;
+using eCommerce.Core.Shared;
 
 namespace eCommerce.Infrastructure.Persistence.Builders.Messages;
 
@@ -55,8 +55,8 @@ public sealed class EmailAccountBuilder : IEntityTypeConfiguration<EmailAccount>
             .Build();
 
         var defaultEmailPassword = _configuration.GetValue<string>("DefaultValues:EmailAccount:Password");
-        var saltKey = EncryptionService.CreateSaltKey(12);
-        var password = EncryptionService.EncryptText(defaultEmailPassword, saltKey);
+        var saltKey = EncryptionHelper.CreateSaltKey(12);
+        var password = EncryptionHelper.EncryptText(defaultEmailPassword, saltKey);
 
         var defaultEmail = new EmailAccount
         {

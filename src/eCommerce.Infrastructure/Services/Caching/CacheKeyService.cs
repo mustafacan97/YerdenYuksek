@@ -3,8 +3,6 @@ using System.Text;
 using eCommerce.Core.Configuration;
 using eCommerce.Core.Primitives;
 using eCommerce.Core.Shared;
-using eCommerce.Core.Services.Security;
-using eCommerce.Infrastructure.Services.Secuirty;
 
 namespace eCommerce.Infrastructure.Services.Caching;
 
@@ -54,7 +52,7 @@ public abstract class CacheKeyService
             return string.Empty;
 
         var identifiersString = string.Join(", ", identifiers.OrderBy(id => id));
-        return EncryptionService.CreateHash(Encoding.UTF8.GetBytes(identifiersString), HashAlgorithm);
+        return EncryptionHelper.CreateHash(Encoding.UTF8.GetBytes(identifiersString), HashAlgorithm);
     }
 
     protected object CreateCacheKeyParameters(object parameter)

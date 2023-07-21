@@ -2,7 +2,7 @@
 using eCommerce.Core.Interfaces;
 using eCommerce.Core.Services.Messages;
 using eCommerce.Core.Services.ScheduleTasks;
-using eCommerce.Infrastructure.Services.Secuirty;
+using eCommerce.Core.Shared;
 
 namespace eCommerce.Infrastructure.BackgroundJobs;
 
@@ -59,7 +59,7 @@ public class QueuedMessagesSendTask : IScheduleTask
             try
             {
                 var email = await _unitOfWork.GetRepository<EmailAccount>().GetByIdAsync(queuedEmail.EmailAccountId);
-                email.Password = EncryptionService.DecryptText(email.Password, email.PasswordSalt);
+                email.Password = EncryptionHelper.DecryptText(email.Password, email.PasswordSalt);
 
                 await _emailSender.SendEmailAsync(
                     email,

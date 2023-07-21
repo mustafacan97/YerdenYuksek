@@ -7,7 +7,6 @@ using eCommerce.Core.Entities.Customers;
 using eCommerce.Core.Shared;
 using eCommerce.Core.Services.Caching;
 using eCommerce.Core.Services.Security;
-using eCommerce.Infrastructure.Services.Secuirty;
 using eCommerce.Core.Services.Customers;
 
 namespace eCommerce.Infrastructure.Services.Customers;
@@ -47,38 +46,6 @@ public class CustomerService : ICustomerService
     #endregion
 
     #region Public Methods
-
-    public async Task<Result<Customer>> RegisterCustomerAsync(string email, string password)
-    {
-        var saltKey = EncryptionService.CreateSaltKey(YerdenYuksekCustomerServicesDefaults.PasswordSaltKeySize);
-        var customer = Customer.Create(email);
-        var customerPassword = new CustomerSecurity
-        {
-            CustomerId = customer.Id,
-            PasswordSalt = saltKey,
-            Password = EncryptionService.CreatePasswordHash(password, saltKey, _customerSettings.HashedPasswordFormat),
-            LastIpAddress = _webHelper.GetCurrentIpAddress(),
-        };
-
-        var registeredRole = await GetCustomerRoleByNameAsync(RoleDefaults.RegisteredRoleName);
-        if (registeredRole is null)
-        {
-            return Result<Customer>.Failure(Error.Failure(description: "Related customer role not found!"));
-        }
-
-        customer.SetCustomerSecurity(customerPassword);
-        customer.SetCustomerRole(registeredRole);
-
-        await InsertCustomerAsync(customer);
-
-        return Result<Customer>.Success(customer);
-    }
-
-    public async Task InsertCustomerAsync(Customer customer)
-    {
-        await _unitOfWork.GetRepository<Customer>().InsertAsync(customer);
-        await _unitOfWork.SaveChangesAsync();
-    }
 
     public async Task<Result> ValidateCustomerAsync(string email, string password)
     {
@@ -162,25 +129,6 @@ public class CustomerService : ICustomerService
         return await _staticCacheManager.GetAsync(cacheKey, getEntityAsync);
     }
 
-    public async Task<Role?> GetCustomerRoleByNameAsync(string name)
-    {
-        if (string.IsNullOrWhiteSpace(name))
-        {
-            return null;
-        }
-
-        var key = _staticCacheManager.PrepareKeyForDefaultCache(YerdenYuksekCustomerServicesDefaults.CustomerRolesByNameCacheKey, name);
-
-        var query = from cr in _unitOfWork.GetRepository<Role>().Table
-                    orderby cr.Id
-                    where cr.Name == name
-                    select cr;
-
-        var customerRole = await _staticCacheManager.GetAsync(key, async () => await query.FirstOrDefaultAsync());
-
-        return customerRole;
-    }
-
     #endregion
 
     #region Methods
@@ -197,7 +145,7 @@ public class CustomerService : ICustomerService
             return false;
         }
 
-        var savedPassword = EncryptionService.CreatePasswordHash(enteredPassword,
+        var savedPassword = EncryptionHelper.CreatePasswordHash(enteredPassword,
                                                                  customerSecurity.PasswordSalt,
                                                                  _customerSettings.HashedPasswordFormat);
 
