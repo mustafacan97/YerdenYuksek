@@ -1,5 +1,4 @@
 ﻿using eCommerce.Infrastructure.Persistence.Primitives;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,6 +24,7 @@ using eCommerce.Infrastructure.Services.Localization;
 using eCommerce.Core.Services.Localization;
 using eCommerce.Infrastructure.Concretes;
 using eCommerce.Infrastructure.Infrastructure;
+using eCommerce.Infrastructure.Persistence.Interceptors;
 
 namespace eCommerce.Infrastructure.Infrastructure;
 
@@ -37,7 +37,6 @@ public static class ServiceCollectionExtensions
         IConfiguration configuration)
     {
         services
-            .ConfigureApiBehaviorOptions()
             .AddJwtBearer(configuration)
             .AddServices()
             .RegisterAllSettings()
@@ -50,27 +49,20 @@ public static class ServiceCollectionExtensions
 
     #region Methods
 
-    private static IServiceCollection ConfigureApiBehaviorOptions(this IServiceCollection services)
-    {
-        services.Configure<ApiBehaviorOptions>(options =>
-        {
-            options.SuppressModelStateInvalidFilter = true;
-        });
-
-        return services;
-    }
-
     private static IServiceCollection AddEntityFramework(this IServiceCollection services, IConfiguration configuration)
     {
         var connectionString =
             configuration.GetConnectionString("ConnectionString") ??
             throw new InvalidOperationException("ConnectionString not found.");
 
+        services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>();
+
         ServerVersion serverVersion = ServerVersion.AutoDetect(connectionString);
 
-        services.AddDbContext<ApplicationDbContext>(opt =>
+        services.AddDbContext<ApplicationDbContext>((sp, opt) =>
         {
-            opt.UseMySql(connectionString, serverVersion);
+            var interceptor = sp.GetService<ConvertDomainEventsToOutboxMessagesInterceptor>()!;
+            opt.UseMySql(connectionString, serverVersion).AddInterceptors(interceptor);
         });
 
         return services;

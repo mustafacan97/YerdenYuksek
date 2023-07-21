@@ -2,6 +2,6 @@
 
 namespace eCommerce.Core.Primitives;
 
-public class BaseEvent : INotification
+public interface IDomainEvent : INotification
 {
 }

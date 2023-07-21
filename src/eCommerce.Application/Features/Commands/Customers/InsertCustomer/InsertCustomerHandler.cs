@@ -3,7 +3,6 @@ using eCommerce.Core.Entities.Security;
 using eCommerce.Core.Interfaces;
 using eCommerce.Core.Primitives;
 using eCommerce.Core.Services.Customers;
-using eCommerce.Core.Services.Security;
 using eCommerce.Core.Shared;
 using MediatR;
 
@@ -15,8 +14,6 @@ public class InsertCustomerHandler : IRequestHandler<InsertCustomerCommand, Resu
 
     private readonly IUnitOfWork _unitOfWork;
 
-    private readonly IEncryptionService _encryptionService;
-
     private readonly IWebHelper _webHelper;
 
     #endregion
@@ -25,11 +22,9 @@ public class InsertCustomerHandler : IRequestHandler<InsertCustomerCommand, Resu
 
     public InsertCustomerHandler(
         IUnitOfWork unitOfWork,
-        IEncryptionService encryptionService,
         IWebHelper webHelper)
     {
         _unitOfWork = unitOfWork;
-        _encryptionService = encryptionService;
         _webHelper = webHelper;
     }
 
@@ -40,10 +35,8 @@ public class InsertCustomerHandler : IRequestHandler<InsertCustomerCommand, Resu
     public async Task<Result> Handle(InsertCustomerCommand command, CancellationToken cancellationToken)
     {
         var saltKey = EncryptionHelper.CreateSaltKey(CustomerDefaults.PasswordSaltKeySize);
-        var customer = Customer.Create(command.Email);
-        var customerPassword = new CustomerSecurity
+        var customerSecurity = new CustomerSecurity
         {
-            CustomerId = customer.Id,
             PasswordSalt = saltKey,
             Password = EncryptionHelper.CreatePasswordHash(command.Password,
                                                            saltKey,
@@ -60,14 +53,12 @@ public class InsertCustomerHandler : IRequestHandler<InsertCustomerCommand, Resu
             return Result<Customer>.Failure(Error.Failure(description: "Related customer role not found!"));
         }
 
-        customer.SetCustomerSecurity(customerPassword);
-        customer.SetCustomerRole(registeredRole);
+        var customer = Customer.Create(command.Email, customerSecurity, registeredRole);
 
         await _unitOfWork.GetRepository<Customer>().InsertAsync(customer);
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-        await _unitOfWork.SaveChangesAsync();
-
-        return Result<Customer>.Success(customer);
+        return Result.Success();
     }
 
     #endregion

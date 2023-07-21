@@ -19,7 +19,7 @@ public sealed class InsertCustomerCommandValidator : AbstractValidator<InsertCus
             .NotEmpty().WithMessage("Password can not be empty!")
             .NotNull().WithMessage("Password can not be null!")
             .MinimumLength(customerSettings.PasswordMinLength).WithMessage($"Password length must at least {customerSettings.PasswordMinLength} characters!")
-            .MaximumLength(customerSettings.PasswordMaxLength).WithMessage($"Password length must have maximum {customerSettings.PasswordMinLength} characters!"); ;
+            .MaximumLength(customerSettings.PasswordMaxLength).WithMessage($"Password length must have maximum {customerSettings.PasswordMinLength} characters!");
 
         if (customerSettings.PasswordRequireUppercase)
         {

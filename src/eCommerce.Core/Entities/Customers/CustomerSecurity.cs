@@ -12,7 +12,7 @@ public class CustomerSecurity
 
     #region Public Properties
 
-    public Guid CustomerId { get; set; }
+    public Guid CustomerId { get; private set; }
 
     public string Password { get; set; }
 
@@ -25,6 +25,12 @@ public class CustomerSecurity
     public int FailedLoginAttempts { get; set; }
 
     public DateTime? CannotLoginUntilDateUtc { get; set; }
+
+    #endregion
+
+    #region Public Methods
+
+    public void SetCustomerId(Guid customerId) => CustomerId = customerId; 
 
     #endregion
 }

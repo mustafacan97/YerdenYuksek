@@ -1,8 +1,7 @@
-﻿using eCommerce.Application.Features.Queries.Customers.GetCustomerByEmail;
-using eCommerce.Core.Interfaces;
+﻿using eCommerce.Application.Features.Commands.Customers.InsertCustomer;
+using eCommerce.Application.Features.Queries.Customers.GetCustomerByEmail;
 using eCommerce.Core.Primitives;
 using eCommerce.Core.Services.Customers;
-using eCommerce.Core.Services.Messages;
 using eCommerce.Core.Services.Security;
 using eCommerce.Web.ViewModels;
 using MediatR;
@@ -21,10 +20,6 @@ public class AuthenticationController : Controller
 
     private readonly ICustomerService _customerService;
 
-    private readonly IWorkflowMessageService _workflowMessageService;
-
-    private readonly IWorkContext _workContext;
-
     private readonly IJwtService _jwtService;
 
     #endregion
@@ -33,14 +28,10 @@ public class AuthenticationController : Controller
 
     public AuthenticationController(
         ICustomerService customerService,
-        IWorkContext workContext,
-        IWorkflowMessageService workflowMessageService,
         IJwtService jwtService,
         IMediator mediator)
     {
         _customerService = customerService;
-        _workContext = workContext;
-        _workflowMessageService = workflowMessageService;
         _jwtService = jwtService;
         _mediator = mediator;
     }
@@ -61,20 +52,9 @@ public class AuthenticationController : Controller
             return Ok(Result.Failure(Error.Conflict(description: "Email is already registered!")));
         }
 
-        return Ok();
+        var registrationResult = await _mediator.Send(InsertCustomerCommand.Create(model.Email, model.Password));
 
-        /*var registerResult = await _customerService.RegisterCustomerAsync(model.Email, model.Password);
-
-        if (registerResult.IsSuccess && registerResult.Value is not null)
-        {
-            var currentLanguage = await _workContext.GetWorkingLanguageAsync();
-            await _workflowMessageService.SendCustomerWelcomeMessageAsync(registerResult.Value, currentLanguage.Id);
-            return Ok();
-        }
-        else
-        {
-            return BadRequest(registerResult);
-        }*/
+        return Ok(registrationResult);
     }
 
     [AllowAnonymous]

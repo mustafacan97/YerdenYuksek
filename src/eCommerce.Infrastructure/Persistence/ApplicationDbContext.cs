@@ -79,6 +79,8 @@ public class ApplicationDbContext : DbContext
 
     public virtual DbSet<OrderNote> OrderNote { get; set; }
 
+    public virtual DbSet<OutboxMessage> OutboxMessage { get; set; }
+
     public virtual DbSet<Permission> Permission { get; set; }
 
     public virtual DbSet<Picture> Picture { get; set; }

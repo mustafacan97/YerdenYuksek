@@ -1,4 +1,5 @@
-﻿using eCommerce.Core.Entities.Common;
+﻿using eCommerce.Core.DomainEvents;
+using eCommerce.Core.Entities.Common;
 using eCommerce.Core.Entities.Directory;
 using eCommerce.Core.Entities.Localization;
 using eCommerce.Core.Entities.Logging;
@@ -81,18 +82,19 @@ public class Customer : SoftDeletedEntity
 
     #region Public Methods
 
-    public static Customer Create(string email)
+    public static Customer Create(string email, CustomerSecurity security, Role role)
     {
-        return new Customer()
-        {
-            Email = email,
-            Active = true,
-            CreatedOnUtc = DateTime.UtcNow
-        };
+        var newCustomer = Create(email);
+        newCustomer.SetCustomerSecurity(newCustomer.Id, security);
+        newCustomer.SetCustomerRole(role);
+        newCustomer.RaiseDomainEvent(new CustomerCreatedDomainEvent(newCustomer.Id));
+
+        return newCustomer;
     }
 
-    public void SetCustomerSecurity(CustomerSecurity customerSecuirty)
+    public void SetCustomerSecurity(Guid customerId, CustomerSecurity customerSecuirty)
     {
+        customerSecuirty.SetCustomerId(customerId);
         CustomerSecurity = customerSecuirty;
     }
 
@@ -120,6 +122,21 @@ public class Customer : SoftDeletedEntity
     {
         CustomerSecurity.CannotLoginUntilDateUtc = DateTime.UtcNow.AddMinutes(lockOutMinutes);
         CustomerSecurity.FailedLoginAttempts = 0;
+    }
+
+    #endregion
+
+    #region Methods
+
+    private static Customer Create(string email)
+    {
+        return new Customer()
+        {
+            Email = email,
+            CreatedOnUtc = DateTime.UtcNow,
+            Active = true,
+            Deleted = false            
+        };
     }
 
     #endregion

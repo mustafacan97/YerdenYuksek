@@ -1,12 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace eCommerce.Core.Primitives;
+﻿namespace eCommerce.Core.Primitives;
 
 public class BaseEntity
 {
     #region Fields
 
-    private readonly List<BaseEvent> _domainEvents = new();
+    private readonly List<IDomainEvent> _domainEvents = new();
 
     #endregion
 
@@ -32,11 +30,11 @@ public class BaseEntity
 
     #region Public Methods
 
-    public IReadOnlyCollection<BaseEvent> GetDomainEvent() => _domainEvents.AsReadOnly();
+    public IReadOnlyCollection<IDomainEvent> GetDomainEvents() => _domainEvents.ToList();
 
-    public void AddDomainEvent(BaseEvent domainEvent) => _domainEvents.Add(domainEvent);
+    public void RaiseDomainEvent(IDomainEvent domainEvent) => _domainEvents.Add(domainEvent);
 
-    public void RemoveDomainEvent(BaseEvent domainEvent) => _domainEvents.Remove(domainEvent);
+    public void RemoveDomainEvent(IDomainEvent domainEvent) => _domainEvents.Remove(domainEvent);
 
     public void ClearDomainEvents() => _domainEvents.Clear();
 

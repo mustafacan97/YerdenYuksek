@@ -45,7 +45,15 @@ public class ScheduleTaskBuilder : IEntityTypeConfiguration<ScheduleTask>
                 Id = Guid.NewGuid(),
                 Name = "Send emails from queue",
                 Seconds = 60,
-                Type = "eCommerce.Infrastructure.Persistence.Services.ScheduleTasks.QueuedMessagesSendTask",
+                Type = "eCommerce.Infrastructure.BackgroundJobs.QueuedMessagesSendTask",
+                Active = true
+            },
+            new ScheduleTask
+            {
+                Id = Guid.NewGuid(),
+                Name = "Process outbox messages",
+                Seconds = 20,
+                Type = "eCommerce.Infrastructure.BackgroundJobs.ProcessOutboxMessagesTask",
                 Active = true
             }
         };

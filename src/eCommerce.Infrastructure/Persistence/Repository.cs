@@ -111,7 +111,7 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
     {
         async Task<T?> getEntity()
         {
-            var query = _dbSet.AsNoTracking();
+            IQueryable<T> query = _dbSet;
 
             if (predicate is not null)
             {
