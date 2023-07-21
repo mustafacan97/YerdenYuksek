@@ -1,9 +1,11 @@
-﻿using eCommerce.Core.Interfaces;
+﻿using eCommerce.Application.Features.Queries.Customers.GetCustomerByEmail;
+using eCommerce.Core.Interfaces;
 using eCommerce.Core.Primitives;
 using eCommerce.Core.Services.Customers;
 using eCommerce.Core.Services.Messages;
 using eCommerce.Core.Services.Security;
 using eCommerce.Web.ViewModels;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,6 +16,8 @@ namespace eCommerce.Web.Controllers;
 public class AuthenticationController : Controller
 {
     #region Fields
+
+    private readonly IMediator _mediator;
 
     private readonly ICustomerService _customerService;
 
@@ -31,12 +35,14 @@ public class AuthenticationController : Controller
         ICustomerService customerService,
         IWorkContext workContext,
         IWorkflowMessageService workflowMessageService,
-        IJwtService jwtService)
+        IJwtService jwtService,
+        IMediator mediator)
     {
         _customerService = customerService;
         _workContext = workContext;
         _workflowMessageService = workflowMessageService;
         _jwtService = jwtService;
+        _mediator = mediator;
     }
 
     #endregion
@@ -48,18 +54,16 @@ public class AuthenticationController : Controller
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Register(RegisterRequestModel model)
     {
-        if (!ModelState.IsValid)
-        {
-            var result = Result.Failure(
-                ModelState.Values
-                    .SelectMany(q => q.Errors)
-                    .Select(x => Error.Validation(description: x.ErrorMessage))
-                    .ToArray());
+        var checkCustomer = await _mediator.Send(GetCustomerByEmailQuery.Create(model.Email));
 
-            return BadRequest(result);
+        if (checkCustomer.Value is not null)
+        {
+            return Ok(Result.Failure(Error.Conflict(description: "Email is already registered!")));
         }
 
-        var registerResult = await _customerService.RegisterCustomerAsync(model.Email, model.Password);
+        return Ok();
+
+        /*var registerResult = await _customerService.RegisterCustomerAsync(model.Email, model.Password);
 
         if (registerResult.IsSuccess && registerResult.Value is not null)
         {
@@ -70,7 +74,7 @@ public class AuthenticationController : Controller
         else
         {
             return BadRequest(registerResult);
-        }
+        }*/
     }
 
     [AllowAnonymous]

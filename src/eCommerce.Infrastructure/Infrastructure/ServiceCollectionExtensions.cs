@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
 using YerdenYuksek.Web.Framework.Persistence;
 using eCommerce.Core.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

@@ -50,11 +50,6 @@ public class CustomerService : ICustomerService
 
     public async Task<Result<Customer>> RegisterCustomerAsync(string email, string password)
     {
-        if (await GetCustomerByEmailAsync(email) is not null)
-        {
-            return Result.Failure(Error.Conflict(description: "Email is already registered!"));
-        }
-
         var saltKey = EncryptionService.CreateSaltKey(YerdenYuksekCustomerServicesDefaults.PasswordSaltKeySize);
         var customer = Customer.Create(email);
         var customerPassword = new CustomerSecurity
@@ -68,7 +63,7 @@ public class CustomerService : ICustomerService
         var registeredRole = await GetCustomerRoleByNameAsync(RoleDefaults.RegisteredRoleName);
         if (registeredRole is null)
         {
-            return Result.Failure(Error.Failure(description: "Related customer role not found!"));
+            return Result<Customer>.Failure(Error.Failure(description: "Related customer role not found!"));
         }
 
         customer.SetCustomerSecurity(customerPassword);
@@ -76,7 +71,7 @@ public class CustomerService : ICustomerService
 
         await InsertCustomerAsync(customer);
 
-        return Result.Success(customer);
+        return Result<Customer>.Success(customer);
     }
 
     public async Task InsertCustomerAsync(Customer customer)

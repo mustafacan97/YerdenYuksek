@@ -266,7 +266,7 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
             throw new ArgumentNullException(nameof(entity));
         }
 
-        _dbSet.Attach(entity).State = EntityState.Modified;
+        _dbSet.Update(entity);
     }
 
     public void Update(IList<T> entities)
@@ -292,8 +292,9 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
                 throw new ArgumentNullException(nameof(entity));
 
             case ISoftDeletedEntity softDeletedEntity:
+                softDeletedEntity.Active = false;
                 softDeletedEntity.Deleted = true;
-                _dbSet.Attach(entity).State = EntityState.Modified;
+                Update(entity);
                 break;
 
             default:
