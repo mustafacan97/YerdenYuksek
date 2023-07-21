@@ -103,13 +103,45 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
         return await query.ToPagedListAsync(pageIndex, pageSize, getOnlyTotalCount);
     }
 
-    public async Task<T?> GetFirstOrDefaultAsync<TResult>(
-        Expression<Func<T, bool>> predicate,
-        bool includeDeleted = true)
+    public async Task<T?> GetFirstOrDefaultAsync(
+        Expression<Func<T, bool>>? predicate = null,
+        Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
+        bool onlyActive = true,
+        Func<IStaticCacheManager, CacheKey>? getCacheKey = null)
     {
-        var query = AddDeletedFilter(Table, includeDeleted);
+        async Task<T?> getEntity()
+        {
+            var query = _dbSet.AsNoTracking();
 
-        return await query.Where(predicate).FirstOrDefaultAsync();
+            if (predicate is not null)
+            {
+                query = query.Where(predicate);
+            }
+
+            if (orderBy is not null)
+            {
+                query = orderBy(query);
+            }
+
+            if (!onlyActive)
+            {
+                return await query.FirstOrDefaultAsync();
+            }
+
+            if (typeof(T).GetInterface(nameof(ISoftDeletedEntity)) is null)
+            {
+                return await query.FirstOrDefaultAsync();
+            }
+
+            return await query.OfType<ISoftDeletedEntity>().Where(q => q.Active && !q.Deleted).OfType<T>().FirstOrDefaultAsync();
+        }
+
+        if (getCacheKey is null)
+        {
+            return await getEntity();
+        }
+
+        return await _staticCacheManager.GetAsync(getCacheKey(_staticCacheManager), getEntity);
     }
 
     public T? GetById(Guid id, bool onlyActive = true)
@@ -135,7 +167,7 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
                 return await query.FirstOrDefaultAsync();
             }
 
-            return await query.OfType<ISoftDeletedEntity>().Where(entry => !entry.Deleted).OfType<T>().FirstOrDefaultAsync();
+            return await query.OfType<ISoftDeletedEntity>().Where(q => q.Active && !q.Deleted).OfType<T>().FirstOrDefaultAsync();
         });
     }
 

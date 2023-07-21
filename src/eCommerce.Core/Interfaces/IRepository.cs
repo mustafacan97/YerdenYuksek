@@ -26,9 +26,11 @@ public interface IRepository<T> where T : BaseEntity
         bool getOnlyTotalCount = false,
         bool includeDeleted = true);
 
-    Task<T?> GetFirstOrDefaultAsync<TResult>(
-        Expression<Func<T, bool>> predicate,
-        bool includeDeleted = true);
+    Task<T?> GetFirstOrDefaultAsync(
+        Expression<Func<T, bool>>? predicate = null,
+        Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
+        bool onlyActive = true,
+        Func<IStaticCacheManager, CacheKey>? getCacheKey = null);
 
     T? GetById(Guid id, bool onlyActive = true);
 

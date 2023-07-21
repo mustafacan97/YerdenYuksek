@@ -65,9 +65,8 @@ public class WorkContext : IWorkContext
                            select l).FirstOrDefaultAsync())!;
         }
 
-        var requestLanguage = await _unitOfWork.GetRepository<Language>().GetFirstOrDefaultAsync<Language>(l =>
-            l.LanguageCulture.Equals(requestCultureFeature.RequestCulture.Culture.Name, StringComparison.InvariantCultureIgnoreCase) &&
-            l.Active && !l.Deleted, false);
+        var requestLanguage = await _unitOfWork.GetRepository<Language>().GetFirstOrDefaultAsync(l =>
+            l.LanguageCulture.Equals(requestCultureFeature.RequestCulture.Culture.Name, StringComparison.InvariantCultureIgnoreCase));
         if (requestLanguage is null)
         {
             return (await (from l in _unitOfWork.GetRepository<Language>().Table
