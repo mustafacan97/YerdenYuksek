@@ -1,9 +1,8 @@
 ﻿using eCommerce.Core.Entities.Directory;
 using eCommerce.Core.Interfaces;
-using eCommerce.Core.Primitives;
 using eCommerce.Core.Services.ScheduleTasks;
 using MediatR;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace eCommerce.Infrastructure.BackgroundJobs;
 
@@ -47,12 +46,7 @@ public class ProcessOutboxMessagesTask : IScheduleTask
 
         foreach(OutboxMessage message in messages)
         {
-            IDomainEvent? domainEvent = JsonConvert.DeserializeObject<IDomainEvent>(
-                message.Content,
-                new JsonSerializerSettings
-                {
-                    TypeNameHandling = TypeNameHandling.All
-                });
+            var domainEvent = JsonSerializer.Deserialize(message.Content, Type.GetType(message.Type));
 
             if (domainEvent is null)
             {

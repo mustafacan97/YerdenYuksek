@@ -1,4 +1,5 @@
 ﻿using eCommerce.Core.Entities.ScheduleTasks;
+using eCommerce.Infrastructure.BackgroundJobs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -45,7 +46,7 @@ public class ScheduleTaskBuilder : IEntityTypeConfiguration<ScheduleTask>
                 Id = Guid.NewGuid(),
                 Name = "Send emails from queue",
                 Seconds = 60,
-                Type = "eCommerce.Infrastructure.BackgroundJobs.QueuedMessagesSendTask",
+                Type = typeof(QueuedMessagesSendTask).AssemblyQualifiedName,
                 Active = true
             },
             new ScheduleTask
@@ -53,7 +54,7 @@ public class ScheduleTaskBuilder : IEntityTypeConfiguration<ScheduleTask>
                 Id = Guid.NewGuid(),
                 Name = "Process outbox messages",
                 Seconds = 20,
-                Type = "eCommerce.Infrastructure.BackgroundJobs.ProcessOutboxMessagesTask",
+                Type = typeof(ProcessOutboxMessagesTask).AssemblyQualifiedName,
                 Active = true
             }
         };

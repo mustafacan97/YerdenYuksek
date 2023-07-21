@@ -1,7 +1,7 @@
 ﻿using eCommerce.Core.Entities.Directory;
 using eCommerce.Core.Primitives;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace eCommerce.Infrastructure.Persistence.Interceptors;
 
@@ -33,12 +33,12 @@ public sealed class ConvertDomainEventsToOutboxMessagesInterceptor : SaveChanges
             .Select(domainEvent => new OutboxMessage()
             {
                 CreatedOnUtc = DateTime.UtcNow,
-                Type = domainEvent.GetType().FullName ?? domainEvent.GetType().Name,
-                Content = JsonConvert.SerializeObject(
-                    domainEvent,
-                    new JsonSerializerSettings
+                Type = domainEvent.GetType().AssemblyQualifiedName,
+                Content = JsonSerializer.Serialize<object>(
+                    domainEvent, 
+                    new JsonSerializerOptions 
                     {
-                        TypeNameHandling = TypeNameHandling.All
+                        WriteIndented = true
                     })
             })
             .ToList();
