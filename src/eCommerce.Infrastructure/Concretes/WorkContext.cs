@@ -1,7 +1,6 @@
 ﻿using eCommerce.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using eCommerce.Core.Entities.Customers;
 using eCommerce.Core.Entities.Localization;
@@ -13,9 +12,9 @@ public class WorkContext : IWorkContext
 {
     #region Fields
 
-    private readonly ICustomerService _customerService;
+    private readonly IRepository<Language> _languageRepository;
 
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly ICustomerService _customerService;
 
     private readonly IHttpContextAccessor _httpContextAccessor;
 
@@ -26,11 +25,11 @@ public class WorkContext : IWorkContext
     public WorkContext(
         IHttpContextAccessor httpContextAccessor,
         ICustomerService customerService,
-        IUnitOfWork unitOfWork)
+        IRepository<Language> languageRepository)
     {
         _httpContextAccessor = httpContextAccessor;
         _customerService = customerService;
-        _unitOfWork = unitOfWork;
+        _languageRepository = languageRepository;
     }
 
     #endregion
@@ -60,18 +59,17 @@ public class WorkContext : IWorkContext
         var requestCultureFeature = _httpContextAccessor.HttpContext?.Features.Get<IRequestCultureFeature>();
         if (requestCultureFeature is null || requestCultureFeature.RequestCulture is null)
         {
-            return (await (from l in _unitOfWork.GetRepository<Language>().Table
-                           where l.IsDefaultLanguage
-                           select l).FirstOrDefaultAsync())!;
+
+            return (await _languageRepository.GetAllAsync(q => q.Where(p => p.IsDefaultLanguage))).First();
         }
 
-        var requestLanguage = await _unitOfWork.GetRepository<Language>().GetFirstOrDefaultAsync(l =>
-            l.LanguageCulture.Equals(requestCultureFeature.RequestCulture.Culture.Name, StringComparison.InvariantCultureIgnoreCase));
+        var requestLanguage = (await _languageRepository.GetAllAsync(
+            func: q => q.Where(p => p.LanguageCulture.Equals(requestCultureFeature.RequestCulture.Culture.Name, StringComparison.InvariantCultureIgnoreCase))))
+            .First();
+
         if (requestLanguage is null)
         {
-            return (await (from l in _unitOfWork.GetRepository<Language>().Table
-                           where l.IsDefaultLanguage
-                           select l).FirstOrDefaultAsync())!;
+            return (await _languageRepository.GetAllAsync(q => q.Where(p => p.IsDefaultLanguage))).First();
         }
 
         return requestLanguage;

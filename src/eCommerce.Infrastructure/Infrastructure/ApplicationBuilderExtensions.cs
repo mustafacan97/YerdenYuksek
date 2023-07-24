@@ -1,7 +1,7 @@
 ﻿using eCommerce.Core.Services.ScheduleTasks;
-using eCommerce.Infrastructure.Persistence.Primitives;
+using eCommerce.Infrastructure.Persistence.DataProviders;
+using FluentMigrator.Runner;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace eCommerce.Infrastructure.Infrastructure;
@@ -12,7 +12,7 @@ public static class ApplicationBuilderExtensions
 
     public static IApplicationBuilder RegisterApplicationBuilders(this IApplicationBuilder application)
     {
-        application.ApplicationServices.RunMigrationsOnStartup();
+        application.RunMigrationsOnStartup();
 
         application.ApplicationServices.RunScheduleTasksOnStartup();
 
@@ -23,13 +23,26 @@ public static class ApplicationBuilderExtensions
 
     #region Methods
 
-    private static void RunMigrationsOnStartup(this IServiceProvider services)
+    private static void RunMigrationsOnStartup(this IApplicationBuilder application)
     {
-        using var scope = services.CreateScope();
+        using var scope = application.ApplicationServices.CreateScope();
+        var dataProvider = scope.ServiceProvider.GetService<ICustomDataProvider>();
 
-        var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        if (dataProvider is null)
+        {
+            return;
+        }
 
-        dbContext.Database.Migrate();
+        dataProvider.CreateDatabase("utf8mb4_0900_ai_ci");
+
+        UpdateDatabase(scope.ServiceProvider);
+    }
+
+    private static void UpdateDatabase(IServiceProvider serviceProvider)
+    {
+        var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
+
+        runner.MigrateUp();
     }
 
     private async static void RunScheduleTasksOnStartup(this IServiceProvider services)

@@ -5,63 +5,85 @@ using eCommerce.Core.Shared;
 
 namespace eCommerce.Core.Interfaces;
 
-public interface IRepository<T> where T : BaseEntity
+public interface IRepository<TEntity> where TEntity : BaseEntity
 {
+    #region Properties
+
+    IQueryable<TEntity> Table { get; }
+
+    #endregion
+
     #region Public Methods
 
-    IList<T> GetAll(
-        Func<IQueryable<T>, IQueryable<T>>? func = null,
-        Func<IStaticCacheManager, CacheKey>? getCacheKey = null,
+    Task<TEntity?> GetByIdAsync(Guid id, Func<IStaticCacheManager, CacheKey>? getCacheKey = null, bool includeDeleted = true);
+
+    TEntity? GetById(Guid id, Func<IStaticCacheManager, CacheKey>? getCacheKey = null, bool includeDeleted = true);
+
+    Task<IList<TEntity>> GetByIdsAsync(IList<Guid> ids, Func<IStaticCacheManager, CacheKey>? getCacheKey = null, bool includeDeleted = true);
+
+    Task<IList<TEntity>> GetAllAsync(
+        Func<IQueryable<TEntity>, IQueryable<TEntity>>? func = null,
+        Func<IStaticCacheManager, CacheKey>? getCacheKey = null, 
         bool includeDeleted = true);
 
-    Task<IList<T>> GetAllAsync(
-        Func<IQueryable<T>, IQueryable<T>>? func = null,
-        Func<IStaticCacheManager, CacheKey>? getCacheKey = null,
+    Task<IList<TEntity>> GetAllAsync(
+        Func<IQueryable<TEntity>, Task<IQueryable<TEntity>>>? func = null,
+        Func<IStaticCacheManager, CacheKey>? getCacheKey = null, 
         bool includeDeleted = true);
 
-    Task<IPagedInfo<T>> GetAllPagedAsync(
-        Func<IQueryable<T>, IQueryable<T>>? func = null,
-        int pageIndex = 0,
+    IList<TEntity> GetAll(
+        Func<IQueryable<TEntity>, IQueryable<TEntity>>? func = null,
+        Func<IStaticCacheManager, CacheKey>? getCacheKey = null, 
+        bool includeDeleted = true);
+
+    Task<IList<TEntity>> GetAllAsync(
+        Func<IQueryable<TEntity>, Task<IQueryable<TEntity>>> func,
+        Func<IStaticCacheManager, Task<CacheKey>> getCacheKey, 
+        bool includeDeleted = true);
+
+    Task<IPagedInfo<TEntity>> GetAllPagedAsync(
+        Func<IQueryable<TEntity>, IQueryable<TEntity>>? func = null,
+        int pageIndex = 0, 
+        int pageSize = int.MaxValue, 
+        bool getOnlyTotalCount = false, 
+        bool includeDeleted = true);
+
+    Task<IPagedInfo<TEntity>> GetAllPagedAsync(
+        Func<IQueryable<TEntity>, Task<IQueryable<TEntity>>>? func = null,
+        int pageIndex = 0, 
         int pageSize = int.MaxValue,
         bool getOnlyTotalCount = false,
         bool includeDeleted = true);
 
-    Task<T?> GetFirstOrDefaultAsync(
-        Expression<Func<T, bool>>? predicate = null,
-        Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
-        bool onlyActive = true,
-        Func<IStaticCacheManager, CacheKey>? getCacheKey = null);
+    Task InsertAsync(TEntity entity, bool publishEvent = true);
 
-    T? GetById(Guid id, bool onlyActive = true);
+    void Insert(TEntity entity, bool publishEvent = true);
 
-    Task<T?> GetByIdAsync(Guid id, bool onlyActive = true);
+    Task InsertAsync(IList<TEntity> entities, bool publishEvent = true);
 
-    Task<IList<T>> GetByIdsAsync(
-        IList<Guid> ids,
-        Func<IStaticCacheManager, CacheKey>? getCacheKey = null,
-        bool includeDeleted = true);
+    void Insert(IList<TEntity> entities, bool publishEvent = true);
 
-    Task InsertAsync(T entity);
+    Task UpdateAsync(TEntity entity, bool publishEvent = true);
 
-    void Insert(T entity);
+    void Update(TEntity entity, bool publishEvent = true);
 
-    Task InsertAsync(IList<T> entities);
+    Task UpdateAsync(IList<TEntity> entities, bool publishEvent = true);
 
-    void Insert(IList<T> entities);
+    void Update(IList<TEntity> entities, bool publishEvent = true);
 
-    void Update(T entity);
+    Task DeleteAsync(TEntity entity, bool publishEvent = true);
 
-    void Update(IList<T> entities);
+    void Delete(TEntity entity, bool publishEvent = true);
 
-    void Delete(T entity);
+    Task DeleteAsync(IList<TEntity> entities, bool publishEvent = true);
 
-    void Truncate();
+    Task<int> DeleteAsync(Expression<Func<TEntity, bool>> predicate);
 
-    #endregion
+    int Delete(Expression<Func<TEntity, bool>> predicate);
 
-    #region Properties
+    Task<TEntity?> LoadOriginalCopyAsync(TEntity entity);
 
-    IQueryable<T> Table { get; }
+    Task TruncateAsync(bool resetIdentity = false);
 
-    #endregion
+    #endregion    
 }

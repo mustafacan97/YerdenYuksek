@@ -1,30 +1,17 @@
-﻿using eCommerce.Infrastructure.Persistence.Primitives;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using YerdenYuksek.Web.Framework.Persistence;
 using eCommerce.Core.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using eCommerce.Core.Services.Caching;
-using eCommerce.Infrastructure.Services.Caching;
-using eCommerce.Core.Services.Security;
 using eCommerce.Core.Shared;
-using eCommerce.Infrastructure.Services.ScheduleTasks;
-using eCommerce.Core.Services.ScheduleTasks;
-using eCommerce.Infrastructure.Services.Messages;
-using eCommerce.Core.Services.Messages;
-using eCommerce.Infrastructure.Services.Secuirty;
-using eCommerce.Infrastructure.Services.Configuration;
 using eCommerce.Core.Services.Configuration;
-using eCommerce.Infrastructure.Services.Customers;
-using eCommerce.Core.Services.Customers;
-using eCommerce.Infrastructure.Services.Localization;
-using eCommerce.Core.Services.Localization;
 using eCommerce.Infrastructure.Concretes;
 using eCommerce.Infrastructure.Infrastructure;
-using eCommerce.Infrastructure.Persistence.Interceptors;
+using eCommerce.Infrastructure.Persistence.DataProviders;
+using eCommerce.Infrastructure.Persistence;
+using FluentMigrator.Runner;
+using System.Reflection;
 
 namespace eCommerce.Infrastructure.Infrastructure;
 
@@ -38,9 +25,9 @@ public static class ServiceCollectionExtensions
     {
         services
             .AddJwtBearer(configuration)
-            .AddServices()
+            .AddServices(configuration)
             .RegisterAllSettings()
-            .AddEntityFramework(configuration);
+            .AddFluentMigrator(configuration);
 
         return services;
     }
@@ -49,39 +36,25 @@ public static class ServiceCollectionExtensions
 
     #region Methods
 
-    private static IServiceCollection AddEntityFramework(this IServiceCollection services, IConfiguration configuration)
+    private static IServiceCollection AddFluentMigrator(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString =
-            configuration.GetConnectionString("ConnectionString") ??
-            throw new InvalidOperationException("ConnectionString not found.");
-
-        services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>();
-
-        ServerVersion serverVersion = ServerVersion.AutoDetect(connectionString);
-
-        services.AddDbContext<ApplicationDbContext>((sp, opt) =>
-        {
-            var interceptor = sp.GetService<ConvertDomainEventsToOutboxMessagesInterceptor>()!;
-            opt.UseMySql(connectionString, serverVersion).AddInterceptors(interceptor);
-        });
+        services
+            .AddFluentMigratorCore()
+            .ConfigureRunner(rb => rb
+                .AddMySql5()
+                .WithGlobalConnectionString(configuration.GetConnectionString("ConnectionString"))
+                .ScanIn(Assembly.GetAssembly(typeof(ICustomDataProvider))).For.Migrations())
+            .AddLogging(lb => lb.AddFluentMigratorConsole());
 
         return services;
     }
 
-    public static IServiceCollection AddUnitOfWork<TContext>(this IServiceCollection services) where TContext : DbContext
+    private static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddScoped<IUnitOfWork, UnitOfWork<TContext>>();
-        services.AddScoped<IUnitOfWork<TContext>, UnitOfWork<TContext>>();
-
-        return services;
-    }
-
-    private static IServiceCollection AddServices(this IServiceCollection services)
-    {
-        services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-        services.AddUnitOfWork<ApplicationDbContext>();
-        services.AddSingleton<ILocker, MemoryCacheLocker>();
-        services.AddSingleton<IStaticCacheManager, MemoryCacheManager>();
+        services
+            .AddSingleton(configuration)
+            .AddScoped(typeof(IRepository<>), typeof(Repository<>))
+            .AddScoped<ICustomDataProvider, MySqlCustomDataProvider>();
 
         //add accessor to HttpContext
         services.AddHttpContextAccessor();
@@ -93,33 +66,8 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IWorkContext, WorkContext>();
 
         //static cache manager
-        services.AddTransient(typeof(IConcurrentCollection<>), typeof(ConcurrentTrie<>));
-        services.AddSingleton<ICacheKeyManager, CacheKeyManager>();
+        services   .AddTransient(typeof(IConcurrentCollection<>), typeof(ConcurrentTrie<>));
         services.AddMemoryCache();
-        services.AddSingleton<IStaticCacheManager, MemoryCacheManager>();
-
-        //email
-        services.AddScoped<ITokenizer, Tokenizer>();
-        services.AddScoped<IEmailSender, EmailSender>();
-
-        //services
-        services.AddScoped<ISettingService, SettingService>();
-        services.AddScoped<ICustomerService, CustomerService>();
-        services.AddScoped<IEncryptionService, EncryptionService>();
-        services.AddScoped<ILanguageService, LanguageService>();
-        services.AddScoped<ILocalizationService, LocalizationService>();
-        services.AddScoped<ILocalizedEntityService, LocalizedEntityService>();
-        services.AddScoped<IScheduleTaskService, ScheduleTaskService>();
-        services.AddScoped<IQueuedEmailService, QueuedEmailService>();
-        services.AddScoped<IWorkflowMessageService, WorkflowMessageService>();
-        services.AddScoped<IEmailAccountService, EmailAccountService>();
-        services.AddScoped<IEmailTemplateService, EmailTemplateService>();
-        services.AddScoped<IMessageTokenProvider, MessageTokenProvider>();
-        services.AddScoped<IJwtService, JwtService>();
-
-        //schedule tasks
-        services.AddSingleton<ITaskScheduler, Services.ScheduleTasks.TaskScheduler>();
-        services.AddTransient<IScheduleTaskRunner, ScheduleTaskRunner>();
 
         return services;
     }

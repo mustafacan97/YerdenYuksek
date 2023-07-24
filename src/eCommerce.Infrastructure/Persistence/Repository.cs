@@ -1,20 +1,18 @@
 ﻿using eCommerce.Core.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 using eCommerce.Core.Primitives;
-using YerdenYuksek.Web.Framework.Persistence.Extensions;
-using eCommerce.Core.Shared;
 using eCommerce.Core.Services.Caching;
+using eCommerce.Core.Shared;
+using eCommerce.Infrastructure.Persistence.DataProviders;
+using System.Linq.Expressions;
+using System.Transactions;
 
-namespace YerdenYuksek.Web.Framework.Persistence;
+namespace eCommerce.Infrastructure.Persistence;
 
-public class Repository<T> : IRepository<T> where T : BaseEntity
+public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
 {
     #region Fields
 
-    private readonly DbContext _dbContext;
-
-    private readonly DbSet<T> _dbSet;
+    private readonly ICustomDataProvider _dataProvider;
 
     private readonly IStaticCacheManager _staticCacheManager;
 
@@ -23,11 +21,10 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
     #region Constructure and Destructure
 
     public Repository(
-        DbContext dbContext,
+        ICustomDataProvider dataProvider,
         IStaticCacheManager staticCacheManager)
     {
-        _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
-        _dbSet = _dbContext.Set<T>();
+        _dataProvider = dataProvider;
         _staticCacheManager = staticCacheManager;
     }
 
@@ -35,163 +32,67 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
 
     #region Public Properties
 
-    public IQueryable<T> Table => _dbSet;
+    public IQueryable<TEntity> Table => _dataProvider.GetTable<TEntity>();
 
     #endregion
 
     #region Public Methods
 
-    public IList<T> GetAll(
-        Func<IQueryable<T>, IQueryable<T>>? func = null,
-        Func<IStaticCacheManager, CacheKey>? getCacheKey = null, 
-        bool includeDeleted = true)
+    public async Task<TEntity?> GetByIdAsync(Guid id, Func<IStaticCacheManager, CacheKey>? getCacheKey = null, bool includeDeleted = true)
     {
-        IList<T> getAll()
+        async Task<TEntity?> getEntityAsync()
         {
-            var query = AddDeletedFilter(Table, includeDeleted);
-            query = func != null ? func(query) : query;
-
-            return query.ToList();
-        }
-
-        return GetEntities(getAll, getCacheKey);
-    }
-
-    public async Task<IList<T>> GetAllAsync(
-        Func<IQueryable<T>, IQueryable<T>>? func = null, 
-        Func<IStaticCacheManager, CacheKey>? getCacheKey = null, 
-        bool includeDeleted = true)
-    {
-        async Task<IList<T>> getAllAsync()
-        {
-            var query = AddDeletedFilter(Table, includeDeleted);
-            query = func != null ? func(query) : query;
-
-            return await query.ToListAsync();
-        }
-
-        return await GetEntitiesAsync(getAllAsync, getCacheKey);
-    }
-
-    public async Task<IList<T>> GetAllAsync(
-        Func<IQueryable<T>, Task<IQueryable<T>>>? func = null,
-        Func<IStaticCacheManager, CacheKey>? getCacheKey = null, 
-        bool includeDeleted = true)
-    {
-        async Task<IList<T>> getAllAsync()
-        {
-            var query = AddDeletedFilter(Table, includeDeleted);
-            query = func != null ? await func(query) : query;
-
-            return await query.ToListAsync();
-        }
-
-        return await GetEntitiesAsync(getAllAsync, getCacheKey);
-    }
-
-    public async Task<IPagedInfo<T>> GetAllPagedAsync(
-        Func<IQueryable<T>, IQueryable<T>>? func = null,
-        int pageIndex = 0, 
-        int pageSize = int.MaxValue, 
-        bool getOnlyTotalCount = false, 
-        bool includeDeleted = true)
-    {
-        var query = AddDeletedFilter(Table, includeDeleted);
-
-        query = func != null ? func(query) : query;
-
-        return await query.ToPagedListAsync(pageIndex, pageSize, getOnlyTotalCount);
-    }
-
-    public async Task<T?> GetFirstOrDefaultAsync(
-        Expression<Func<T, bool>>? predicate = null,
-        Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
-        bool onlyActive = true,
-        Func<IStaticCacheManager, CacheKey>? getCacheKey = null)
-    {
-        async Task<T?> getEntity()
-        {
-            IQueryable<T> query = _dbSet;
-
-            if (predicate is not null)
-            {
-                query = query.Where(predicate);
-            }
-
-            if (orderBy is not null)
-            {
-                query = orderBy(query);
-            }
-
-            if (!onlyActive)
-            {
-                return await query.FirstOrDefaultAsync();
-            }
-
-            if (typeof(T).GetInterface(nameof(ISoftDeletedEntity)) is null)
-            {
-                return await query.FirstOrDefaultAsync();
-            }
-
-            return await query.OfType<ISoftDeletedEntity>().Where(q => q.Active && !q.Deleted).OfType<T>().FirstOrDefaultAsync();
+            return await AddDeletedFilter(Table, includeDeleted).FirstOrDefaultAsync(entity => entity.Id == id);
         }
 
         if (getCacheKey is null)
         {
-            return await getEntity();
+            return await getEntityAsync();
         }
 
-        return await _staticCacheManager.GetAsync(getCacheKey(_staticCacheManager), getEntity);
+        var cacheKey = getCacheKey(_staticCacheManager)
+            ?? _staticCacheManager.PrepareKeyForDefaultCache(EntityCacheDefaults<TEntity>.ByIdCacheKey, id);
+
+        return await _staticCacheManager.GetAsync(cacheKey, getEntityAsync);
     }
 
-    public T? GetById(Guid id, bool onlyActive = true)
+    public TEntity? GetById(Guid id, Func<IStaticCacheManager, CacheKey>? getCacheKey = null, bool includeDeleted = true)
     {
-        return GetByIdAsync(id, onlyActive).GetAwaiter().GetResult();
-    }
-
-    public async Task<T?> GetByIdAsync(Guid id, bool onlyActive = true)
-    {
-        var cacheKey = _staticCacheManager.PrepareKey(EntityCacheDefaults<T>.ByIdCacheKey, id);
-
-        return await _staticCacheManager.GetAsync(cacheKey, async () =>
+        TEntity? getEntity()
         {
-            var query = _dbSet.AsNoTracking().Where(q => q.Id == id);
+            return AddDeletedFilter(Table, includeDeleted).FirstOrDefault(entity => entity.Id == id);
+        }
 
-            if (!onlyActive)
-            {
-                return await query.FirstOrDefaultAsync();
-            }
+        if (getCacheKey is null)
+        {
+            return getEntity();
+        }
 
-            if (typeof(T).GetInterface(nameof(ISoftDeletedEntity)) is null)
-            {
-                return await query.FirstOrDefaultAsync();
-            }
+        var cacheKey = getCacheKey(_staticCacheManager)
+                       ?? _staticCacheManager.PrepareKeyForDefaultCache(EntityCacheDefaults<TEntity>.ByIdCacheKey, id);
 
-            return await query.OfType<ISoftDeletedEntity>().Where(q => q.Active && !q.Deleted).OfType<T>().FirstOrDefaultAsync();
-        });
+        return _staticCacheManager.Get(cacheKey, getEntity);
     }
 
-    public async Task<IList<T>> GetByIdsAsync(
-        IList<Guid> ids, 
-        Func<IStaticCacheManager, CacheKey>? getCacheKey = null, 
+    public async Task<IList<TEntity>> GetByIdsAsync(
+        IList<Guid> ids,
+        Func<IStaticCacheManager, CacheKey>? getCacheKey = null,
         bool includeDeleted = true)
     {
         if (!ids.Any())
         {
-            return new List<T>();
+            return new List<TEntity>();
         }
 
-        async Task<IList<T>> getByIdsAsync()
+        async Task<IList<TEntity>> getByIdsAsync()
         {
             var query = AddDeletedFilter(Table, includeDeleted);
 
-            //get entries
             var entriesById = await query
                 .Where(entry => ids.Contains(entry.Id))
                 .ToDictionaryAsync(entry => entry.Id);
 
-            //sort by passed identifiers
-            var sortedEntries = new List<T>();
+            var sortedEntries = new List<TEntity>();
             foreach (var id in ids)
             {
                 if (entriesById.TryGetValue(id, out var sortedEntry))
@@ -208,83 +109,274 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
             return await getByIdsAsync();
         }
 
-        //caching
         var cacheKey = getCacheKey(_staticCacheManager)
-            ?? _staticCacheManager.PrepareKeyForDefaultCache(EntityCacheDefaults<T>.ByIdsCacheKey, ids);
+            ?? _staticCacheManager.PrepareKeyForDefaultCache(EntityCacheDefaults<TEntity>.ByIdsCacheKey, ids);
 
         return await _staticCacheManager.GetAsync(cacheKey, getByIdsAsync);
     }
 
-    #region Insert
+    public async Task<IList<TEntity>> GetAllAsync(
+        Func<IQueryable<TEntity>, IQueryable<TEntity>>? func = null,
+        Func<IStaticCacheManager, CacheKey>? getCacheKey = null, 
+        bool includeDeleted = true)
+    {
+        async Task<IList<TEntity>> getAllAsync()
+        {
+            var query = AddDeletedFilter(Table, includeDeleted);
+            query = func != null ? func(query) : query;
 
-    public async Task InsertAsync(T entity)
+            return await query.ToListAsync();
+        }
+
+        if (getCacheKey is null)
+        {
+            return await getAllAsync();
+        }
+
+        return await GetEntitiesAsync(getAllAsync, getCacheKey);
+    }
+
+    public IList<TEntity> GetAll(
+        Func<IQueryable<TEntity>, IQueryable<TEntity>>? func = null,
+        Func<IStaticCacheManager, CacheKey>? getCacheKey = null,
+        bool includeDeleted = true)
+    {
+        IList<TEntity> getAll()
+        {
+            var query = AddDeletedFilter(Table, includeDeleted);
+            query = func != null ? func(query) : query;
+
+            return query.ToList();
+        }
+
+        if (getCacheKey is null)
+        {
+            return getAll();
+        }
+
+        return GetEntities(getAll, getCacheKey);
+    }
+
+    public async Task<IList<TEntity>> GetAllAsync(
+        Func<IQueryable<TEntity>, Task<IQueryable<TEntity>>>? func = null,
+        Func<IStaticCacheManager, CacheKey>? getCacheKey = null, 
+        bool includeDeleted = true)
+    {
+        async Task<IList<TEntity>> getAllAsync()
+        {
+            var query = AddDeletedFilter(Table, includeDeleted);
+            query = func != null ? await func(query) : query;
+
+            return await query.ToListAsync();
+        }
+
+        if (getCacheKey is null)
+        {
+            return await getAllAsync();
+        }
+
+        return await GetEntitiesAsync(getAllAsync, getCacheKey);
+    }
+
+    public async Task<IList<TEntity>> GetAllAsync(
+        Func<IQueryable<TEntity>, Task<IQueryable<TEntity>>>? func = null,
+        Func<IStaticCacheManager, Task<CacheKey>>? getCacheKey = null, 
+        bool includeDeleted = true)
+    {
+        async Task<IList<TEntity>> getAllAsync()
+        {
+            var query = AddDeletedFilter(Table, includeDeleted);
+            query = func != null ? await func(query) : query;
+
+            return await query.ToListAsync();
+        }
+
+        if (getCacheKey is null)
+        {
+            return await getAllAsync();
+        }
+
+        return await GetEntitiesAsync(getAllAsync, getCacheKey);
+    }
+
+    public async Task<IPagedInfo<TEntity>> GetAllPagedAsync(
+        Func<IQueryable<TEntity>, IQueryable<TEntity>>? func = null,
+        int pageIndex = 0,
+        int pageSize = int.MaxValue,
+        bool getOnlyTotalCount = false,
+        bool includeDeleted = true)
+    {
+        var query = AddDeletedFilter(Table, includeDeleted);
+
+        query = func != null ? func(query) : query;
+
+        return await query.ToPagedListAsync(pageIndex, pageSize, getOnlyTotalCount);
+    }
+
+    public async Task<IPagedInfo<TEntity>> GetAllPagedAsync(
+        Func<IQueryable<TEntity>, Task<IQueryable<TEntity>>>? func = null,
+        int pageIndex = 0,
+        int pageSize = int.MaxValue,
+        bool getOnlyTotalCount = false,
+        bool includeDeleted = true)
+    {
+        var query = AddDeletedFilter(Table, includeDeleted);
+
+        query = func != null ? await func(query) : query;
+
+        return await query.ToPagedListAsync(pageIndex, pageSize, getOnlyTotalCount);
+    }
+
+    public async Task InsertAsync(TEntity entity, bool publishEvent = true)
     {
         if (entity is null)
         {
             throw new ArgumentNullException(nameof(entity));
         }
 
-        await _dbSet.AddAsync(entity);
+        await _dataProvider.InsertEntityAsync(entity);
+
+        if (publishEvent)
+        {
+            // TODO ---> entity.RaiseDomainEvent();
+        }
     }
 
-    public void Insert(T entity)
+    public void Insert(TEntity entity, bool publishEvent = true)
     {
         if (entity is null)
         {
             throw new ArgumentNullException(nameof(entity));
         }
 
-        _dbSet.Add(entity);
+        _dataProvider.InsertEntity(entity);
+
+        if (publishEvent)
+        {
+            // TODO ---> entity.RaiseDomainEvent();
+        }
     }
 
-    public async Task InsertAsync(IList<T> entities)
+    public async Task InsertAsync(IList<TEntity> entities, bool publishEvent = true)
     {
         if (entities is null)
         {
             throw new ArgumentNullException(nameof(entities));
         }
 
-        await _dbSet.AddRangeAsync(entities);
-    }
+        using var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+        await _dataProvider.BulkInsertEntitiesAsync(entities);
+        transaction.Complete();
 
-    public void Insert(IList<T> entities)
-    {
-        if (entities is null)
-        {
-            throw new ArgumentNullException(nameof(entities));
-        }
-
-        _dbSet.AddRange(entities);
-    }
-
-    #endregion
-
-    public void Update(T entity)
-    {
-        if (entity is null)
-        {
-            throw new ArgumentNullException(nameof(entity));
-        }
-
-        _dbSet.Update(entity);
-    }
-
-    public void Update(IList<T> entities)
-    {
-        if (entities is null)
-        {
-            throw new ArgumentNullException(nameof(entities));
-        }
-
-        if (entities.Count == 0)
+        if (!publishEvent)
         {
             return;
         }
 
-        _dbSet.UpdateRange(entities);
+        foreach (var entity in entities)
+        {
+            // TODO ---> entity.RaiseDomainEvent()
+        }
     }
 
-    public void Delete(T entity)
+    public void Insert(IList<TEntity> entities, bool publishEvent = true)
+    {
+        if (entities is null)
+        {
+            throw new ArgumentNullException(nameof(entities));
+        }
+
+        using var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+        _dataProvider.BulkInsertEntities(entities);
+        transaction.Complete();
+
+        if (!publishEvent)
+        {
+            return;
+        }
+
+        foreach (var entity in entities)
+        {
+            // TODO ---> entity.RaiseDomainEvent();
+        }
+    }
+
+    public async Task<TEntity?> LoadOriginalCopyAsync(TEntity entity)
+    {
+        return await _dataProvider.GetTable<TEntity>().FirstOrDefaultAsync(e => e.Id == entity.Id);
+    }
+
+    public async Task UpdateAsync(TEntity entity, bool publishEvent = true)
+    {
+        if (entity is null)
+        {
+            throw new ArgumentNullException(nameof(entity));
+        }
+
+        await _dataProvider.UpdateEntityAsync(entity);
+
+        if (publishEvent)
+        {
+            // TODO ---> entity.RaiseDomainEvent();
+        }
+    }
+
+    public void Update(TEntity entity, bool publishEvent = true)
+    {
+        if (entity is null)
+        {
+            throw new ArgumentNullException(nameof(entity));
+        }
+
+        _dataProvider.UpdateEntity(entity);
+
+        if (publishEvent)
+        {
+            // TODO ---> entity.RaiseDomainEvent();
+        }
+    }
+
+    public async Task UpdateAsync(IList<TEntity> entities, bool publishEvent = true)
+    {
+        if (entities is null || !entities.Any())
+        {
+            return;
+        }
+        
+        await _dataProvider.UpdateEntitiesAsync(entities);
+
+        if (!publishEvent)
+        {
+            return;
+        }
+
+        foreach (var entity in entities)
+        {
+            // TODO ---> entity.RaiseDomainEvent();
+        }
+    }
+
+    public void Update(IList<TEntity> entities, bool publishEvent = true)
+    {
+        if (entities is null || !entities.Any())
+        {
+            return;
+        }
+        
+        _dataProvider.UpdateEntities(entities);
+
+        if (!publishEvent)
+        {
+            return;
+        }
+
+        foreach (var entity in entities)
+        {
+            // TODO ---> entity.RaiseDomainEvent();
+        }
+    }
+
+    public async Task DeleteAsync(TEntity entity, bool publishEvent = true)
     {
         switch (entity)
         {
@@ -292,44 +384,100 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
                 throw new ArgumentNullException(nameof(entity));
 
             case ISoftDeletedEntity softDeletedEntity:
-                softDeletedEntity.Active = false;
                 softDeletedEntity.Deleted = true;
-                Update(entity);
+                await _dataProvider.UpdateEntityAsync(entity);
                 break;
 
             default:
-                _dbSet.Attach(entity).State = EntityState.Deleted;
+                await _dataProvider.DeleteEntityAsync(entity);
                 break;
+        }
+
+        if (publishEvent)
+        { 
+            // TODO ---> entity.RaiseDomainEvent();
         }
     }
 
-    public void Truncate()
+    public void Delete(TEntity entity, bool publishEvent = true)
     {
-        _dbSet.RemoveRange(_dbSet);
+        switch (entity)
+        {
+            case null:
+                throw new ArgumentNullException(nameof(entity));
+            case ISoftDeletedEntity softDeletedEntity:
+                softDeletedEntity.Deleted = true;
+                _dataProvider.UpdateEntity(entity);
+                break;
+            default:
+                _dataProvider.DeleteEntity(entity);
+                break;
+        }
+
+        if (publishEvent)
+        {
+            // TODO ---> entity.RaiseDomainEvent();
+        }
     }
 
-    #endregion
+    public async Task DeleteAsync(IList<TEntity> entities, bool publishEvent = true)
+    {
+        if (entities is null || !entities.Any())
+        {
+            return;
+        }
+
+        await DeleteAsync(entities);
+
+        if (!publishEvent)
+        {
+            return;
+        }
+
+        foreach (var entity in entities)
+        {
+            // TODO ---> entity.RaiseDomainEvent();
+        }
+    }
+
+    public async Task<int> DeleteAsync(Expression<Func<TEntity, bool>> predicate)
+    {
+        if (predicate is null)
+        {
+            throw new ArgumentNullException(nameof(predicate));
+        }
+
+        using var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+        var countDeletedRecords = await _dataProvider.BulkDeleteEntitiesAsync(predicate);
+        transaction.Complete();
+
+        return countDeletedRecords;
+    }
+
+    public int Delete(Expression<Func<TEntity, bool>> predicate)
+    {
+        if (predicate is null)
+        {
+            throw new ArgumentNullException(nameof(predicate));
+        }
+
+        using var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+        var countDeletedRecords = _dataProvider.BulkDeleteEntities(predicate);
+        transaction.Complete();
+
+        return countDeletedRecords;
+    }
+
+    public async Task TruncateAsync(bool resetIdentity = false)
+    {
+        await _dataProvider.TruncateAsync<TEntity>(resetIdentity);
+    }
+
+    #endregion    
 
     #region Methods
 
-    private IQueryable<T> AddDeletedFilter(IQueryable<T> query, in bool includeDeleted)
-    {
-        if (includeDeleted)
-        {
-            return query;
-        }
-
-        if (typeof(T).GetInterface(nameof(ISoftDeletedEntity)) == null)
-        {
-            return query;
-        }
-
-        return query.OfType<ISoftDeletedEntity>().Where(entry => !entry.Deleted).OfType<T>();
-    }
-
-    private async Task<IList<T>> GetEntitiesAsync(
-        Func<Task<IList<T>>> getAllAsync, 
-        Func<IStaticCacheManager, CacheKey>? getCacheKey = null)
+    private async Task<IList<TEntity>> GetEntitiesAsync(Func<Task<IList<TEntity>>> getAllAsync, Func<IStaticCacheManager, CacheKey> getCacheKey)
     {
         if (getCacheKey is null)
         {
@@ -337,22 +485,67 @@ public class Repository<T> : IRepository<T> where T : BaseEntity
         }
 
         var cacheKey = getCacheKey(_staticCacheManager)
-                       ?? _staticCacheManager.PrepareKeyForDefaultCache(EntityCacheDefaults<T>.AllCacheKey);
+                       ?? _staticCacheManager.PrepareKeyForDefaultCache(EntityCacheDefaults<TEntity>.AllCacheKey);
+
         return await _staticCacheManager.GetAsync(cacheKey, getAllAsync);
     }
 
-    private IList<T> GetEntities(Func<IList<T>> getAll, Func<IStaticCacheManager, CacheKey> getCacheKey)
+    private IList<TEntity> GetEntities(Func<IList<TEntity>> getAll, Func<IStaticCacheManager, CacheKey> getCacheKey)
     {
-        if (getCacheKey == null)
+        if (getCacheKey is null)
         {
             return getAll();
         }
 
-        //caching
         var cacheKey = getCacheKey(_staticCacheManager)
-                       ?? _staticCacheManager.PrepareKeyForDefaultCache(EntityCacheDefaults<T>.AllCacheKey);
+                       ?? _staticCacheManager.PrepareKeyForDefaultCache(EntityCacheDefaults<TEntity>.AllCacheKey);
 
         return _staticCacheManager.Get(cacheKey, getAll);
+    }
+
+    private async Task<IList<TEntity>> GetEntitiesAsync(Func<Task<IList<TEntity>>> getAllAsync, Func<IStaticCacheManager, Task<CacheKey>> getCacheKey)
+    {
+        if (getCacheKey is null)
+        {
+            return await getAllAsync();
+        }
+
+        var cacheKey = await getCacheKey(_staticCacheManager)
+                       ?? _staticCacheManager.PrepareKeyForDefaultCache(EntityCacheDefaults<TEntity>.AllCacheKey);
+
+        return await _staticCacheManager.GetAsync(cacheKey, getAllAsync);
+    }
+
+    private IQueryable<TEntity> AddDeletedFilter(IQueryable<TEntity> query, in bool includeDeleted)
+    {
+        if (includeDeleted)
+        {
+            return query;
+        }
+
+        if (typeof(TEntity).GetInterface(nameof(ISoftDeletedEntity)) is null)
+        {
+            return query;
+        }
+
+        return query.OfType<ISoftDeletedEntity>().Where(entry => !entry.Deleted).OfType<TEntity>();
+    }
+
+    private async Task DeleteAsync(IList<TEntity> entities)
+    {
+        using var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+        await _dataProvider.BulkDeleteEntitiesAsync(entities);
+        transaction.Complete();
+    }
+
+    private async Task DeleteAsync<T>(IList<T> entities) where T : ISoftDeletedEntity, TEntity
+    {
+        foreach (var entity in entities)
+        {
+            entity.Deleted = true;
+        }
+
+        await _dataProvider.UpdateEntitiesAsync(entities);
     }
 
     #endregion

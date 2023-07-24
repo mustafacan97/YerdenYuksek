@@ -10,11 +10,11 @@ internal sealed class CustomerCreatedDomainEventHandler : INotificationHandler<C
 {
     #region Fields
 
+    private readonly IRepository<Customer> _customerRepository;
+
     private readonly IWorkflowMessageService _workflowMessageService;
 
     private readonly IWorkContext _workContext;
-
-    private readonly IUnitOfWork _unitOfWork;
 
     #endregion
 
@@ -23,11 +23,11 @@ internal sealed class CustomerCreatedDomainEventHandler : INotificationHandler<C
     public CustomerCreatedDomainEventHandler(
         IWorkContext workContext,
         IWorkflowMessageService workflowMessageService,
-        IUnitOfWork unitOfWork)
+        IRepository<Customer> customerRepository)
     {
         _workContext = workContext;
         _workflowMessageService = workflowMessageService;
-        _unitOfWork = unitOfWork;
+        _customerRepository = customerRepository;
     }
 
     #endregion
@@ -36,7 +36,7 @@ internal sealed class CustomerCreatedDomainEventHandler : INotificationHandler<C
 
     public async Task Handle(CustomerCreatedDomainEvent notification, CancellationToken cancellationToken)
     {
-        var customer = await _unitOfWork.GetRepository<Customer>().GetByIdAsync(notification.CustomerId);
+        var customer = await _customerRepository.GetByIdAsync(notification.CustomerId);
 
         if (customer is null)
         {

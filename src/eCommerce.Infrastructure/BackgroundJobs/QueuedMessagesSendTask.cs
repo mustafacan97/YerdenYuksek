@@ -10,7 +10,7 @@ public class QueuedMessagesSendTask : IScheduleTask
 {
     #region Fields
 
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IRepository<EmailAccount> _emailAccountRepository;
 
     private readonly IEmailSender _emailSender;
 
@@ -23,11 +23,11 @@ public class QueuedMessagesSendTask : IScheduleTask
     public QueuedMessagesSendTask(
         IEmailSender emailSender,
         IQueuedEmailService queuedEmailService,
-        IUnitOfWork unitOfWork)
+        IRepository<EmailAccount> emailAccountRepository)
     {
         _emailSender = emailSender;
         _queuedEmailService = queuedEmailService;
-        _unitOfWork = unitOfWork;
+        _emailAccountRepository = emailAccountRepository;
     }
 
     #endregion
@@ -58,7 +58,7 @@ public class QueuedMessagesSendTask : IScheduleTask
 
             try
             {
-                var email = await _unitOfWork.GetRepository<EmailAccount>().GetByIdAsync(queuedEmail.EmailAccountId);
+                var email = await _emailAccountRepository.GetByIdAsync(queuedEmail.EmailAccountId);
                 email.Password = EncryptionHelper.DecryptText(email.Password, email.PasswordSalt);
 
                 await _emailSender.SendEmailAsync(

@@ -12,7 +12,9 @@ public class InsertCustomerHandler : IRequestHandler<InsertCustomerCommand, Resu
 {
     #region Fields
 
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IRepository<Customer> _customerRepository;
+
+    private readonly IRepository<Role> _roleRepository;
 
     private readonly IWebHelper _webHelper;
 
@@ -21,11 +23,13 @@ public class InsertCustomerHandler : IRequestHandler<InsertCustomerCommand, Resu
     #region Constructure and Destructure
 
     public InsertCustomerHandler(
-        IUnitOfWork unitOfWork,
-        IWebHelper webHelper)
+        IWebHelper webHelper,
+        IRepository<Role> roleRepository,
+        IRepository<Customer> customerRepository)
     {
-        _unitOfWork = unitOfWork;
         _webHelper = webHelper;
+        _roleRepository = roleRepository;
+        _customerRepository = customerRepository;
     }
 
     #endregion
@@ -44,9 +48,9 @@ public class InsertCustomerHandler : IRequestHandler<InsertCustomerCommand, Resu
             LastIpAddress = _webHelper.GetCurrentIpAddress(),
         };
 
-        var registeredRole = await _unitOfWork.GetRepository<Role>().GetFirstOrDefaultAsync(
-            predicate: q => q.Name == RoleDefaults.RegisteredRoleName,
-            getCacheKey: q => q.PrepareKey(EntityCacheDefaults<Role>.RolesByNameCacheKey, RoleDefaults.RegisteredRoleName));
+        var registeredRole = (await _roleRepository.GetAllAsync(
+            func: q => q.Where(p => p.Name == RoleDefaults.RegisteredRoleName),
+            getCacheKey: q => q.PrepareKey(EntityCacheDefaults<Role>.RolesByNameCacheKey, RoleDefaults.RegisteredRoleName))).FirstOrDefault();
         
         if (registeredRole is null)
         {
@@ -54,9 +58,7 @@ public class InsertCustomerHandler : IRequestHandler<InsertCustomerCommand, Resu
         }
 
         var customer = Customer.Create(command.Email, customerSecurity, registeredRole);
-
-        await _unitOfWork.GetRepository<Customer>().InsertAsync(customer);
-        await _unitOfWork.SaveChangesAsync(cancellationToken);
+        await _customerRepository.InsertAsync(customer);
 
         return Result.Success();
     }

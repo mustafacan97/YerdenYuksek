@@ -10,7 +10,7 @@ public class ProcessOutboxMessagesTask : IScheduleTask
 {
     #region Fields
 
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IRepository<OutboxMessage> _outboxMessageRepository;
 
     private readonly IPublisher _publisher;
 
@@ -19,11 +19,10 @@ public class ProcessOutboxMessagesTask : IScheduleTask
     #region Constructure and Destructure
 
     public ProcessOutboxMessagesTask(
-        IUnitOfWork unitOfWork,
-        IPublisher publisher)
+        IPublisher publisher, IRepository<OutboxMessage> outboxMessageRepository)
     {
-        _unitOfWork = unitOfWork;
         _publisher = publisher;
+        _outboxMessageRepository = outboxMessageRepository;
     }
 
     #endregion
@@ -32,12 +31,7 @@ public class ProcessOutboxMessagesTask : IScheduleTask
 
     public async Task ExecuteAsync()
     {
-        var messages = (await _unitOfWork.GetRepository<OutboxMessage>().GetAllAsync(q =>
-        {
-            return from s in q
-                   where s.ProcessedOnUtc == null
-                   select s;
-        }));
+        var messages = (await _outboxMessageRepository.GetAllAsync(q => q.Where(p => p.ProcessedOnUtc == null)));
 
         if (messages is null || !messages.Any())
         {
@@ -58,7 +52,7 @@ public class ProcessOutboxMessagesTask : IScheduleTask
             message.ProcessedOnUtc = DateTime.UtcNow;
         }
 
-        await _unitOfWork.SaveChangesAsync();
+        await _outboxMessageRepository.UpdateAsync(messages);
     }
 
     #endregion

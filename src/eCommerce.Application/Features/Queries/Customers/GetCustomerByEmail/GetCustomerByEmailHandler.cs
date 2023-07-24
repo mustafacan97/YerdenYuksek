@@ -10,15 +10,15 @@ public class GetCustomerByEmailHandler : IRequestHandler<GetCustomerByEmailQuery
 {
     #region Fields
 
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IRepository<Customer> _customerRepository;
 
     #endregion
 
     #region Constructure and Destructure
 
-    public GetCustomerByEmailHandler(IUnitOfWork unitOfWork)
+    public GetCustomerByEmailHandler(IRepository<Customer> customerRepository)
     {
-        _unitOfWork = unitOfWork;
+        _customerRepository = customerRepository;
     }
 
     #endregion
@@ -27,9 +27,9 @@ public class GetCustomerByEmailHandler : IRequestHandler<GetCustomerByEmailQuery
 
     public async Task<Result<GetCustomerByEmailResponse>> Handle(GetCustomerByEmailQuery request, CancellationToken cancellationToken)
     {
-        var customer = await _unitOfWork.GetRepository<Customer>().GetFirstOrDefaultAsync(
-            predicate: x => x.Email == request.Email,
-            getCacheKey: q => q.PrepareKey(EntityCacheDefaults<Customer>.ByEmailCacheKey, request.Email) );
+        var customer = (await _customerRepository.GetAllAsync(
+            func: q => q.Where(p => p.Email == request.Email),
+            getCacheKey: q => q.PrepareKey(EntityCacheDefaults<Customer>.ByEmailCacheKey, request.Email))).FirstOrDefault();
 
         if (customer is null)
         {
