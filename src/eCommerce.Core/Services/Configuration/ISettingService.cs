@@ -10,7 +10,7 @@ public interface ISettingService
 
     Task ClearCacheAsync();
 
-    Task<Setting> GetSettingAsync(string key, bool loadSharedValueIfNotFound = false);
+    Task<Setting?> GetSettingAsync(string key, bool loadSharedValueIfNotFound = false);
 
     Task<T?> GetSettingByKeyAsync<T>(string key, T? defaultValue = default);
 

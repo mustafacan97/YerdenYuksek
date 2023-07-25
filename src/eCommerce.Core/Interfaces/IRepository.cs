@@ -21,24 +21,19 @@ public interface IRepository<TEntity> where TEntity : BaseEntity
 
     Task<IList<TEntity>> GetByIdsAsync(IList<Guid> ids, Func<IStaticCacheManager, CacheKey>? getCacheKey = null, bool includeDeleted = true);
 
-    Task<IList<TEntity>> GetAllAsync(
-        Func<IQueryable<TEntity>, IQueryable<TEntity>>? func = null,
-        Func<IStaticCacheManager, CacheKey>? getCacheKey = null, 
-        bool includeDeleted = true);
-
-    Task<IList<TEntity>> GetAllAsync(
-        Func<IQueryable<TEntity>, Task<IQueryable<TEntity>>>? func = null,
-        Func<IStaticCacheManager, CacheKey>? getCacheKey = null, 
-        bool includeDeleted = true);
-
     IList<TEntity> GetAll(
+        Func<IQueryable<TEntity>, IQueryable<TEntity>>? func = null,
+        Func<IStaticCacheManager, CacheKey>? getCacheKey = null,
+        bool includeDeleted = true);
+
+    Task<IList<TEntity>> GetAllAsync(
         Func<IQueryable<TEntity>, IQueryable<TEntity>>? func = null,
         Func<IStaticCacheManager, CacheKey>? getCacheKey = null, 
         bool includeDeleted = true);
 
     Task<IList<TEntity>> GetAllAsync(
         Func<IQueryable<TEntity>, Task<IQueryable<TEntity>>> func,
-        Func<IStaticCacheManager, Task<CacheKey>> getCacheKey, 
+        Func<IStaticCacheManager, CacheKey> getCacheKey, 
         bool includeDeleted = true);
 
     Task<IPagedInfo<TEntity>> GetAllPagedAsync(
@@ -53,6 +48,16 @@ public interface IRepository<TEntity> where TEntity : BaseEntity
         int pageIndex = 0, 
         int pageSize = int.MaxValue,
         bool getOnlyTotalCount = false,
+        bool includeDeleted = true);
+
+    TEntity? GetFirstOrDefault(
+        Func<IQueryable<TEntity>, IQueryable<TEntity>>? func = null,
+        Func<IStaticCacheManager, CacheKey>? getCacheKey = null,
+        bool includeDeleted = true);
+
+    Task<TEntity?> GetFirstOrDefaultAsync(
+        Func<IQueryable<TEntity>, IQueryable<TEntity>>? func = null,
+        Func<IStaticCacheManager, CacheKey>? getCacheKey = null, 
         bool includeDeleted = true);
 
     Task InsertAsync(TEntity entity, bool publishEvent = true);

@@ -115,27 +115,6 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
         return await _staticCacheManager.GetAsync(cacheKey, getByIdsAsync);
     }
 
-    public async Task<IList<TEntity>> GetAllAsync(
-        Func<IQueryable<TEntity>, IQueryable<TEntity>>? func = null,
-        Func<IStaticCacheManager, CacheKey>? getCacheKey = null, 
-        bool includeDeleted = true)
-    {
-        async Task<IList<TEntity>> getAllAsync()
-        {
-            var query = AddDeletedFilter(Table, includeDeleted);
-            query = func != null ? func(query) : query;
-
-            return await query.ToListAsync();
-        }
-
-        if (getCacheKey is null)
-        {
-            return await getAllAsync();
-        }
-
-        return await GetEntitiesAsync(getAllAsync, getCacheKey);
-    }
-
     public IList<TEntity> GetAll(
         Func<IQueryable<TEntity>, IQueryable<TEntity>>? func = null,
         Func<IStaticCacheManager, CacheKey>? getCacheKey = null,
@@ -158,14 +137,14 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
     }
 
     public async Task<IList<TEntity>> GetAllAsync(
-        Func<IQueryable<TEntity>, Task<IQueryable<TEntity>>>? func = null,
+        Func<IQueryable<TEntity>, IQueryable<TEntity>>? func = null,
         Func<IStaticCacheManager, CacheKey>? getCacheKey = null, 
         bool includeDeleted = true)
     {
         async Task<IList<TEntity>> getAllAsync()
         {
             var query = AddDeletedFilter(Table, includeDeleted);
-            query = func != null ? await func(query) : query;
+            query = func != null ? func(query) : query;
 
             return await query.ToListAsync();
         }
@@ -179,8 +158,8 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
     }
 
     public async Task<IList<TEntity>> GetAllAsync(
-        Func<IQueryable<TEntity>, Task<IQueryable<TEntity>>>? func = null,
-        Func<IStaticCacheManager, Task<CacheKey>>? getCacheKey = null, 
+        Func<IQueryable<TEntity>, Task<IQueryable<TEntity>>> func,
+        Func<IStaticCacheManager, CacheKey> getCacheKey,
         bool includeDeleted = true)
     {
         async Task<IList<TEntity>> getAllAsync()
@@ -225,6 +204,41 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
         query = func != null ? await func(query) : query;
 
         return await query.ToPagedListAsync(pageIndex, pageSize, getOnlyTotalCount);
+    }
+
+    public TEntity? GetFirstOrDefault(
+        Func<IQueryable<TEntity>, IQueryable<TEntity>>? func = null,
+        Func<IStaticCacheManager, CacheKey>? getCacheKey = null,
+        bool includeDeleted = true)
+    {
+        return GetFirstOrDefaultAsync(func, getCacheKey, includeDeleted).GetAwaiter().GetResult();
+    }
+
+    public async Task<TEntity?> GetFirstOrDefaultAsync(
+        Func<IQueryable<TEntity>, IQueryable<TEntity>>? func = null,
+        Func<IStaticCacheManager, CacheKey>? getCacheKey = null, 
+        bool includeDeleted = true)
+    {
+        async Task<TEntity?> getEntityAsync()
+        {
+            var query = AddDeletedFilter(Table, includeDeleted);
+
+            if (func is not null)
+            {
+                query = func(query);
+            }
+
+            return await query.FirstOrDefaultAsync();
+        }
+
+        if (getCacheKey is null)
+        {
+            return await getEntityAsync();
+        }
+
+        var cacheKey = getCacheKey(_staticCacheManager);
+
+        return await _staticCacheManager.GetAsync(cacheKey, getEntityAsync);
     }
 
     public async Task InsertAsync(TEntity entity, bool publishEvent = true)

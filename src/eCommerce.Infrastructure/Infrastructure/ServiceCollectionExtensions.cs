@@ -14,6 +14,17 @@ using System.Reflection;
 using eCommerce.Core.Services.Caching;
 using eCommerce.Infrastructure.Services.Caching;
 using eCommerce.Infrastructure.Concretes;
+using eCommerce.Core.Services.Messages;
+using eCommerce.Infrastructure.Services.Messages;
+using eCommerce.Core.Services.Customers;
+using eCommerce.Core.Services.Localization;
+using eCommerce.Core.Services.ScheduleTasks;
+using eCommerce.Core.Services.Security;
+using eCommerce.Infrastructure.Services.Configuration;
+using eCommerce.Infrastructure.Services.Customers;
+using eCommerce.Infrastructure.Services.Secuirty;
+using eCommerce.Infrastructure.Services.Localization;
+using eCommerce.Infrastructure.Services.ScheduleTasks;
 
 namespace eCommerce.Infrastructure.Infrastructure;
 
@@ -61,6 +72,7 @@ public static class ServiceCollectionExtensions
             .AddTransient(typeof(IConcurrentCollection<>), typeof(ConcurrentTrie<>))
 
             // Caching
+            .AddSingleton<ILocker, MemoryCacheLocker>()
             .AddSingleton<ICacheKeyManager, CacheKeyManager>()
             .AddMemoryCache()
             .AddSingleton<IStaticCacheManager, MemoryCacheManager>()
@@ -69,7 +81,26 @@ public static class ServiceCollectionExtensions
             .AddScoped<IWebHelper, WebHelper>()
 
             // Work context
-            .AddScoped<IWorkContext, WorkContext>();
+            .AddScoped<IWorkContext, WorkContext>()
+
+            // Email
+            .AddScoped<ITokenizer, Tokenizer>()
+            .AddScoped<IEmailSender, EmailSender>()
+
+            // Services
+            .AddScoped<ISettingService, SettingService>()
+            .AddScoped<ICustomerService, CustomerService>()
+            .AddScoped<IEncryptionService, EncryptionService>()
+            .AddScoped<ILanguageService, LanguageService>()
+            .AddScoped<ILocalizationService, LocalizationService>()
+            .AddScoped<ILocalizedEntityService, LocalizedEntityService>()
+            .AddScoped<IScheduleTaskService, ScheduleTaskService>()
+            .AddScoped<IQueuedEmailService, QueuedEmailService>()
+            .AddScoped<IWorkflowMessageService, WorkflowMessageService>()
+            .AddScoped<IEmailAccountService, EmailAccountService>()
+            .AddScoped<IEmailTemplateService, EmailTemplateService>()
+            .AddScoped<IMessageTokenProvider, MessageTokenProvider>()
+            .AddScoped<IJwtService, JwtService>();
 
         return services;
     }

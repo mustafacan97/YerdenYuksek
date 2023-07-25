@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Localization;
 using System.Security.Claims;
 using eCommerce.Core.Entities.Customers;
 using eCommerce.Core.Entities.Localization;
-using eCommerce.Core.Services.Customers;
+using eCommerce.Core.Shared;
 
 namespace eCommerce.Infrastructure.Concretes;
 
@@ -14,7 +14,7 @@ public class WorkContext : IWorkContext
 
     private readonly IRepository<Language> _languageRepository;
 
-    private readonly ICustomerService _customerService;
+    private readonly IRepository<Customer> _customerRepository;
 
     private readonly IHttpContextAccessor _httpContextAccessor;
 
@@ -24,12 +24,12 @@ public class WorkContext : IWorkContext
 
     public WorkContext(
         IHttpContextAccessor httpContextAccessor,
-        ICustomerService customerService,
-        IRepository<Language> languageRepository)
+        IRepository<Language> languageRepository,
+        IRepository<Customer> customerRepository)
     {
         _httpContextAccessor = httpContextAccessor;
-        _customerService = customerService;
         _languageRepository = languageRepository;
+        _customerRepository = customerRepository;
     }
 
     #endregion
@@ -48,7 +48,9 @@ public class WorkContext : IWorkContext
                 return null;
             }
 
-            return await _customerService.GetCustomerByEmailAsync(customerEmail);
+            return (await _customerRepository.GetAllAsync(
+                func: q => q.Where(p => p.Email == customerEmail),
+                getCacheKey: q => q.PrepareKey(EntityCacheDefaults<Customer>.ByEmailCacheKey, customerEmail))).FirstOrDefault();
         }
 
         return null;

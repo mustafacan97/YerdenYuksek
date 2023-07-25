@@ -16,6 +16,8 @@ public class InsertCustomerHandler : IRequestHandler<InsertCustomerCommand, Resu
 
     private readonly IRepository<Role> _roleRepository;
 
+    private readonly IRepository<CustomerRoleMapping> _crmRepository;
+
     private readonly IWebHelper _webHelper;
 
     #endregion
@@ -25,11 +27,13 @@ public class InsertCustomerHandler : IRequestHandler<InsertCustomerCommand, Resu
     public InsertCustomerHandler(
         IWebHelper webHelper,
         IRepository<Role> roleRepository,
-        IRepository<Customer> customerRepository)
+        IRepository<Customer> customerRepository,
+        IRepository<CustomerRoleMapping> crmRepository)
     {
         _webHelper = webHelper;
         _roleRepository = roleRepository;
         _customerRepository = customerRepository;
+        _crmRepository = crmRepository;
     }
 
     #endregion
@@ -58,7 +62,10 @@ public class InsertCustomerHandler : IRequestHandler<InsertCustomerCommand, Resu
         }
 
         var customer = Customer.Create(command.Email, customerSecurity, registeredRole);
+        var crm = CustomerRoleMapping.Create(customer.Id, registeredRole.Id);
+
         await _customerRepository.InsertAsync(customer);
+        await _crmRepository.InsertAsync(crm);
 
         return Result.Success();
     }
