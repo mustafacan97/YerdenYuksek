@@ -1,5 +1,6 @@
 ﻿using eCommerce.Core.Entities.Common;
 using eCommerce.Core.Entities.Customers;
+using eCommerce.Core.Primitives;
 using eCommerce.Infrastructure.Persistence.Extensions;
 using FluentMigrator.Builders.Create.Table;
 using System.Data;
@@ -13,7 +14,7 @@ public class AddressBuilder : IEntityBuilder
     public void MapEntity(CreateTableExpressionBuilder table)
     {
         table
-            .WithColumn(nameof(Address.Id)).AsGuid().NotNullable().PrimaryKey()
+            .WithColumn(nameof(BaseEntity.Id)).AsGuid().NotNullable().PrimaryKey()
             .WithColumn(nameof(Address.FirstName)).AsString(128).NotNullable()
             .WithColumn(nameof(Address.LastName)).AsString(128).NotNullable()
             .WithColumn(nameof(Address.Email)).AsString(128).NotNullable()

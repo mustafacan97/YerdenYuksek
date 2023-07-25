@@ -1,4 +1,5 @@
 ﻿using eCommerce.Core.Entities.Common;
+using eCommerce.Core.Primitives;
 using FluentMigrator.Builders.Create.Table;
 
 namespace eCommerce.Infrastructure.Persistence.Builders.Common;
@@ -10,7 +11,7 @@ public class CountryBuilder : IEntityBuilder
     public void MapEntity(CreateTableExpressionBuilder table)
     {
         table
-            .WithColumn(nameof(Country.Id)).AsGuid().NotNullable().PrimaryKey()
+            .WithColumn(nameof(BaseEntity.Id)).AsGuid().NotNullable().PrimaryKey()
             .WithColumn(nameof(Country.Name)).AsString(128).NotNullable()
             .WithColumn(nameof(Country.TwoLetterIsoCode)).AsString(2).NotNullable()
             .WithColumn(nameof(Country.AllowsBilling)).AsBoolean().NotNullable().WithDefaultValue(true)

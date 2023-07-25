@@ -1,4 +1,5 @@
 ﻿using eCommerce.Core.Entities.Common;
+using eCommerce.Core.Primitives;
 using eCommerce.Infrastructure.Persistence.Extensions;
 using FluentMigrator.Builders.Create.Table;
 
@@ -11,7 +12,7 @@ public class CityBuilder : IEntityBuilder
     public void MapEntity(CreateTableExpressionBuilder table)
     {
         table
-            .WithColumn(nameof(City.Id)).AsGuid().NotNullable().PrimaryKey()
+            .WithColumn(nameof(BaseEntity.Id)).AsGuid().NotNullable().PrimaryKey()
             .WithColumn(nameof(City.Name)).AsString(128).NotNullable()
             .WithColumn(nameof(City.Abbreviation)).AsString(8).NotNullable()
             .WithColumn(nameof(City.CountryId)).AsGuid().ForeignKey<Country>().NotNullable()

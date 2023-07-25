@@ -1,5 +1,6 @@
 ﻿using eCommerce.Core.Entities.Directory;
 using eCommerce.Core.Entities.Localization;
+using eCommerce.Core.Primitives;
 using eCommerce.Infrastructure.Persistence.Extensions;
 using FluentMigrator.Builders.Create.Table;
 
@@ -12,7 +13,7 @@ public class LanguageBuilder : IEntityBuilder
     public void MapEntity(CreateTableExpressionBuilder table)
     {
         table
-            .WithColumn(nameof(Language.Id)).AsGuid().NotNullable().PrimaryKey()
+            .WithColumn(nameof(BaseEntity.Id)).AsGuid().NotNullable().PrimaryKey()
             .WithColumn(nameof(Language.Name)).AsString(64).NotNullable()
             .WithColumn(nameof(Language.LanguageCulture)).AsString(8).NotNullable()
             .WithColumn(nameof(Language.UniqueSeoCode)).AsString(2).Nullable()

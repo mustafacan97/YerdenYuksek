@@ -3,6 +3,7 @@ using eCommerce.Core.Entities.Customers;
 using eCommerce.Core.Entities.Directory;
 using eCommerce.Core.Entities.Localization;
 using eCommerce.Core.Entities.Media;
+using eCommerce.Core.Entities.Security;
 using eCommerce.Infrastructure.Persistence.Extensions;
 using FluentMigrator;
 using System.Data;
@@ -22,6 +23,10 @@ public class Installation : ForwardOnlyMigration
         Create.TableFor<Country>();
         Create.TableFor<City>();
         Create.TableFor<Address>();
+        Create.TableFor<Role>();
+        Create.TableFor<Permission>();
+        Create.TableFor<CustomerRoleMapping>();
+        Create.TableFor<PermissionRoleMapping>();
 
         // Karşılıklı ForeignKey olduğu için, Address tablosu oluştuktan sonra aşağıdakini eklemeliyim!
         Alter.Table(nameof(Customer))

@@ -1,4 +1,5 @@
 ﻿using eCommerce.Core.Entities.Directory;
+using eCommerce.Core.Primitives;
 using eCommerce.Infrastructure.Persistence.Extensions;
 using FluentMigrator.Builders.Create.Table;
 
@@ -11,7 +12,7 @@ public class CurrencyBuilder : IEntityBuilder
     public void MapEntity(CreateTableExpressionBuilder table)
     {
         table
-            .WithColumn(nameof(Currency.Id)).AsGuid().NotNullable().PrimaryKey()
+            .WithColumn(nameof(BaseEntity.Id)).AsGuid().NotNullable().PrimaryKey()
             .WithColumn(nameof(Currency.Name)).AsString(64).NotNullable()
             .WithColumn(nameof(Currency.CurrencyCode)).AsString(4).NotNullable()
             .WithColumn(nameof(Currency.DisplayLocale)).AsString(8).Nullable()

@@ -89,7 +89,7 @@ public static class FluentMigratorExtensions
         var selectedBuilder = Assembly.GetAssembly(typeof(IEntityBuilder))!
             .GetTypes()
             .Where(t => t.GetInterfaces().Contains(typeof(IEntityBuilder)) &&
-                        t.Name.Contains(type.Name) &&
+                        t.Name.Remove(t.Name.Length-7) == type.Name && // remove 'builder' text
                         t.IsClass &&
                         !t.IsAbstract &&
                         !t.IsInterface)

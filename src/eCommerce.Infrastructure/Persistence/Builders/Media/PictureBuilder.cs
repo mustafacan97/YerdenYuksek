@@ -1,4 +1,5 @@
 ﻿using eCommerce.Core.Entities.Media;
+using eCommerce.Core.Primitives;
 using eCommerce.Infrastructure.Persistence.Extensions;
 using FluentMigrator.Builders.Create.Table;
 
@@ -11,7 +12,7 @@ public class PictureBuilder : IEntityBuilder
     public void MapEntity(CreateTableExpressionBuilder table)
     {
         table
-            .WithColumn(nameof(Picture.Id)).AsGuid().NotNullable().PrimaryKey()
+            .WithColumn(nameof(BaseEntity.Id)).AsGuid().NotNullable().PrimaryKey()
             .WithColumn(nameof(Picture.MimeType)).AsString(16).NotNullable()
             .WithColumn(nameof(Picture.SeoFilename)).AsString(128).NotNullable()
             .WithColumn(nameof(Picture.AltAttribute)).AsString(128).Nullable()
