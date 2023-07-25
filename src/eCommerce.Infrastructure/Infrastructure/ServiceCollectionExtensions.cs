@@ -54,20 +54,18 @@ public static class ServiceCollectionExtensions
         services
             .AddSingleton(configuration)
             .AddScoped(typeof(IRepository<>), typeof(Repository<>))
-            .AddScoped<ICustomDataProvider, MySqlCustomDataProvider>();
-
-        //add accessor to HttpContext
-        services.AddHttpContextAccessor();
+            .AddScoped<ICustomDataProvider, MySqlCustomDataProvider>()
+            .AddHttpContextAccessor();
 
         //web helper
-        services.AddScoped<IWebHelper, WebHelper>();
+        //services.AddScoped<IWebHelper, WebHelper>();
 
         //work context
-        services.AddScoped<IWorkContext, WorkContext>();
+        //services.AddScoped<IWorkContext, WorkContext>();
 
         //static cache manager
-        services   .AddTransient(typeof(IConcurrentCollection<>), typeof(ConcurrentTrie<>));
-        services.AddMemoryCache();
+        //services.AddTransient(typeof(IConcurrentCollection<>), typeof(ConcurrentTrie<>));
+        //services.AddMemoryCache();
 
         return services;
     }

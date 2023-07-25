@@ -1,6 +1,8 @@
-﻿namespace eCommerce.Core.Entities.Customers;
+﻿using eCommerce.Core.Primitives;
 
-public class CustomerSecurity
+namespace eCommerce.Core.Entities.Customers;
+
+public class CustomerSecurity : BaseEntity
 {
     #region Constructure and Destructure
 

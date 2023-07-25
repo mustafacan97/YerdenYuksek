@@ -33,6 +33,11 @@ public static class FluentMigratorExtensions
 
     #region Public Methods
 
+    public static ICreateTableColumnOptionOrWithColumnSyntax AsCustomDateTime(this ICreateTableColumnAsTypeSyntax syntax)
+    {
+        return syntax.AsCustom($"datetime({DATE_TIME_PRECISION})");
+    }
+
     public static ICreateTableColumnOptionOrForeignKeyCascadeOrWithColumnSyntax ForeignKey<TPrimary>(
         this ICreateTableColumnOptionOrWithColumnSyntax column,
         string? primaryTableName = null,
@@ -83,7 +88,11 @@ public static class FluentMigratorExtensions
     {
         var selectedBuilder = Assembly.GetAssembly(typeof(IEntityBuilder))!
             .GetTypes()
-            .Where(t => t.GetInterfaces().Contains(typeof(IEntityBuilder)) && t.IsClass && !t.IsAbstract && !t.IsInterface)
+            .Where(t => t.GetInterfaces().Contains(typeof(IEntityBuilder)) &&
+                        t.Name.Contains(type.Name) &&
+                        t.IsClass &&
+                        !t.IsAbstract &&
+                        !t.IsInterface)
             .FirstOrDefault();
 
         if (selectedBuilder is null)
