@@ -16,7 +16,7 @@ public sealed record GetCustomerByEmailQuery : IRequest<Result<GetCustomerByEmai
 
     #region Public Methods
 
-    public static GetCustomerByEmailQuery Create(string Email) => new GetCustomerByEmailQuery(Email);
+    public static GetCustomerByEmailQuery Create(string Email) => new(Email);
 
     #endregion
 

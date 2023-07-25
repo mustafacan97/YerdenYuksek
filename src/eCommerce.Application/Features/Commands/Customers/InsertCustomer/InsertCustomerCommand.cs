@@ -17,7 +17,7 @@ public sealed class InsertCustomerCommand : IRequest<Result>
 
     #region Public Methods
 
-    public static InsertCustomerCommand Create(string email, string password) => new InsertCustomerCommand(email, password);
+    public static InsertCustomerCommand Create(string email, string password) => new(email, password);
 
     #endregion
 
