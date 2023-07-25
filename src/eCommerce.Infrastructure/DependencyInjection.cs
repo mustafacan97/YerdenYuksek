@@ -101,7 +101,12 @@ public static class DependencyInjection
             .AddScoped<IEmailAccountService, EmailAccountService>()
             .AddScoped<IEmailTemplateService, EmailTemplateService>()
             .AddScoped<IMessageTokenProvider, MessageTokenProvider>()
-            .AddScoped<IJwtService, JwtService>();
+            .AddScoped<IJwtService, JwtService>()
+
+            // Schedule tasks
+            .AddScoped<IScheduleTaskService, ScheduleTaskService>()
+            .AddSingleton<ITaskScheduler, ScheduleTaskScheduler>()
+            .AddTransient<IScheduleTaskRunner, ScheduleTaskRunner>();
 
         return services;
     }
