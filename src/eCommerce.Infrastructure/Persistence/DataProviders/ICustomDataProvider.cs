@@ -1,10 +1,11 @@
 ﻿using eCommerce.Core.Primitives;
+using eCommerce.Infrastructure.Persistence.Configurations;
 using LinqToDB.Data;
 using System.Linq.Expressions;
 
 namespace eCommerce.Infrastructure.Persistence.DataProviders;
 
-public interface ICustomDataProvider
+public interface ICustomDataProvider : IMappingEntityAccessor
 {
     #region Public Properties
 
