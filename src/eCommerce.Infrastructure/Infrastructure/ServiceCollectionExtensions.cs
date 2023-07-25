@@ -6,12 +6,13 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using eCommerce.Core.Shared;
 using eCommerce.Core.Services.Configuration;
-using eCommerce.Infrastructure.Concretes;
 using eCommerce.Infrastructure.Infrastructure;
 using eCommerce.Infrastructure.Persistence.DataProviders;
 using eCommerce.Infrastructure.Persistence;
 using FluentMigrator.Runner;
 using System.Reflection;
+using eCommerce.Core.Services.Caching;
+using eCommerce.Infrastructure.Services.Caching;
 
 namespace eCommerce.Infrastructure.Infrastructure;
 
@@ -55,7 +56,13 @@ public static class ServiceCollectionExtensions
             .AddSingleton(configuration)
             .AddScoped(typeof(IRepository<>), typeof(Repository<>))
             .AddScoped<ICustomDataProvider, MySqlCustomDataProvider>()
-            .AddHttpContextAccessor();
+            .AddHttpContextAccessor()
+            .AddTransient(typeof(IConcurrentCollection<>), typeof(ConcurrentTrie<>))
+
+            // Caching
+            .AddSingleton<ICacheKeyManager, CacheKeyManager>()
+            .AddMemoryCache()
+            .AddSingleton<IStaticCacheManager, MemoryCacheManager>();
 
         //web helper
         //services.AddScoped<IWebHelper, WebHelper>();
