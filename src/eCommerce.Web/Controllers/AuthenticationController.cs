@@ -16,7 +16,7 @@ public class AuthenticationController : Controller
 {
     #region Fields
 
-    private readonly IMediator _mediator;
+    private readonly ISender _sender;
 
     private readonly ICustomerService _customerService;
 
@@ -29,11 +29,11 @@ public class AuthenticationController : Controller
     public AuthenticationController(
         ICustomerService customerService,
         IJwtService jwtService,
-        IMediator mediator)
+        ISender sender)
     {
         _customerService = customerService;
         _jwtService = jwtService;
-        _mediator = mediator;
+        _sender = sender;
     }
 
     #endregion
@@ -45,14 +45,14 @@ public class AuthenticationController : Controller
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Register(RegisterRequestModel model)
     {
-        var checkCustomer = await _mediator.Send(GetCustomerByEmailQuery.Create(model.Email));
+        var checkCustomer = await _sender.Send(GetCustomerByEmailQuery.Create(model.Email));
 
         if (checkCustomer.Value is not null)
         {
             return Ok(Result.Failure(Error.Conflict(description: "Email is already registered!")));
         }
 
-        var registrationResult = await _mediator.Send(InsertCustomerCommand.Create(model.Email, model.Password));
+        var registrationResult = await _sender.Send(InsertCustomerCommand.Create(model.Email, model.Password));
 
         return Ok(registrationResult);
     }

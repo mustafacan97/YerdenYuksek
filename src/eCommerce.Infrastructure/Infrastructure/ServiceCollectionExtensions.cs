@@ -13,6 +13,7 @@ using FluentMigrator.Runner;
 using System.Reflection;
 using eCommerce.Core.Services.Caching;
 using eCommerce.Infrastructure.Services.Caching;
+using eCommerce.Infrastructure.Concretes;
 
 namespace eCommerce.Infrastructure.Infrastructure;
 
@@ -62,17 +63,13 @@ public static class ServiceCollectionExtensions
             // Caching
             .AddSingleton<ICacheKeyManager, CacheKeyManager>()
             .AddMemoryCache()
-            .AddSingleton<IStaticCacheManager, MemoryCacheManager>();
+            .AddSingleton<IStaticCacheManager, MemoryCacheManager>()
 
-        //web helper
-        //services.AddScoped<IWebHelper, WebHelper>();
+            // Web helper
+            .AddScoped<IWebHelper, WebHelper>()
 
-        //work context
-        //services.AddScoped<IWorkContext, WorkContext>();
-
-        //static cache manager
-        //services.AddTransient(typeof(IConcurrentCollection<>), typeof(ConcurrentTrie<>));
-        //services.AddMemoryCache();
+            // Work context
+            .AddScoped<IWorkContext, WorkContext>();
 
         return services;
     }
