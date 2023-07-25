@@ -1,7 +1,7 @@
 ﻿using eCommerce.Core.Entities.Common;
 using eCommerce.Core.Entities.Customers;
 using eCommerce.Core.Primitives;
-using eCommerce.Infrastructure.Persistence.Extensions;
+using eCommerce.Infrastructure.Extensions;
 using FluentMigrator.Builders.Create.Table;
 using System.Data;
 

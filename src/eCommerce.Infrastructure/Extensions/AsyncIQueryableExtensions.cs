@@ -2,7 +2,7 @@
 using eCommerce.Core.Primitives;
 using LinqToDB;
 
-namespace System.Linq;
+namespace eCommerce.Infrastructure.Extensions;
 
 public static class AsyncIQueryableExtensions
 {

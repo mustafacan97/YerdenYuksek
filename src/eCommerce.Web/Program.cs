@@ -1,13 +1,14 @@
 using eCommerce.Application;
-using eCommerce.Infrastructure.Infrastructure;
+using eCommerce.Infrastructure;
+using eCommerce.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services
     .AddEndpointsApiExplorer()
-    .AddInfrastructureProject(builder.Configuration)
     .AddApplicationProject()
+    .AddInfrastructureProject(builder.Configuration)    
     .AddSwaggerGen();
 
 builder.Host.UseDefaultServiceProvider(options =>

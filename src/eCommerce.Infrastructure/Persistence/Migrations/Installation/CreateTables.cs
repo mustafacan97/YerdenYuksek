@@ -7,7 +7,7 @@ using eCommerce.Core.Entities.Media;
 using eCommerce.Core.Entities.Messages;
 using eCommerce.Core.Entities.ScheduleTasks;
 using eCommerce.Core.Entities.Security;
-using eCommerce.Infrastructure.Persistence.Extensions;
+using eCommerce.Infrastructure.Extensions;
 using FluentMigrator;
 using System.Data;
 

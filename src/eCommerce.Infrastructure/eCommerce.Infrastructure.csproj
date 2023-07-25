@@ -7,15 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Persistence\NewFolder\**" />
-    <EmbeddedResource Remove="Persistence\NewFolder\**" />
-    <None Remove="Persistence\NewFolder\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="FluentMigrator" Version="3.3.2" />
     <PackageReference Include="FluentMigrator.Runner" Version="3.3.2" />
-    <PackageReference Include="linq2db" Version="5.2.2" />
+    <PackageReference Include="linq2db" Version="4.3.0" />
     <PackageReference Include="MailKit" Version="4.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.20" />
     <PackageReference Include="MySqlConnector" Version="2.2.7" />

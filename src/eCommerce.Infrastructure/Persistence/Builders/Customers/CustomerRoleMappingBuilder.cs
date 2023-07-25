@@ -1,6 +1,6 @@
 ﻿using eCommerce.Core.Entities.Customers;
 using eCommerce.Core.Entities.Security;
-using eCommerce.Infrastructure.Persistence.Extensions;
+using eCommerce.Infrastructure.Extensions;
 using FluentMigrator.Builders.Create.Table;
 
 namespace eCommerce.Infrastructure.Persistence.Builders.Security;

@@ -1,6 +1,6 @@
 ﻿using eCommerce.Core.Entities.Messages;
 using eCommerce.Core.Primitives;
-using eCommerce.Infrastructure.Persistence.Extensions;
+using eCommerce.Infrastructure.Extensions;
 using FluentMigrator.Builders.Create.Table;
 
 namespace eCommerce.Infrastructure.Persistence.Builders.Messages;

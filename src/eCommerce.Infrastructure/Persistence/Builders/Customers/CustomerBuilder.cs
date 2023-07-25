@@ -3,7 +3,7 @@ using eCommerce.Core.Entities.Directory;
 using eCommerce.Core.Entities.Localization;
 using eCommerce.Core.Entities.Media;
 using eCommerce.Core.Primitives;
-using eCommerce.Infrastructure.Persistence.Extensions;
+using eCommerce.Infrastructure.Extensions;
 using FluentMigrator.Builders.Create.Table;
 using System.Data;
 

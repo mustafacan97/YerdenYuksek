@@ -1,6 +1,6 @@
 ﻿using LinqToDB;
 
-namespace eCommerce.Infrastructure.Persistence;
+namespace eCommerce.Infrastructure.Persistence.Configurations;
 
 public class TempSqlDataStorage<T> : TempTable<T>, ITempDataStorage<T> where T : class
 {

@@ -4,7 +4,7 @@ using FluentMigrator.Runner;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace eCommerce.Infrastructure.Infrastructure;
+namespace eCommerce.Infrastructure.Extensions;
 
 public static class ApplicationBuilderExtensions
 {
@@ -38,12 +38,7 @@ public static class ApplicationBuilderExtensions
         UpdateDatabase(scope.ServiceProvider);
     }
 
-    private static void UpdateDatabase(IServiceProvider serviceProvider)
-    {
-        var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
-
-        runner.MigrateUp();
-    }
+    private static void UpdateDatabase(IServiceProvider serviceProvider) => serviceProvider.GetRequiredService<IMigrationRunner>().MigrateUp();
 
     private async static void RunScheduleTasksOnStartup(this IServiceProvider services)
     {

@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Reflection;
 
-namespace eCommerce.Infrastructure.Persistence.Extensions;
+namespace eCommerce.Infrastructure.Extensions;
 
 public static class FluentMigratorExtensions
 {
@@ -89,7 +89,7 @@ public static class FluentMigratorExtensions
         var selectedBuilder = Assembly.GetAssembly(typeof(IEntityBuilder))!
             .GetTypes()
             .Where(t => t.GetInterfaces().Contains(typeof(IEntityBuilder)) &&
-                        t.Name.Remove(t.Name.Length-7) == type.Name && // remove 'builder' text
+                        t.Name.Remove(t.Name.Length - 7) == type.Name && // remove 'builder' text
                         t.IsClass &&
                         !t.IsAbstract &&
                         !t.IsInterface)
@@ -109,15 +109,15 @@ public static class FluentMigratorExtensions
                          !pi.HasAttribute<NotMappedAttribute>() &&
                          !pi.HasAttribute<NotColumnAttribute>() &&
                          !builder.Expression.Columns.Any(x => x.Name.Equals(pi.Name, StringComparison.OrdinalIgnoreCase)) &&
-                         TypeMapping.ContainsKey(GetTypeToMap(pi.PropertyType).propType));
+                         TypeMapping.ContainsKey(pi.PropertyType.GetTypeToMap().propType));
 
         foreach (var prop in propertiesToAutoMap)
         {
             var columnName = prop.Name;
-            var (propType, canBeNullable) = GetTypeToMap(prop.PropertyType);
+            var (propType, canBeNullable) = prop.PropertyType.GetTypeToMap();
             DefineByOwnType(columnName, propType, builder, canBeNullable);
         }
-    }    
+    }
 
     public static (Type propType, bool canBeNullable) GetTypeToMap(this Type type)
     {

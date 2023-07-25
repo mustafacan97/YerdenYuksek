@@ -2,6 +2,7 @@
 using eCommerce.Core.Interfaces;
 using eCommerce.Core.Primitives;
 using eCommerce.Core.Services.Messages;
+using eCommerce.Infrastructure.Extensions;
 
 namespace eCommerce.Infrastructure.Services.Messages;
 

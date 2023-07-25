@@ -1,34 +1,34 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using eCommerce.Core.Interfaces;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-using eCommerce.Core.Shared;
-using eCommerce.Core.Services.Configuration;
-using eCommerce.Infrastructure.Infrastructure;
-using eCommerce.Infrastructure.Persistence.DataProviders;
-using eCommerce.Infrastructure.Persistence;
-using FluentMigrator.Runner;
-using System.Reflection;
+﻿using eCommerce.Core.Interfaces;
 using eCommerce.Core.Services.Caching;
-using eCommerce.Infrastructure.Services.Caching;
-using eCommerce.Infrastructure.Concretes;
-using eCommerce.Core.Services.Messages;
-using eCommerce.Infrastructure.Services.Messages;
+using eCommerce.Core.Services.Configuration;
 using eCommerce.Core.Services.Customers;
 using eCommerce.Core.Services.Localization;
+using eCommerce.Core.Services.Messages;
 using eCommerce.Core.Services.ScheduleTasks;
 using eCommerce.Core.Services.Security;
+using eCommerce.Core.Shared;
+using eCommerce.Infrastructure.Concretes;
+using eCommerce.Infrastructure.Persistence.Configurations;
+using eCommerce.Infrastructure.Persistence.DataProviders;
+using eCommerce.Infrastructure.Persistence;
+using eCommerce.Infrastructure.Services.Caching;
 using eCommerce.Infrastructure.Services.Configuration;
 using eCommerce.Infrastructure.Services.Customers;
-using eCommerce.Infrastructure.Services.Secuirty;
 using eCommerce.Infrastructure.Services.Localization;
+using eCommerce.Infrastructure.Services.Messages;
 using eCommerce.Infrastructure.Services.ScheduleTasks;
+using eCommerce.Infrastructure.Services.Secuirty;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using FluentMigrator.Runner;
+using System.Reflection;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
-namespace eCommerce.Infrastructure.Infrastructure;
+namespace eCommerce.Infrastructure;
 
-public static class ServiceCollectionExtensions
+public static class DependencyInjection
 {
     #region Public Methods
 
@@ -53,6 +53,7 @@ public static class ServiceCollectionExtensions
     {
         services
             .AddFluentMigratorCore()
+            .AddScoped<IMappingEntityAccessor, MySqlCustomDataProvider>()
             .ConfigureRunner(rb => rb
                 .AddMySql5()
                 .WithGlobalConnectionString(configuration.GetConnectionString("ConnectionString"))

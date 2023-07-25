@@ -1,7 +1,7 @@
 ﻿using eCommerce.Core.Entities.Directory;
 using eCommerce.Core.Primitives;
+using eCommerce.Infrastructure.Extensions;
 using eCommerce.Infrastructure.Persistence.DataProviders;
-using eCommerce.Infrastructure.Persistence.Extensions;
 using FluentMigrator.Builders.Create.Table;
 
 namespace eCommerce.Infrastructure.Persistence.Builders.Directory;

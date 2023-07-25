@@ -8,6 +8,7 @@ using eCommerce.Core.Shared;
 using eCommerce.Core.Services.Localization;
 using eCommerce.Infrastructure.Concretes;
 using eCommerce.Core.Interfaces;
+using eCommerce.Infrastructure.Extensions;
 
 namespace eCommerce.Infrastructure.Services.Localization;
 

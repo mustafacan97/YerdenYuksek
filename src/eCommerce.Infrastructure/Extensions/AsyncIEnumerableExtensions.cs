@@ -1,4 +1,6 @@
-﻿namespace System.Linq;
+﻿using eCommerce.Infrastructure.Extensions;
+
+namespace eCommerce.Infrastructure.Extensions;
 
 public static class AsyncIEnumerableExtensions
 {
@@ -76,14 +78,14 @@ public static class AsyncIEnumerableExtensions
     }
 
     public static IOrderedAsyncEnumerable<TSource> OrderByDescendingAwait<TSource, TKey>(
-        this IEnumerable<TSource> source, 
+        this IEnumerable<TSource> source,
         Func<TSource, ValueTask<TKey>> keySelector)
     {
         return source.ToAsyncEnumerable().OrderByDescendingAwait(keySelector);
     }
 
     public static IAsyncEnumerable<IAsyncGrouping<TKey, TElement>> GroupByAwait<TSource, TKey, TElement>(
-        this IEnumerable<TSource> source, 
+        this IEnumerable<TSource> source,
         Func<TSource, ValueTask<TKey>> keySelector,
         Func<TSource, ValueTask<TElement>> elementSelector)
     {
@@ -91,7 +93,7 @@ public static class AsyncIEnumerableExtensions
     }
 
     public static ValueTask<TAccumulate> AggregateAwaitAsync<TSource, TAccumulate>(
-        this IEnumerable<TSource> source, 
+        this IEnumerable<TSource> source,
         TAccumulate seed,
         Func<TAccumulate, TSource, ValueTask<TAccumulate>> accumulator)
     {
@@ -99,7 +101,7 @@ public static class AsyncIEnumerableExtensions
     }
 
     public static ValueTask<Dictionary<TKey, TElement>> ToDictionaryAwaitAsync<TSource, TKey, TElement>(
-        this IEnumerable<TSource> source, 
+        this IEnumerable<TSource> source,
         Func<TSource, ValueTask<TKey>> keySelector,
         Func<TSource, ValueTask<TElement>> elementSelector) where TKey : notnull
     {
@@ -107,7 +109,7 @@ public static class AsyncIEnumerableExtensions
     }
 
     public static IAsyncEnumerable<IAsyncGrouping<TKey, TSource>> GroupByAwait<TSource, TKey>(
-        this IEnumerable<TSource> source, 
+        this IEnumerable<TSource> source,
         Func<TSource, ValueTask<TKey>> keySelector)
     {
         return source.ToAsyncEnumerable().GroupByAwait(keySelector);

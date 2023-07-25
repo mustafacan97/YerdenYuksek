@@ -2,6 +2,7 @@
 using eCommerce.Core.Primitives;
 using eCommerce.Core.Services.Caching;
 using eCommerce.Core.Shared;
+using eCommerce.Infrastructure.Extensions;
 using eCommerce.Infrastructure.Persistence.DataProviders;
 using System.Linq.Expressions;
 using System.Transactions;
