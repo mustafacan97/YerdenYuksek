@@ -1,8 +1,6 @@
-﻿using eCommerce.Core.Entities.Catalog;
-using eCommerce.Infrastructure.Persistence.Builders.Directory;
+﻿using eCommerce.Core.Entities.Directory;
 using eCommerce.Infrastructure.Persistence.DataProviders;
 using FluentMigrator;
-using LinqToDB.Mapping;
 
 namespace eCommerce.Infrastructure.Persistence.Migrations.Installation;
 
@@ -28,7 +26,31 @@ public class SeedData : ForwardOnlyMigration
 
     public override void Up()
     {
-        CurrencyBuilder.SeedData(_customDataProvider);
+        SeedCurrencyData(_customDataProvider);
+    }
+
+    #endregion
+
+    #region Methods
+
+    private static void SeedCurrencyData(ICustomDataProvider _customDataProvider)
+    {
+        var currency = new Currency
+        {
+            Id = Guid.NewGuid(),
+            Name = "US Dollar",
+            CurrencyCode = "USD",
+            DisplayLocale = "en-US",
+            CustomFormatting = string.Empty,
+            Rate = 1,
+            DisplayOrder = 1,
+            RoundingTypeId = (int)RoundingType.Rounding001,
+            CreatedOnUtc = DateTime.UtcNow,
+            Active = true,
+            Deleted = false
+        };
+
+        _customDataProvider.InsertEntity(currency);
     }
 
     #endregion

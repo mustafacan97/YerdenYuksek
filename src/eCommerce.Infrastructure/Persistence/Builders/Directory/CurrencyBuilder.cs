@@ -1,5 +1,6 @@
 ﻿using eCommerce.Core.Entities.Directory;
 using eCommerce.Core.Primitives;
+using eCommerce.Infrastructure.Persistence.DataProviders;
 using eCommerce.Infrastructure.Persistence.Extensions;
 using FluentMigrator.Builders.Create.Table;
 
@@ -23,7 +24,7 @@ public class CurrencyBuilder : IEntityBuilder
             .WithColumn(nameof(Currency.CreatedOnUtc)).AsCustomDateTime().NotNullable()
             .WithColumn(nameof(Currency.Active)).AsBoolean().NotNullable().WithDefaultValue(true)
             .WithColumn(nameof(Currency.Deleted)).AsBoolean().NotNullable();
-    }
+    }    
 
     #endregion
 }

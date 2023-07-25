@@ -21,7 +21,7 @@ public class CreateTables : ForwardOnlyMigration
     public override void Up()
     {
         Create.TableFor<Currency>();
-        /*Create.TableFor<Picture>();
+        Create.TableFor<Picture>();
         Create.TableFor<Language>();
         Create.TableFor<Customer>();
         Create.TableFor<CustomerSecurity>();
@@ -41,7 +41,7 @@ public class CreateTables : ForwardOnlyMigration
 
         // Karşılıklı ForeignKey olduğu için, Address tablosu oluştuktan sonra aşağıdakini eklemeliyim!
         Create.ForeignKey().FromTable(nameof(Customer)).ForeignColumn(nameof(Customer.DefaultAddressId))
-                .ToTable(nameof(Address)).PrimaryColumn(nameof(Address.Id)).OnDelete(Rule.SetNull);*/
+                .ToTable(nameof(Address)).PrimaryColumn(nameof(Address.Id)).OnDelete(Rule.SetNull);
     }
 
     #endregion
