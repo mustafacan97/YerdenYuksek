@@ -23,6 +23,8 @@ public class CreateTables : ForwardOnlyMigration
         Create.TableFor<Currency>();
         Create.TableFor<Picture>();
         Create.TableFor<Language>();
+        Create.TableFor<LocalizedProperty>();
+        Create.TableFor<LocaleStringResource>();
         Create.TableFor<Customer>();
         Create.TableFor<CustomerSecurity>();
         Create.TableFor<Country>();

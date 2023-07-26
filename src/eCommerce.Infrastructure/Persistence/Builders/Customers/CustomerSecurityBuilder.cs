@@ -12,7 +12,7 @@ public class CustomerSecurityBuilder : IEntityBuilder
     {
         table
             .WithColumn(nameof(CustomerSecurity.CustomerId)).AsGuid().ForeignKey<Customer>().NotNullable().PrimaryKey()
-            .WithColumn(nameof(CustomerSecurity.Password)).AsString().NotNullable()
+            .WithColumn(nameof(CustomerSecurity.Password)).AsString(int.MaxValue).NotNullable()
             .WithColumn(nameof(CustomerSecurity.PasswordSalt)).AsString(16).NotNullable()
             .WithColumn(nameof(CustomerSecurity.LastIpAddress)).AsString(64)
             .WithColumn(nameof(CustomerSecurity.RequireReLogin)).AsBoolean().NotNullable()

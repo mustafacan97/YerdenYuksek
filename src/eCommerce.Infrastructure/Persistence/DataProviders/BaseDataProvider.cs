@@ -193,7 +193,7 @@ public abstract class BaseDataProvider : IMappingEntityAccessor
         using var dataContext = CreateDataConnection();
         await dataContext.GetTable<TEntity>()
             .Where(e => e.Id.In(entities.Select(x => x.Id)))
-           .DeleteAsync();
+            .DeleteAsync();
     }
 
     public void BulkDeleteEntities<TEntity>(IList<TEntity> entities) where TEntity : BaseEntity
