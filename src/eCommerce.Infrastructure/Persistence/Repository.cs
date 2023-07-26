@@ -1,10 +1,12 @@
-﻿using eCommerce.Core.Interfaces;
+﻿using eCommerce.Core.Entities.Directory;
+using eCommerce.Core.Interfaces;
 using eCommerce.Core.Primitives;
 using eCommerce.Core.Services.Caching;
 using eCommerce.Core.Shared;
 using eCommerce.Infrastructure.Extensions;
 using eCommerce.Infrastructure.Persistence.DataProviders;
 using System.Linq.Expressions;
+using System.Text.Json;
 using System.Transactions;
 
 namespace eCommerce.Infrastructure.Persistence;
@@ -242,6 +244,8 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
         return await _staticCacheManager.GetAsync(cacheKey, getEntityAsync);
     }
 
+    #region Insert
+
     public async Task InsertAsync(TEntity entity, bool publishEvent = true)
     {
         if (entity is null)
@@ -249,12 +253,12 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
             throw new ArgumentNullException(nameof(entity));
         }
 
+        using var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
         await _dataProvider.InsertEntityAsync(entity);
 
-        if (publishEvent)
-        {
-            // TODO ---> entity.RaiseDomainEvent();
-        }
+        if (publishEvent) PublishEvents(entity);
+
+        transaction.Complete();
     }
 
     public void Insert(TEntity entity, bool publishEvent = true)
@@ -264,12 +268,12 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
             throw new ArgumentNullException(nameof(entity));
         }
 
+        using var transaction = new TransactionScope();
         _dataProvider.InsertEntity(entity);
 
-        if (publishEvent)
-        {
-            // TODO ---> entity.RaiseDomainEvent();
-        }
+        if (publishEvent) PublishEvents(entity);
+
+        transaction.Complete();
     }
 
     public async Task InsertAsync(IList<TEntity> entities, bool publishEvent = true)
@@ -281,17 +285,10 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
 
         using var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
         await _dataProvider.BulkInsertEntitiesAsync(entities);
+
+        if (publishEvent) PublishEvents(entities.ToArray());
+
         transaction.Complete();
-
-        if (!publishEvent)
-        {
-            return;
-        }
-
-        foreach (var entity in entities)
-        {
-            // TODO ---> entity.RaiseDomainEvent()
-        }
     }
 
     public void Insert(IList<TEntity> entities, bool publishEvent = true)
@@ -301,20 +298,15 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
             throw new ArgumentNullException(nameof(entities));
         }
 
-        using var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+        using var transaction = new TransactionScope();
         _dataProvider.BulkInsertEntities(entities);
+
+        if (publishEvent) PublishEvents(entities.ToArray());
+
         transaction.Complete();
-
-        if (!publishEvent)
-        {
-            return;
-        }
-
-        foreach (var entity in entities)
-        {
-            // TODO ---> entity.RaiseDomainEvent();
-        }
     }
+
+    #endregion
 
     public async Task<TEntity?> LoadOriginalCopyAsync(TEntity entity)
     {
@@ -561,6 +553,27 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
         }
 
         await _dataProvider.UpdateEntitiesAsync(entities);
+    }
+
+    private async void PublishEvents(params BaseEntity[] entities)
+    {
+        List<IDomainEvent> domainEvents = new();
+
+        foreach(var entity in entities)
+        {
+            domainEvents.AddRange(entity.GetDomainEvents());
+            entity.ClearDomainEvents();
+        }
+
+        if (!domainEvents.Any()) return;
+
+        var outboxMessages = domainEvents.Select(q => new OutboxMessage
+        {
+            CreatedOnUtc = DateTime.UtcNow,
+            Type = q.GetType().AssemblyQualifiedName!,
+            Content = JsonSerializer.Serialize<object>(q, new JsonSerializerOptions { WriteIndented = true })
+        });
+        await _dataProvider.BulkInsertEntitiesAsync(outboxMessages);
     }
 
     #endregion
