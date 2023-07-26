@@ -14,9 +14,11 @@ public class InsertCustomerHandler : IRequestHandler<InsertCustomerCommand, Resu
 
     private readonly IRepository<Customer> _customerRepository;
 
-    private readonly IRepository<Role> _roleRepository;
+    private readonly IRepository<CustomerSecurity> _customerSecurityRepository;
 
     private readonly IRepository<CustomerRoleMapping> _crmRepository;
+
+    private readonly IRepository<Role> _roleRepository;    
 
     private readonly IWebHelper _webHelper;
 
@@ -28,12 +30,14 @@ public class InsertCustomerHandler : IRequestHandler<InsertCustomerCommand, Resu
         IWebHelper webHelper,
         IRepository<Role> roleRepository,
         IRepository<Customer> customerRepository,
-        IRepository<CustomerRoleMapping> crmRepository)
+        IRepository<CustomerRoleMapping> crmRepository,
+        IRepository<CustomerSecurity> customerSecurityRepository)
     {
         _webHelper = webHelper;
         _roleRepository = roleRepository;
         _customerRepository = customerRepository;
         _crmRepository = crmRepository;
+        _customerSecurityRepository = customerSecurityRepository;
     }
 
     #endregion
@@ -65,6 +69,7 @@ public class InsertCustomerHandler : IRequestHandler<InsertCustomerCommand, Resu
         var crm = CustomerRoleMapping.Create(customer.Id, registeredRole.Id);
 
         await _customerRepository.InsertAsync(customer);
+        await _customerSecurityRepository.InsertAsync(customer.CustomerSecurity);
         await _crmRepository.InsertAsync(crm);
 
         return Result.Success();

@@ -12,7 +12,7 @@ public static class EntityCacheDefaults<TEntity> where TEntity : BaseEntity
 
     public static CacheKey AllCacheKey => new($"ecommerce.{EntityTypeName}.all.", AllPrefix, Prefix);
 
-    public static CacheKey ByEmailCacheKey => new($"ecommerce.{EntityTypeName}.byemail.{{0}}", ByEmailPrefix, Prefix);
+    public static CacheKey ByEmailCacheKey => new("ecommerce.customer.byemail.{0}", ByEmailPrefix);
 
     public static CacheKey RolesByNameCacheKey => new("ecommerce.role.name.{0}", RolesByNamePrefix);
 
@@ -24,7 +24,7 @@ public static class EntityCacheDefaults<TEntity> where TEntity : BaseEntity
 
     public static string AllPrefix => $"ecommerce.{EntityTypeName}.all.";
 
-    public static string ByEmailPrefix => $"ecommerce.{EntityTypeName}.byemail.";
+    public static string ByEmailPrefix => "ecommerce.customer.byemail.";
 
     public static string RolesByNamePrefix => "ecommerce.role.name.";
 }

@@ -92,19 +92,20 @@ public class Customer : SoftDeletedEntity
         return newCustomer;
     }
 
-    public void SetCustomerSecurity(Guid customerId, CustomerSecurity customerSecuirty)
+    public Customer SetCustomerSecurity(Guid customerId, CustomerSecurity customerSecuirty)
     {
         customerSecuirty.SetCustomerId(customerId);
         CustomerSecurity = customerSecuirty;
+        return this;
     }
 
-    public void SetCustomerRole(Role customerRole)
+    public Customer SetCustomerRole(Role role)
     {
-        var isAlreadyExists = CustomerRoles.FirstOrDefault(q => q.Id == customerRole.Id);
-        if (isAlreadyExists is null)
+        if (CustomerRoles.FirstOrDefault(q => q.Id == role.Id) is null)
         {
-            CustomerRoles.Add(customerRole);
+            CustomerRoles.Add(role);
         }
+        return this;
     }
 
     public bool CustomerHasSpecifiedRole(string roleName)

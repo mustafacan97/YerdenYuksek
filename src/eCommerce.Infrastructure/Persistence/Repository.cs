@@ -222,17 +222,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
         Func<IStaticCacheManager, CacheKey>? getCacheKey = null, 
         bool includeDeleted = true)
     {
-        async Task<TEntity?> getEntityAsync()
-        {
-            var query = AddDeletedFilter(Table, includeDeleted);
-
-            if (func is not null)
-            {
-                query = func(query);
-            }
-
-            return await query.FirstOrDefaultAsync();
-        }
+        async Task<TEntity?> getEntityAsync() => await AddDeletedFilter(func is null ? Table : func(Table), includeDeleted).FirstOrDefaultAsync();
 
         if (getCacheKey is null)
         {

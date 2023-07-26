@@ -2,5 +2,5 @@
 
 public interface IJwtService
 {
-    Task<string> GenerateJwtToken(string email);
+    string GenerateJwtToken(string email, IEnumerable<string> roles);
 }

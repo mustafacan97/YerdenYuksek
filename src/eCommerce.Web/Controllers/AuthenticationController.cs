@@ -1,5 +1,6 @@
 ﻿using eCommerce.Application.Features.Commands.Customers.InsertCustomer;
 using eCommerce.Application.Features.Queries.Customers.GetCustomerByEmail;
+using eCommerce.Application.Features.Queries.Customers.GetCustomerByEmailAndPassword;
 using eCommerce.Core.Primitives;
 using eCommerce.Core.Services.Customers;
 using eCommerce.Core.Services.Security;
@@ -42,7 +43,6 @@ public class AuthenticationController : Controller
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Register(RegisterRequestModel model)
     {
         var checkCustomer = await _sender.Send(GetCustomerByEmailQuery.Create(model.Email));
@@ -56,35 +56,24 @@ public class AuthenticationController : Controller
 
         return Ok(registrationResult);
     }
-
-    [AllowAnonymous]
+    
     [HttpPost]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> Login([FromBody] LoginRequestModel model)
     {
-        if (!ModelState.IsValid)
+        var result = await _sender.Send(new GetCustomerByEmailAndPasswordQuery(model.Email, model.Password));
+        if (!result.IsSuccess || result.Value is null)
         {
-            var result = Result.Failure(
-                ModelState.Values
-                    .SelectMany(q => q.Errors)
-                    .Select(x => Error.Validation(description: x.ErrorMessage))
-                    .ToArray());
-
-            return BadRequest(result);
+            return Ok(Result.Failure(result.Errors.ToArray()));
         }
 
-        var loginResult = await _customerService.ValidateCustomerAsync(model.Email, model.Password);
-        if (!loginResult.IsSuccess)
-        {
-            return Ok(loginResult);
-        }
-
-        var token = _jwtService.GenerateJwtToken(model.Email);
+        var token = _jwtService.GenerateJwtToken(result.Value.Email, result.Value.Roles);
         if (token is null)
         {
             return Ok(Result.Failure(Error.Unexpected(description: "Unexpected error occurred!")));
         }
 
-        return Ok(token);
+        return Ok(Result<string>.Success(token));
     }
 
     #endregion
