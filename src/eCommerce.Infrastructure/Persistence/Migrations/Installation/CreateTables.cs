@@ -3,6 +3,7 @@ using eCommerce.Core.Entities.Configuration;
 using eCommerce.Core.Entities.Customers;
 using eCommerce.Core.Entities.Directory;
 using eCommerce.Core.Entities.Localization;
+using eCommerce.Core.Entities.Logging;
 using eCommerce.Core.Entities.Media;
 using eCommerce.Core.Entities.Messages;
 using eCommerce.Core.Entities.ScheduleTasks;
@@ -27,6 +28,9 @@ public class CreateTables : ForwardOnlyMigration
         Create.TableFor<LocaleStringResource>();
         Create.TableFor<Customer>();
         Create.TableFor<CustomerSecurity>();
+        Create.TableFor<Log>();
+        Create.TableFor<ActivityLogType>();
+        Create.TableFor<ActivityLog>();
         Create.TableFor<Country>();
         Create.TableFor<City>();
         Create.TableFor<Address>();
