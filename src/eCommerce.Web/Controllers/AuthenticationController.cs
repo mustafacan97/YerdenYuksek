@@ -6,7 +6,6 @@ using eCommerce.Core.Services.Customers;
 using eCommerce.Core.Services.Security;
 using eCommerce.Web.ViewModels;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eCommerce.Web.Controllers;
@@ -61,7 +60,7 @@ public class AuthenticationController : Controller
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> Login([FromBody] LoginRequestModel model)
     {
-        var result = await _sender.Send(new GetCustomerByEmailAndPasswordQuery(model.Email, model.Password));
+        var result = await _sender.Send(GetCustomerByEmailAndPasswordQuery.Create(model.Email, model.Password));
         if (!result.IsSuccess || result.Value is null)
         {
             return Ok(Result.Failure(result.Errors.ToArray()));

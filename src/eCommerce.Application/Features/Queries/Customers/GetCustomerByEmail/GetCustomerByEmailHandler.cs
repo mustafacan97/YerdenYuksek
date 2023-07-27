@@ -2,6 +2,7 @@
 using eCommerce.Core.Interfaces;
 using eCommerce.Core.Primitives;
 using eCommerce.Core.Shared;
+using Mapster;
 using MediatR;
 
 namespace eCommerce.Application.Features.Queries.Customers.GetCustomerByEmail;
@@ -36,12 +37,7 @@ public class GetCustomerByEmailHandler : IRequestHandler<GetCustomerByEmailQuery
             return Result<GetCustomerByEmailResponse>.Success();
         }
 
-        GetCustomerByEmailResponse response = new()
-        {
-            Email = customer.Email,
-            FirstName = customer.FirstName,
-            LastName = customer.LastName
-        };
+        var response = customer.Adapt<GetCustomerByEmailResponse>();
         
         return Result<GetCustomerByEmailResponse>.Success(response);
     }

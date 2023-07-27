@@ -5,6 +5,7 @@ using eCommerce.Core.Interfaces;
 using eCommerce.Core.Primitives;
 using eCommerce.Core.Services.Customers;
 using eCommerce.Core.Shared;
+using Mapster;
 using MediatR;
 
 namespace eCommerce.Application.Features.Queries.Customers.GetCustomerByEmailAndPassword;
@@ -89,13 +90,7 @@ public class GetCustomerByEmailAndPasswordHandler : IRequestHandler<GetCustomerB
 
         await _customerService.UpdateCustomerAsync(customer);
 
-        var result = new GetCustomerByEmailAndPasswordResponse
-        {
-            Email = customer.Email,
-            FirstName = customer.FirstName,
-            LastName = customer.LastName,
-            Roles = customer.CustomerRoles.Select(q => q.Name)
-        };
+        var result = customer.Adapt<GetCustomerByEmailAndPasswordResponse>();
 
         return Result<GetCustomerByEmailAndPasswordResponse>.Success(result);
     }
