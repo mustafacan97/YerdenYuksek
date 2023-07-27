@@ -25,37 +25,37 @@ public static class CustomerDefaults
 
     #region Customer roles
 
-    public static CacheKey CustomerRolesAllCacheKey => new("YerdenYuksek.customerrole.all.{0}", EntityCacheDefaults<Role>.AllPrefix);
+    public static CacheKey CustomerRolesAllCacheKey => new("ecommerce.customerrole.all.{0}", EntityCacheDefaults<Role>.AllPrefix);
 
-    public static CacheKey CustomerRolesByNameCacheKey => new("YerdenYuksek.customerrole.name.{0}", CustomerRolesByNamePrefix);
+    public static CacheKey CustomerRolesByNameCacheKey => new("ecommerce.customerrole.name.{0}", CustomerRolesByNamePrefix);
 
-    public static string CustomerRolesByNamePrefix => "YerdenYuksek.customerrole.name.";
+    public static string CustomerRolesByNamePrefix => "ecommerce.customerrole.name.";
 
-    public static CacheKey CustomerRoleIdsCacheKey => new("YerdenYuksek.customer.customerrole.ids.{0}-{1}", CustomerCustomerRolesPrefix);
+    public static CacheKey CustomerRoleIdsCacheKey => new("ecommerce.customer.customerrole.ids.{0}-{1}", CustomerCustomerRolesPrefix);
 
-    public static CacheKey CustomerRolesCacheKey => new("YerdenYuksek.customer.customerrole.{0}-{1}", CustomerCustomerRolesByCustomerPrefix, CustomerCustomerRolesPrefix);
+    public static CacheKey CustomerRolesCacheKey => new("ecommerce.customer.customerrole.{0}-{1}", CustomerCustomerRolesByCustomerPrefix, CustomerCustomerRolesPrefix);
 
-    public static string CustomerCustomerRolesPrefix => "YerdenYuksek.customer.customerrole.";
+    public static string CustomerCustomerRolesPrefix => "ecommerce.customer.customerrole.";
 
-    public static string CustomerCustomerRolesByCustomerPrefix => "YerdenYuksek.customer.customerrole.{0}";
+    public static string CustomerCustomerRolesByCustomerPrefix => "ecommerce.customer.customerrole.{0}";
 
     #endregion
 
     #region Addresses
 
-    public static CacheKey CustomerAddressesCacheKey => new("YerdenYuksek.customer.addresses.{0}", CustomerAddressesPrefix);
+    public static CacheKey CustomerAddressesCacheKey => new("ecommerce.customer.addresses.{0}", CustomerAddressesPrefix);
 
-    public static CacheKey CustomerAddressCacheKey => new("YerdenYuksek.customer.addresses.{0}-{1}", CustomerAddressesByCustomerPrefix, CustomerAddressesPrefix);
+    public static CacheKey CustomerAddressCacheKey => new("ecommerce.customer.addresses.{0}-{1}", CustomerAddressesByCustomerPrefix, CustomerAddressesPrefix);
 
-    public static string CustomerAddressesPrefix => "YerdenYuksek.customer.addresses.";
+    public static string CustomerAddressesPrefix => "ecommerce.customer.addresses.";
 
-    public static string CustomerAddressesByCustomerPrefix => "YerdenYuksek.customer.addresses.{0}";
+    public static string CustomerAddressesByCustomerPrefix => "ecommerce.customer.addresses.{0}";
 
     #endregion
 
     #region Customer password
 
-    public static CacheKey CustomerPasswordLifetimeCacheKey => new("YerdenYuksek.customerpassword.lifetime.{0}");
+    public static CacheKey CustomerPasswordLifetimeCacheKey => new("ecommerce.customerpassword.lifetime.{0}");
 
     #endregion
 
