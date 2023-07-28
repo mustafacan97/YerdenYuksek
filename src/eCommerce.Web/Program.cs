@@ -8,7 +8,7 @@ builder.Services.AddControllers();
 builder.Services
     .AddEndpointsApiExplorer()
     .AddApplicationProject()
-    .AddInfrastructureProject(builder.Configuration)    
+    .AddInfrastructureProject(builder.Configuration, builder.WebHost)    
     .AddSwaggerGen();
 
 builder.Host.UseDefaultServiceProvider(options =>

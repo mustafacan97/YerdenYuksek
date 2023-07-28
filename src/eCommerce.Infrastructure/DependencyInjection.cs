@@ -25,6 +25,9 @@ using System.Text;
 using FluentMigrator.Runner;
 using System.Reflection;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore;
 
 namespace eCommerce.Infrastructure;
 
@@ -34,11 +37,12 @@ public static class DependencyInjection
 
     public static IServiceCollection AddInfrastructureProject(
         this IServiceCollection services,
-        IConfiguration configuration)
+        IConfiguration configuration,
+        ConfigureWebHostBuilder webHost)
     {
         services
             .AddJwtBearer(configuration)
-            .AddServices(configuration)
+            .AddServices(configuration, webHost)
             .RegisterAllSettings()
             .AddFluentMigrator(configuration);
 
@@ -63,13 +67,14 @@ public static class DependencyInjection
         return services;
     }
 
-    private static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
+    private static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration, ConfigureWebHostBuilder webHost)
     {
         services
             .AddSingleton(configuration)
             .AddScoped(typeof(IRepository<>), typeof(Repository<>))
             .AddScoped<ICustomDataProvider, MySqlCustomDataProvider>()
             .AddHttpContextAccessor()
+            .AddSingleton<IHttpBaseUrlAccessor>(HttpBaseUrlAccessor.Create(webHost.GetSetting(WebHostDefaults.ServerUrlsKey)!))
             .AddTransient(typeof(IConcurrentCollection<>), typeof(ConcurrentTrie<>))
 
             // Caching
